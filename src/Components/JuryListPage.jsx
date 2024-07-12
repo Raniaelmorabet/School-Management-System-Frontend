@@ -7,7 +7,18 @@ import { MdDelete } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import Swal from 'sweetalert2';
 import {Link, useParams} from 'react-router-dom';
-
+const getRoleName = (roleValue) => {
+    switch(roleValue) {
+        case 0:
+            return 'Représentant de l\'établissement';
+        case 1:
+            return 'Formateur de l\'établissement';
+        case 2:
+            return 'Membre professionnel';
+        default:
+            return '';
+    }
+};
 const JuryList = () => {
     const [listData, setListData] = useState([]);
     useEffect(() => {
@@ -76,7 +87,7 @@ const JuryList = () => {
                 </h4>
                 <Link
                     to="/add-jury"
-                    className="px-4 py-2 bg-blue-950 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+                    className="px-4 py-2 bg-blue-950 text-white rounded-md  focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
                 >
                     Ajouter Jury
                 </Link>
@@ -138,7 +149,7 @@ const JuryList = () => {
                         </div>
 
                         <div className="flex items-center justify-center p-2.5 xl:p-5">
-                            <p className="text-black">{list.role}</p>
+                            <p className="text-black">{getRoleName(list.role)}</p>
                         </div>
 
                         <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
