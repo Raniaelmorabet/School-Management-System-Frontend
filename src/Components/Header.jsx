@@ -26,8 +26,8 @@ function Header() {
                     <div className="flex items-center space-x-4 pr-10">
                         <div className="flex items-center space-x-2 cursor-pointer" onClick={toggleDropdown}>
                             <div className="flex flex-col">
-                                <span className="text-gray-800 font-semibold">Thomas Anree</span>
-                                <span className="text-gray-400 text-sm">UX Designer</span>
+                                <span className="text-gray-800 font-semibold">Hamza Bourkha</span>
+                                <span className="text-gray-400 text-sm">Directeur Pédagogique</span>
                             </div>
                             <img src={juryfive} className="h-12 w-12 rounded-full" alt="Profile" />
                         </div>
@@ -44,14 +44,14 @@ function Header() {
                                     console.log('View Profile clicked');
                                 }}
                             >
-                                <FaUserCircle className="text-xl text-gray-500 mr-2" />
-                                <span>View Profile</span>
+                                <FaUserCircle className="text-xl text-gray-200 mr-2" />
+                                <span className='text-gray-200'>View Profile</span>
                             </button>
                             <button
                                 className="flex items-center block px-4 py-2 text-gray-800 hover:bg-black/10  w-full text-left"
                             >
-                                <FaSignOutAlt className="text-xl text-gray-500 mr-2" />
-                                <span>Logout</span>
+                                <FaSignOutAlt className="text-xl text-meta-1 mr-2" />
+                                <span className='text-meta-1'>Sign out</span>
                             </button>
                         </div>
                     )}
