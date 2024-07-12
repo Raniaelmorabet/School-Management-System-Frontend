@@ -51,10 +51,9 @@ const AddJuryMemberForm = () => {
         formData.append('latestDiploma', LatestDiploma);
         formData.append('role', Role);
         formData.append('imgFile', profileImage);
-        formData.append('juryId','dbb8c58c-b784-4a52-b0d3-b9ca9d092316')
+        formData.append('juryId','83103af3-7be3-415d-b9c0-15266db68b86')
         formData.append('sector', sector);
 
-        // Debugging output
         for (let [key, value] of formData.entries()) {
             console.log(`${key}: ${value}`);
         }
