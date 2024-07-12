@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { FaCalendarAlt, FaUser } from 'react-icons/fa';
 import { IoIosArrowDropright, IoIosArrowDropleft } from "react-icons/io";
 import { TiGroup } from "react-icons/ti";
+import {Link} from 'react-router-dom';
+
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(true);
@@ -33,13 +35,13 @@ const Sidebar = () => {
                                     <li>
                                         <a href="#" className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-gray-700 p-2 rounded-md">
                                             <TiGroup />
-                                            <span>Les Jury</span>
+                                            <Link to='/Home'>Les Jury</Link>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="#" className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-gray-700 p-2 rounded-md">
                                             <FaCalendarAlt />
-                                            <span>Les Réunions</span>
+                                            <Link to='/MeetingListPage'>Les Réunions</Link>
                                         </a>
                                     </li>
                                 </ul>
@@ -52,7 +54,6 @@ const Sidebar = () => {
                 </button>
             </div>
             <div className={`flex-1 transition-margin duration-300 ${isOpen ? 'ml-55' : 'ml-16'} overflow-auto`}>
-                {/* Your main content here */}
             </div>
         </div>
     );
