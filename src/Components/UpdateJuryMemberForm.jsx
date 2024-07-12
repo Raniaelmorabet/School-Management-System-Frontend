@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Swal from 'sweetalert2';
 import {Link, useParams} from 'react-router-dom';
 
@@ -14,7 +14,28 @@ const UpdateJuryMemberForm = () => {
     const [CompanyName, setCompanyName] = useState('');
     const [sector, setSector] = useState('');
     const {id} = useParams();
-
+    useEffect(async()=>{
+        try {
+            const response = await fetch(`http://localhost:5016/api/JuryMember/${id}`);
+            if (response.ok) {
+                const data = await response.json();
+                setFirstName(data.firstName)
+                setLastName(data.lastName)
+                setEmail(data.email)
+                setSector(data.sector)
+                setCompanyName(data.companyName)
+                setExperienceYears(data.yearOfExperience)
+                setLastDegree(data.latestDiploma)
+                setProfileImage(data.profileImg)
+                setRole(data.role)
+                console.log(data);
+            } else {
+                console.error('Failed to fetch jury data');
+            }
+        } catch (error) {
+            console.error('Error fetching jury data:', error);
+        }
+    },[])
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -53,7 +74,7 @@ const UpdateJuryMemberForm = () => {
         formData.append('latestDiploma', LatestDiploma);
         formData.append('role', Role);
         formData.append('imgFile', profileImage);
-        formData.append('juryId','dbb8c58c-b784-4a52-b0d3-b9ca9d092316')
+        formData.append('juryId','83103af3-7be3-415d-b9c0-15266db68b86')
         formData.append('sector', sector);
 
 
@@ -107,6 +128,7 @@ const UpdateJuryMemberForm = () => {
                                         placeholder="Entrez votre prénom"
                                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                         required
+                                        value={FirstName}
                                         onChange={(e) => setFirstName(e.target.value)}
                                     />
                                     <label className="mt-8 mb-2.5 block text-black dark:text-white">
@@ -117,6 +139,7 @@ const UpdateJuryMemberForm = () => {
                                         placeholder="Entrez votre nom de famille"
                                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                         required
+                                        value={LastName}
                                         onChange={(e) => setLastName(e.target.value)}
                                     />
                                 </div>
@@ -193,6 +216,7 @@ const UpdateJuryMemberForm = () => {
                                         placeholder="Entrez votre adresse e-mail"
                                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                         required
+                                        value={Email}
                                         onChange={(e) => setEmail(e.target.value)}
                                     />
                                 </div>
@@ -224,6 +248,7 @@ const UpdateJuryMemberForm = () => {
                                         placeholder="Entrez votre dernier diplôme"
                                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                         required
+                                        value={LatestDiploma}
                                         onChange={(e) => setLastDegree(e.target.value)}
                                     />
                                 </div>
@@ -236,6 +261,7 @@ const UpdateJuryMemberForm = () => {
                                         placeholder="Entrez vos années d'expérience"
                                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                         required
+                                        value={YearOfExperience}
                                         onChange={(e) => setExperienceYears(e.target.value)}
                                     />
                                 </div>
@@ -251,6 +277,7 @@ const UpdateJuryMemberForm = () => {
                                         placeholder="Entrez le nom de l'entreprise"
                                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                         required
+                                        value={CompanyName}
                                         onChange={(e) => setCompanyName(e.target.value)}
                                     />
                                 </div>
@@ -263,6 +290,7 @@ const UpdateJuryMemberForm = () => {
                                         placeholder="Entrez le secteur d'activité"
                                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                         required
+                                        value={sector}
                                         onChange={(e) => setSector(e.target.value)}
                                     />
                                 </div>
