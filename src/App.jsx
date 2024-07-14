@@ -7,6 +7,7 @@ import UpdateJuryMemberForm from "./Components/UpdateJuryMemberForm.jsx";
 import Sidebar from "./Components/Sidebar.jsx";
 import MeetingListPage from "./Components/MeetingListPage.jsx";
 import ScheduleMeeting from "./Components/ScheduleMeeting.jsx";
+import RescheduleMeeting from "./Components/RescheduleMeeting.jsx";
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
                             <Route path="/Update/:id" element={<UpdateJuryMemberForm />} />
                             <Route path="/MeetingListPage" element={<MeetingListPage />} />
                             <Route path="/ScheduleMeeting" element={<ScheduleMeeting />} />
+                            <Route path="/RescheduleMeeting" element={<RescheduleMeeting />} />
                         </Routes>
                     </div>
                 </div>
