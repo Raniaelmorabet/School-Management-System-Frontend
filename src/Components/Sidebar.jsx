@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom';
 
 
 const Sidebar = () => {
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
@@ -49,8 +49,8 @@ const Sidebar = () => {
                         </nav>
                     </div>
                 )}
-                <button onClick={toggleSidebar} className="absolute bottom-4 right-4 focus:outline-none">
-                    {isOpen ? <IoIosArrowDropleft className="text-2xl" /> : <IoIosArrowDropright className="text-2xl" />}
+                <button onClick={toggleSidebar} className="absolute bottom-4 right-5 focus:outline-none ">
+                    {isOpen ? <IoIosArrowDropleft  className="text-2xl" /> : <IoIosArrowDropright className="text-2xl" />}
                 </button>
             </div>
             <div className={`flex-1 transition-margin duration-300 ${isOpen ? 'ml-55' : 'ml-16'} overflow-auto`}>
