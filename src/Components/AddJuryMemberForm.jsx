@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const AddJuryMemberForm = () => {
     const [profileImage, setProfileImage] = useState(null);
@@ -12,8 +13,32 @@ const AddJuryMemberForm = () => {
     const [LatestDiploma, setLastDegree] = useState('');
     const [YearOfExperience, setExperienceYears] = useState('');
     const [CompanyName, setCompanyName] = useState('');
-    const [sector, setSector] = useState('');
-
+    const [jury, setJury] = useState('');
+    const [roles,setRoles] = useState([]);
+    const [juries,setJuries] = useState();
+    const navigate = useNavigate()
+    useEffect(()=>{
+        const fetchRoles = async () => {
+            try {
+                const response = await axios.get('https://localhost:7219/api/JuryMemberRole');
+                setRoles(response.data)
+                console.log(response.data)
+            } catch (error) {
+                console.error('Error fetching roles:', error);
+            }
+        };
+        const fetchJury = async () => {
+            try {
+                const response = await axios.get('https://localhost:7219/api/Jury');
+                setJuries(response.data)
+                console.log(response.data)
+            } catch (error) {
+                console.error('Error fetching Juries:', error);
+            }
+        };
+        fetchRoles();
+        fetchJury();
+    },[])
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -49,28 +74,23 @@ const AddJuryMemberForm = () => {
         formData.append('companyName', CompanyName);
         formData.append('yearOfExperience', YearOfExperience);
         formData.append('latestDiploma', LatestDiploma);
-        formData.append('role', Role);
+        formData.append('roleId', Role);
         formData.append('imgFile', profileImage);
-        formData.append('juryId','44f984ea-8cfa-4907-9e6b-3f0caef94bc6')
-        formData.append('sector', sector);
-
+        formData.append('juryId',jury)
+        console.log(formData);
         for (let [key, value] of formData.entries()) {
             console.log(`${key}: ${value}`);
         }
 
         try {
-            const response = await fetch('http://localhost:5016/api/JuryMember', {
-                method: 'POST',
-                body: formData,
-            });
-
-            if (response.ok) {
+            const response = await axios.post('https://localhost:7219/api/JuryMember',formData);
+            console.log(response);
+            if (response.status == 200) {
                 Swal.fire({
-                    title: "Membre ajouté avec succès!",
+                    title: response.data,
                     icon: "success",
                 });
             } else {
-                const errorData = await response.json();
                 Swal.fire({
                     title: "Erreur lors de l'ajout du membre!",
                     text: errorData.message || 'Erreur inconnue',
@@ -206,10 +226,12 @@ const AddJuryMemberForm = () => {
                                         onChange={(e) => setRole(e.target.value)}
                                         required
                                     >
-                                        <option value="">Sélectionnez votre rôle</option>
-                                        <option value="2">Membre professionnel</option>
-                                        <option value="1">Formateur de l'établissement</option>
-                                        <option value="0">Représentant de l'établissement</option>
+                                    {roles.map((role,i)=>{
+                                        return(
+                                            <option key={i} value={role.juryMemberRoleId}>{role.role}</option>
+                                        )
+                                    })}
+                                        
                                     </select>
                                 </div>
                             </div>
@@ -256,15 +278,21 @@ const AddJuryMemberForm = () => {
                                 </div>
                                 <div className="w-full sm:w-1/2">
                                     <label className="mb-2.5 block text-black dark:text-white">
-                                        Secteur d'activité <span className="text-meta-1">*</span>
+                                        Jury <span className="text-meta-1">*</span>
                                     </label>
-                                    <input
-                                        type="text"
-                                        placeholder="Entrez le secteur d'activité"
+                                    <select
                                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                        value={jury}
+                                        onChange={(e) => setJury(e.target.value)}
                                         required
-                                        onChange={(e) => setSector(e.target.value)}
-                                    />
+                                    >
+                                    {juries?.map((jury,i)=>{
+                                        return(
+                                            <option key={i} value={jury.juryId}>{jury.juryName}</option>
+                                        )
+                                    })}
+                                        
+                                    </select>
                                 </div>
                             </div>
                             <div className="flex justify-end gap-4.5">

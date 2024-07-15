@@ -7,6 +7,7 @@ import { MdDelete } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import Swal from 'sweetalert2';
 import {Link, useParams} from 'react-router-dom';
+import axios from 'axios';
 const getRoleName = (roleValue) => {
     switch(roleValue) {
         case 0:
@@ -19,27 +20,22 @@ const getRoleName = (roleValue) => {
             return '';
     }
 };
+
 const JuryList = () => {
     const [listData, setListData] = useState([]);
+    const fetchJuries = async () => {
+        try {
+            const response = await axios.get('https://localhost:7219/api/JuryMember');
+            setListData(response.data)
+            console.log(response.data)
+        } catch (error) {
+            console.error('Error fetching roles:', error);
+        }
+    };
     useEffect(() => {
-        const fetchJuries = async () => {
-            try {
-                const response = await fetch('http://localhost:5016/api/JuryMember');
-                if (response.ok) {
-                    const data = await response.json();
-                    setListData(data);
-                    console.log(data);
-                } else {
-                    console.error('Failed to fetch jury data');
-                }
-            } catch (error) {
-                console.error('Error fetching jury data:', error);
-            }
-        };
-
+        
         fetchJuries();
     }, []);
-
     const handleDelete = async (id) => {
         console.log("Deleting ID:", id);
         Swal.fire({
@@ -52,23 +48,21 @@ const JuryList = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const response = await fetch(`http://localhost:5016/api/JuryMember/${id}`, {
-                        method: 'DELETE',
-                    });
-
-                    if (response.ok) {
-                        const newList = listData.filter((item) => item.juryMemberId !== id);
-                        setListData(newList);
-                        Swal.fire({
-                            title: "L'élément a été supprimé.",
-                            icon: "success",
-                        });
-                    } else {
-                        Swal.fire({
-                            title: "Erreur lors de la suppression.",
-                            icon: "error",
-                        });
-                    }
+                    const response = await axios.delete(`https://localhost:7219/api/JuryMember/${id}`);
+                    fetchJuries();
+                    // if (response.ok) {
+                    //     const newList = listData.filter((item) => item.juryMemberId !== id);
+                    //     setListData(newList);
+                    //     Swal.fire({
+                    //         title: "L'élément a été supprimé.",
+                    //         icon: "success",
+                    //     });
+                    // } else {
+                    //     Swal.fire({
+                    //         title: "Erreur lors de la suppression.",
+                    //         icon: "error",
+                    //     });
+                    // }
                 } catch (error) {
                     Swal.fire({
                         title: "Erreur lors de la suppression.",
@@ -142,14 +136,14 @@ const JuryList = () => {
                         </div>
 
                         <div className="flex items-center justify-center p-2.5 xl:p-5 ">
-                            {console.log(list.juryMemberId)}
+                            
                             <a href={`mailto:${list.email}`} className="text-blue-500 underline">
                                 {list.email}
                             </a>
                         </div>
-
                         <div className="flex items-center justify-center p-2.5 xl:p-5">
-                            <p className="text-black">{getRoleName(list.role)}</p>
+                        {console.log(list.role)}
+                            <p className="text-black">{list.role.role}</p>
                         </div>
 
                         <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">

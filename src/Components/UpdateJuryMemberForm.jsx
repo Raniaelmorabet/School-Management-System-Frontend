@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Swal from 'sweetalert2';
 import {Link, useParams} from 'react-router-dom';
+import axios from 'axios';
 
 const UpdateJuryMemberForm = () => {
     const [profileImage, setProfileImage] = useState(null);
@@ -12,29 +13,50 @@ const UpdateJuryMemberForm = () => {
     const [LatestDiploma, setLastDegree] = useState('');
     const [YearOfExperience, setExperienceYears] = useState('');
     const [CompanyName, setCompanyName] = useState('');
-    const [sector, setSector] = useState('');
+    const [jury, setJury] = useState('');
+    const [juries,setJuries] = useState();
+    const [roles,setRoles] = useState([]);
     const {id} = useParams();
     useEffect(async()=>{
-        try {
-            const response = await fetch(`http://localhost:5016/api/JuryMember/${id}`);
-            if (response.ok) {
-                const data = await response.json();
-                setFirstName(data.firstName)
-                setLastName(data.lastName)
-                setEmail(data.email)
-                setSector(data.sector)
-                setCompanyName(data.companyName)
-                setExperienceYears(data.yearOfExperience)
-                setLastDegree(data.latestDiploma)
-                setProfileImage(data.profileImg)
-                setRole(data.role)
-                console.log(data);
-            } else {
-                console.error('Failed to fetch jury data');
-            }
-        } catch (error) {
-            console.error('Error fetching jury data:', error);
-        }
+            const fetchJury = async () => {
+                try {
+                    const response = await axios.get(`https://localhost:7219/api/JuryMember/${id}`);
+                    console.log(response.data)
+                    setFirstName(response.data.firstName)
+                    setLastName(response.data.lastName)
+                    setEmail(response.data.email)
+                    setJury(response.data.juryId)
+                    setCompanyName(response.data.companyName)
+                    setExperienceYears(response.data.yearOfExperience)
+                    setLastDegree(response.data.latestDiploma)
+                    setProfileImage(response.data.profileImg)
+                    setRole(response.data.role)
+                } catch (error) {
+                    console.error('Error fetching Juries:', error);
+                }
+            };
+            const fetchRoles = async () => {
+                try {
+                    const response = await axios.get('https://localhost:7219/api/JuryMemberRole');
+                    setRoles(response.data)
+                    console.log(response.data)
+                } catch (error) {
+                    console.error('Error fetching roles:', error);
+                }
+            };
+            const fetchJuries = async () => {
+                try {
+                    const response = await axios.get('https://localhost:7219/api/Jury');
+                    setJuries(response.data)
+                    console.log(response.data)
+                } catch (error) {
+                    console.error('Error fetching Juries:', error);
+                }
+            };
+            fetchRoles();
+            fetchJuries();
+            fetchJury();
+
     },[])
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -72,32 +94,23 @@ const UpdateJuryMemberForm = () => {
         formData.append('companyName', CompanyName);
         formData.append('yearOfExperience', YearOfExperience);
         formData.append('latestDiploma', LatestDiploma);
-        formData.append('role', Role);
+        formData.append('roleId', Role);
         formData.append('imgFile', profileImage);
-        formData.append('juryId','8b2890a3-6c14-4281-8833-99581d71d36d')
-        formData.append('sector', sector);
-
-
+        formData.append('juryId', jury);
         // Debugging output
         for (let [key, value] of formData.entries()) {
             console.log(`${key}: ${value}`);
         }
-
         try {
-            const response = await fetch('http://localhost:5016/edit', {
-                method: 'PUT',
-                body: formData
-            });
-
-            if (!response.ok) {
+            const response = await axios.put(`https://localhost:7219/api/JuryMember`,formData);
+            if (response.status != 200) {
                 throw new Error('Network response was not ok');
             }
             Swal.fire({
                 icon: 'success',
                 title: 'Success!',
-                text: 'Jury member details updated successfully.'
+                text: response.data
             });
-
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -221,7 +234,7 @@ const UpdateJuryMemberForm = () => {
                                     />
                                 </div>
                                 <div className="w-full sm:w-1/2">
-                                    <label className="mb-2.5 block text-black dark:text-white">
+                                <label className="mb-2.5 block text-black dark:text-white">
                                         Rôle <span className="text-meta-1">*</span>
                                     </label>
                                     <select
@@ -230,10 +243,11 @@ const UpdateJuryMemberForm = () => {
                                         onChange={(e) => setRole(e.target.value)}
                                         required
                                     >
-                                        <option value="">Sélectionnez votre rôle</option>
-                                        <option value="2">Membre professionnel</option>
-                                        <option value="1">Formateur de l'établissement</option>
-                                        <option value="0">Représentant de l'établissement</option>
+                                    {roles.map((role,i)=>{
+                                        return(
+                                            <option key={i} value={role.juryMemberRoleId}>{role.role}</option>
+                                        )
+                                    })}
                                     </select>
                                 </div>
                             </div>
@@ -282,17 +296,22 @@ const UpdateJuryMemberForm = () => {
                                     />
                                 </div>
                                 <div className="w-full sm:w-1/2">
-                                    <label className="mb-2.5 block text-black dark:text-white">
-                                        Secteur d'activité <span className="text-meta-1">*</span>
+                                <label className="mb-2.5 block text-black dark:text-white">
+                                        Jury <span className="text-meta-1">*</span>
                                     </label>
-                                    <input
-                                        type="text"
-                                        placeholder="Entrez le secteur d'activité"
+                                    <select
                                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                        value={jury}
+                                        onChange={(e) => setJury(e.target.value)}
                                         required
-                                        value={sector}
-                                        onChange={(e) => setSector(e.target.value)}
-                                    />
+                                    >
+                                    {juries?.map((jury,i)=>{
+                                        return(
+                                            <option key={i} value={jury.juryId}>{jury.juryName}</option>
+                                        )
+                                    })}
+                                        
+                                    </select>
                                 </div>
                             </div>
                             <div className="flex justify-end gap-4.5">
