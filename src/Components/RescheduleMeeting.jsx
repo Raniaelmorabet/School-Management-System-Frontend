@@ -1,11 +1,44 @@
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-function RescheduleMeeting() {
+function ScheduleMeeting() {
     const [date, setDate] = useState("");
     const [error, setError] = useState("");
     const [location, setLocation] = useState("etablissement");
     const [customLocation, setCustomLocation] = useState("");
+    const [hours, setHours] = useState("12");
+    const [minutes, setMinutes] = useState("00");
+    const [period, setPeriod] = useState("AM");
+    const [meetings, setMeetings] = useState([]);
+
+    useEffect(() => {
+        fetchMeetings();
+    }, []);
+
+    const fetchMeetings = async () => {
+        try {
+            const response = await fetch("http://localhost:5016/api/meeting", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    date: "2024-07-14T23:47:17.821Z",
+                    time: { ticks: 0 },
+                    location: "string",
+                    type: 0,
+                    juryId: "8b2890a3-6c14-4281-8833-99581d71d36d",
+                }),
+            });
+            if (!response.ok) {
+                throw new Error("Failed to fetch meetings");
+            }
+            const data = await response.json();
+            setMeetings(data);
+        } catch (error) {
+            console.error("Error fetching meetings:", error);
+        }
+    };
 
     const handleDateChange = (e) => {
         const selectedDate = new Date(e.target.value);
@@ -33,6 +66,9 @@ function RescheduleMeeting() {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!error) {
+            const time = `${hours}:${minutes} ${period}`;
+            // Further processing with the date, time, location, and other data
+            console.log("Scheduled meeting at", date, time, location);
         }
     };
 
@@ -43,7 +79,7 @@ function RescheduleMeeting() {
                     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                         <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
                             <h3 className="font-medium text-black dark:text-white">
-                                Replanifier une réunion
+                                Planifier une réunion
                             </h3>
                         </div>
                         <form onSubmit={handleSubmit}>
@@ -66,11 +102,37 @@ function RescheduleMeeting() {
                                         <label className="mb-2.5 block text-black dark:text-white">
                                             L'heure <span className="text-meta-1">*</span>
                                         </label>
-                                        <input
-                                            type="time"
-                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                            required
-                                        />
+                                        <div className="flex space-x-2">
+                                            <select
+                                                value={hours}
+                                                onChange={(e) => setHours(e.target.value)}
+                                                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                required
+                                            >
+                                                {Array.from({ length: 12 }, (_, i) => i + 1).map(hour => (
+                                                    <option key={hour} value={hour}>{hour}</option>
+                                                ))}
+                                            </select>
+                                            <select
+                                                value={minutes}
+                                                onChange={(e) => setMinutes(e.target.value)}
+                                                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                required
+                                            >
+                                                {Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0')).map(minute => (
+                                                    <option key={minute} value={minute}>{minute}</option>
+                                                ))}
+                                            </select>
+                                            <select
+                                                value={period}
+                                                onChange={(e) => setPeriod(e.target.value)}
+                                                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                required
+                                            >
+                                                <option value="AM">AM</option>
+                                                <option value="PM">PM</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -122,7 +184,7 @@ function RescheduleMeeting() {
                                         type="submit"
                                         className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-white hover:bg-opacity-90"
                                     >
-                                        Enregister les modifications
+                                        Ajouter
                                     </button>
                                 </div>
                             </div>
@@ -134,4 +196,4 @@ function RescheduleMeeting() {
     );
 }
 
-export default RescheduleMeeting;
+export default ScheduleMeeting;

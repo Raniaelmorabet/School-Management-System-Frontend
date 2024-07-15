@@ -6,6 +6,9 @@ function ScheduleMeeting() {
     const [error, setError] = useState("");
     const [location, setLocation] = useState("etablissement");
     const [customLocation, setCustomLocation] = useState("");
+    const [hours, setHours] = useState("12");
+    const [minutes, setMinutes] = useState("00");
+    const [period, setPeriod] = useState("AM");
     const [meetings, setMeetings] = useState([]);
 
     useEffect(() => {
@@ -63,6 +66,9 @@ function ScheduleMeeting() {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!error) {
+            const time = `${hours}:${minutes} ${period}`;
+            // Further processing with the date, time, location, and other data
+            console.log("Scheduled meeting at", date, time, location);
         }
     };
 
@@ -96,11 +102,37 @@ function ScheduleMeeting() {
                                         <label className="mb-2.5 block text-black dark:text-white">
                                             L'heure <span className="text-meta-1">*</span>
                                         </label>
-                                        <input
-                                            type="time"
-                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                            required
-                                        />
+                                        <div className="flex space-x-2">
+                                            <select
+                                                value={hours}
+                                                onChange={(e) => setHours(e.target.value)}
+                                                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                required
+                                            >
+                                                {Array.from({ length: 12 }, (_, i) => i + 1).map(hour => (
+                                                    <option key={hour} value={hour}>{hour}</option>
+                                                ))}
+                                            </select>
+                                            <select
+                                                value={minutes}
+                                                onChange={(e) => setMinutes(e.target.value)}
+                                                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                required
+                                            >
+                                                {Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0')).map(minute => (
+                                                    <option key={minute} value={minute}>{minute}</option>
+                                                ))}
+                                            </select>
+                                            <select
+                                                value={period}
+                                                onChange={(e) => setPeriod(e.target.value)}
+                                                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                required
+                                            >
+                                                <option value="AM">AM</option>
+                                                <option value="PM">PM</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
 
