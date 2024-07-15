@@ -1,11 +1,41 @@
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function ScheduleMeeting() {
     const [date, setDate] = useState("");
     const [error, setError] = useState("");
     const [location, setLocation] = useState("etablissement");
     const [customLocation, setCustomLocation] = useState("");
+    const [meetings, setMeetings] = useState([]);
+
+    useEffect(() => {
+        fetchMeetings();
+    }, []);
+
+    const fetchMeetings = async () => {
+        try {
+            const response = await fetch("http://localhost:5016/api/meeting", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    date: "2024-07-14T23:47:17.821Z",
+                    time: { ticks: 0 },
+                    location: "string",
+                    type: 0,
+                    juryId: "8b2890a3-6c14-4281-8833-99581d71d36d",
+                }),
+            });
+            if (!response.ok) {
+                throw new Error("Failed to fetch meetings");
+            }
+            const data = await response.json();
+            setMeetings(data);
+        } catch (error) {
+            console.error("Error fetching meetings:", error);
+        }
+    };
 
     const handleDateChange = (e) => {
         const selectedDate = new Date(e.target.value);

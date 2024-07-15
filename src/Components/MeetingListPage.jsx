@@ -1,28 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaEdit } from 'react-icons/fa';
+import axios from 'axios'; // Add this line if you're using Axios
 
 const Calendar = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [events, setEvents] = useState([
-        {
-            id: 1,
-            date: new Date(2024, 6, 5),
-            title: "Meetings",
-            time: "5 Jul - 6 Jul",
-            location: "Virtual",
-            jury: "Internal Review Panel"
-        },
-        {
-            id: 2,
-            date: new Date(2024, 6, 23),
-            title: "Exams",
-            time: "23 Jul - 24 Jul",
-            location: "Main Hall",
-            jury: "External Examiners"
-        },
-    ]);
+    const [events, setEvents] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState(null);
+
+    useEffect(() => {
+        const fetchEvents = async () => {
+            try {
+                const response = await axios.get('http://localhost:5016/api/meeting');
+                setEvents(response.data);
+            } catch (error) {
+                console.error('Error fetching events:', error);
+            }
+        };
+
+        fetchEvents();
+    }, []);
 
     const daysInMonth = (month, year) => {
         return new Date(year, month + 1, 0).getDate();
@@ -106,9 +103,9 @@ const Calendar = () => {
                         <tr key={weekIndex} className="grid grid-cols-7">
                             {week.map((day, dayIndex) => {
                                 const event = events.find(event =>
-                                    event.date.getFullYear() === currentDate.getFullYear() &&
-                                    event.date.getMonth() === currentDate.getMonth() &&
-                                    event.date.getDate() === day
+                                    new Date(event.date).getFullYear() === currentDate.getFullYear() &&
+                                    new Date(event.date).getMonth() === currentDate.getMonth() &&
+                                    new Date(event.date).getDate() === day
                                 );
                                 return (
                                     <td
@@ -149,7 +146,7 @@ const Calendar = () => {
                         </div>
                         <div className="mb-4 border-b p-4 border-gray-300 pb-4">
                             <p className="text-blue-950 font-bold">Date:</p>
-                            <p className="text-gray-900">{selectedEvent.date.toLocaleDateString()}</p>
+                            <p className="text-gray-900">{new Date(selectedEvent.date).toLocaleDateString()}</p>
                         </div>
                         <div className="mb-4 border-b p-4 border-gray-300 pb-4">
                             <p className="text-blue-950 font-bold">Titre:</p>
