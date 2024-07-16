@@ -29,7 +29,7 @@ const AddJuryMemberForm = () => {
         };
         const fetchJury = async () => {
             try {
-                const response = await axios.get('https://localhost:7219/api/Jury');
+                const response = await axios.get('https://localhost:7219/api/Jury\n');
                 setJuries(response.data)
                 console.log(response.data)
             } catch (error) {
@@ -231,7 +231,7 @@ const AddJuryMemberForm = () => {
                                             <option key={i} value={role.juryMemberRoleId}>{role.role}</option>
                                         )
                                     })}
-                                        
+
                                     </select>
                                 </div>
                             </div>
@@ -291,7 +291,7 @@ const AddJuryMemberForm = () => {
                                             <option key={i} value={jury.juryId}>{jury.juryName}</option>
                                         )
                                     })}
-                                        
+
                                     </select>
                                 </div>
                             </div>

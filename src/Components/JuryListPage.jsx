@@ -27,7 +27,7 @@ const JuryList = () => {
         try {
             const response = await axios.get('https://localhost:7219/api/JuryMember');
             setListData(response.data)
-            console.log(response.data)
+            console.log('res',response.data)
         } catch (error) {
             console.error('Error fetching roles:', error);
         }

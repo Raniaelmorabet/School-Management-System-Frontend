@@ -17,7 +17,7 @@ function ScheduleMeeting() {
 
     const fetchMeetings = async () => {
         try {
-            const response = await fetch("http://localhost:5016/api/meeting", {
+            const response = await fetch("https://localhost:7219/api/meeting", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
