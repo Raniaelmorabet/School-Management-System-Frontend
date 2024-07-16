@@ -9,37 +9,6 @@ function ScheduleMeeting() {
     const [hours, setHours] = useState("12");
     const [minutes, setMinutes] = useState("00");
     const [period, setPeriod] = useState("AM");
-    const [meetings, setMeetings] = useState([]);
-
-    useEffect(() => {
-        fetchMeetings();
-    }, []);
-
-    const fetchMeetings = async () => {
-        try {
-            const response = await fetch("http://localhost:5016/api/meeting", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    date: "2024-07-14T23:47:17.821Z",
-                    time: { ticks: 0 },
-                    location: "string",
-                    type: 0,
-                    juryId: "8b2890a3-6c14-4281-8833-99581d71d36d",
-                }),
-            });
-            if (!response.ok) {
-                throw new Error("Failed to fetch meetings");
-            }
-            const data = await response.json();
-            setMeetings(data);
-        } catch (error) {
-            console.error("Error fetching meetings:", error);
-        }
-    };
-
     const handleDateChange = (e) => {
         const selectedDate = new Date(e.target.value);
         const currentDate = new Date();
@@ -65,11 +34,12 @@ function ScheduleMeeting() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!error) {
-            const time = `${hours}:${minutes} ${period}`;
-            // Further processing with the date, time, location, and other data
-            console.log("Scheduled meeting at", date, time, location);
-        }
+        const formData = new FormData();
+        formData.append('date',date);
+        formData.append('time',`${hours}:${minutes} ${period}`);
+        formData.append('location' , location);
+        formData.append('type', type);
+        formData.append('juryId',);
     };
 
     return (
