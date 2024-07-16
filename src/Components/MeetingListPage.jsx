@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaEdit } from 'react-icons/fa';
+import axios from 'axios';
 
 const Calendar = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
+    const [meetingsList,setMeetingsList] = useState([]);
     const [events, setEvents] = useState([
         {
             id: 1,
@@ -22,16 +24,25 @@ const Calendar = () => {
             jury: "External Examiners"
         },
     ]);
+    useEffect(()=>{
+        const fetchMeetings = async () => {
+            try {
+                const response = await axios.get('https://localhost:7219/api/meeting');
+                setListData(response.data)
+                console.log(response.data)
+            } catch (error) {
+                console.error('Error fetching meeting:', error);
+            }
+        };
+        fetchMeetings();
+    },[])
     const [selectedEvent, setSelectedEvent] = useState(null);
-
     const daysInMonth = (month, year) => {
         return new Date(year, month + 1, 0).getDate();
     };
-
     const getDayOfWeek = (date) => {
         return date.getDay();
     };
-
     const generateCalendar = () => {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
@@ -39,11 +50,9 @@ const Calendar = () => {
         let firstDay = getDayOfWeek(new Date(year, month, 1));
         const weeks = [];
         let week = new Array(7).fill(null);
-
         for (let i = 0; i < firstDay; i++) {
             week[i] = null;
         }
-
         for (let day = 1; day <= days; day++) {
             week[firstDay] = day;
             firstDay++;
@@ -53,30 +62,23 @@ const Calendar = () => {
                 firstDay = 0;
             }
         }
-
         if (week.some(day => day !== null)) {
             weeks.push(week);
         }
-
         return weeks;
     };
-
     const handlePreviousMonth = () => {
         const prevMonth = new Date(currentDate.setMonth(currentDate.getMonth() - 1));
         setCurrentDate(new Date(prevMonth));
     };
-
     const handleNextMonth = () => {
         const nextMonth = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
         setCurrentDate(new Date(nextMonth));
     };
-
     const handleEventClick = (event) => {
         setSelectedEvent(event);
     };
-
     const weeks = generateCalendar();
-
     return (
         <>
             <div className="w-full max-w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

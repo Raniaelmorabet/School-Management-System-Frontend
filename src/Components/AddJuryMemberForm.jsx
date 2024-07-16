@@ -29,7 +29,7 @@ const AddJuryMemberForm = () => {
         };
         const fetchJury = async () => {
             try {
-                const response = await axios.get('https://localhost:7219/api/Jury\n');
+                const response = await axios.get('https://localhost:7219/api/Jury');
                 setJuries(response.data)
                 console.log(response.data)
             } catch (error) {
