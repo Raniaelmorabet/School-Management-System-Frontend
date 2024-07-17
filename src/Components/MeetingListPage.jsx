@@ -5,44 +5,30 @@ import axios from 'axios';
 
 const Calendar = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [meetingsList,setMeetingsList] = useState([]);
-    const [events, setEvents] = useState([
-        {
-            id: 1,
-            date: new Date(2024, 6, 5),
-            title: "Meetings",
-            time: "5 Jul - 6 Jul",
-            location: "Virtual",
-            jury: "Internal Review Panel"
-        },
-        {
-            id: 2,
-            date: new Date(2024, 6, 23),
-            title: "Exams",
-            time: "23 Jul - 24 Jul",
-            location: "Main Hall",
-            jury: "External Examiners"
-        },
-    ]);
-    useEffect(()=>{
+    const [meetingsList, setMeetingsList] = useState([]);
+    const [selectedEvent, setSelectedEvent] = useState(null);
+
+    useEffect(() => {
         const fetchMeetings = async () => {
             try {
                 const response = await axios.get('https://localhost:7219/api/meeting');
-                setListData(response.data)
-                console.log(response.data)
+                setMeetingsList(response.data);
+                console.log(response.data);
             } catch (error) {
                 console.error('Error fetching meeting:', error);
             }
         };
         fetchMeetings();
-    },[])
-    const [selectedEvent, setSelectedEvent] = useState(null);
+    }, []);
+
     const daysInMonth = (month, year) => {
         return new Date(year, month + 1, 0).getDate();
     };
+
     const getDayOfWeek = (date) => {
         return date.getDay();
     };
+
     const generateCalendar = () => {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
@@ -50,6 +36,7 @@ const Calendar = () => {
         let firstDay = getDayOfWeek(new Date(year, month, 1));
         const weeks = [];
         let week = new Array(7).fill(null);
+
         for (let i = 0; i < firstDay; i++) {
             week[i] = null;
         }
@@ -67,18 +54,23 @@ const Calendar = () => {
         }
         return weeks;
     };
+
     const handlePreviousMonth = () => {
         const prevMonth = new Date(currentDate.setMonth(currentDate.getMonth() - 1));
         setCurrentDate(new Date(prevMonth));
     };
+
     const handleNextMonth = () => {
         const nextMonth = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
         setCurrentDate(new Date(nextMonth));
     };
+
     const handleEventClick = (event) => {
         setSelectedEvent(event);
     };
+
     const weeks = generateCalendar();
+
     return (
         <>
             <div className="w-full max-w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -107,30 +99,31 @@ const Calendar = () => {
                     {weeks.map((week, weekIndex) => (
                         <tr key={weekIndex} className="grid grid-cols-7">
                             {week.map((day, dayIndex) => {
-                                const event = events.find(event =>
-                                    event.date.getFullYear() === currentDate.getFullYear() &&
-                                    event.date.getMonth() === currentDate.getMonth() &&
-                                    event.date.getDate() === day
-                                );
+                                const event = meetingsList.find(event => {
+                                    const eventDate = new Date(event.date);
+                                    return eventDate.getFullYear() === currentDate.getFullYear() &&
+                                           eventDate.getMonth() === currentDate.getMonth() &&
+                                           eventDate.getDate() === day;
+                                });
                                 return (
                                     <td
                                         key={dayIndex}
                                         className={`ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31 ${!day ? 'bg-gray-200 dark:bg-gray-700' : ''}`}
                                         onClick={() => event && handleEventClick(event)}
                                     >
-                                            <span className={`font-medium ${day ? 'text-black dark:text-white' : 'text-gray-400'}`}>
-                                                {day}
-                                            </span>
+                                        <span className={`font-medium ${day ? 'text-black dark:text-white' : 'text-gray-400'}`}>
+                                            {day}
+                                        </span>
                                         {event && (
                                             <div
                                                 className="event absolute left-2 z-10 mb-1 flex w-[92%] flex-col rounded-sm border-l-[3px] border-bg-blue-950 bg-gray px-3 py-1 text-left"
                                             >
-                                                    <span className="event-name text-sm font-semibold text-black dark:text-white">
-                                                        {event.title}
-                                                    </span>
+                                                <span className="event-name text-sm font-semibold text-black dark:text-white">
+                                                    {event.title}
+                                                </span>
                                                 <span className="time text-sm font-medium text-black dark:text-white">
-                                                        {event.time}
-                                                    </span>
+                                                    {event.time}
+                                                </span>
                                             </div>
                                         )}
                                     </td>
@@ -146,12 +139,12 @@ const Calendar = () => {
                     <div className="relative bg-white shadow-lg rounded-lg w-115 ">
                         <div className="flex w-115 h-16 rounded-t-lg justify-center items-center bg-blue-950 mb-4">
                             <h2 className="text-xl font-bold text-white">Détails de la Réunion</h2>
-                            <Link to='/RescheduleMeeting'><FaEdit size={20} className="absolute right-4 top-[21px] text-xl cursor-pointer text-white" />
+                            <Link to={`/RescheduleMeeting/${selectedEvent.meetingId}`}><FaEdit size={20} className="absolute right-4 top-[21px] text-xl cursor-pointer text-white" />
                             </Link>
                         </div>
                         <div className="mb-4 border-b p-4 border-gray-300 pb-4">
                             <p className="text-blue-950 font-bold">Date:</p>
-                            <p className="text-gray-900">{selectedEvent.date.toLocaleDateString()}</p>
+                            <p className="text-gray-900">{new Date(selectedEvent.date).toLocaleDateString()}</p>
                         </div>
                         <div className="mb-4 border-b p-4 border-gray-300 pb-4">
                             <p className="text-blue-950 font-bold">Titre:</p>
@@ -167,7 +160,7 @@ const Calendar = () => {
                         </div>
                         <div className="mb-4 p-4">
                             <p className="text-blue-950 font-bold">Jury:</p>
-                            <p className="text-gray-900">{selectedEvent.jury}</p>
+                            <p className="text-gray-900">{selectedEvent.jury.juryName}</p>
                         </div>
                         <div className="flex justify-end pr-4 pb-3 -mt-4">
                             <button

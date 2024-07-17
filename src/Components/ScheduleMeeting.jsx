@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -14,7 +14,7 @@ function ScheduleMeeting() {
     const [period, setPeriod] = useState("AM");
     const [juries,setJuries] = useState();
     const [type,setType] = useState();
-
+    const navigate = useNavigate();
     const handleDateChange = (e) => {
         const selectedDate = new Date(e.target.value);
         const currentDate = new Date();
@@ -54,19 +54,22 @@ function ScheduleMeeting() {
     const handleSubmit = async (e) => {
         console.log(location)
         e.preventDefault();
-        const formData = new FormData();
-        formData.append('date',date);
-        formData.append('time',`${hours}:${minutes} ${period}`);
-        formData.append('location' , l);
-        formData.append('type', type);
-        formData.append('juryId',jury);
+        const formData = {
+            date: date,
+            time: `${hours}:${minutes} ${period}`,
+            location: location === 'autre' ? customLocation : location,
+            type: parseInt(type), // Ensure type is an integer
+            juryId: jury
+        };
         console.log(formData)
-        const response = await axios.post('https://localhost:7219/api/meeting');
+        const response = await axios.post('https://localhost:7219/api/meeting',formData);
         if (response.status == 200) {
             Swal.fire({
                 title: response.data,
                 icon: "success",
-            });
+            }).then(()=>{
+                navigate('/MeetingListPage');
+            }); 
         } else {
             Swal.fire({
                 title: "Erreur lors de l'ajout du membre!",

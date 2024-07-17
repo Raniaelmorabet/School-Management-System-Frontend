@@ -23,7 +23,7 @@ function App() {
                             <Route path="/Update/:id" element={<UpdateJuryMemberForm />} />
                             <Route path="/MeetingListPage" element={<MeetingListPage />} />
                             <Route path="/ScheduleMeeting" element={<ScheduleMeeting />} />
-                            <Route path="/RescheduleMeeting" element={<RescheduleMeeting />} />
+                            <Route path="/RescheduleMeeting/:id" element={<RescheduleMeeting />} />
                         </Routes>
                     </div>
                 </div>
