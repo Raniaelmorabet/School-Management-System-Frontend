@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 function ScheduleMeeting() {
     const [date, setDate] = useState("");
@@ -7,38 +9,11 @@ function ScheduleMeeting() {
     const [location, setLocation] = useState("etablissement");
     const [customLocation, setCustomLocation] = useState("");
     const [hours, setHours] = useState("12");
+    const [jury,setJury] = useState('')
     const [minutes, setMinutes] = useState("00");
     const [period, setPeriod] = useState("AM");
-    const [meetings, setMeetings] = useState([]);
-
-    useEffect(() => {
-        fetchMeetings();
-    }, []);
-
-    const fetchMeetings = async () => {
-        try {
-            const response = await fetch("https://localhost:7219/api/meeting", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    date: "2024-07-14T23:47:17.821Z",
-                    time: { ticks: 0 },
-                    location: "string",
-                    type: 0,
-                    juryId: "8b2890a3-6c14-4281-8833-99581d71d36d",
-                }),
-            });
-            if (!response.ok) {
-                throw new Error("Failed to fetch meetings");
-            }
-            const data = await response.json();
-            setMeetings(data);
-        } catch (error) {
-            console.error("Error fetching meetings:", error);
-        }
-    };
+    const [juries,setJuries] = useState();
+    const [type,setType] = useState();
 
     const handleDateChange = (e) => {
         const selectedDate = new Date(e.target.value);
@@ -54,6 +29,19 @@ function ScheduleMeeting() {
             setDate(e.target.value);
         }
     };
+    useEffect(() => {
+        const fetchJury = async () => {
+            try {
+                const response = await axios.get('https://localhost:7219/api/Jury');
+                setJuries(response.data)
+                console.log(response.data)
+            } catch (error) {
+                console.error('Error fetching Juries:', error);
+            }
+        };
+
+        fetchJury();
+    }, []);
 
     const handleLocationChange = (e) => {
         setLocation(e.target.value);
@@ -63,12 +51,28 @@ function ScheduleMeeting() {
         setCustomLocation(e.target.value);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
+        console.log(location)
         e.preventDefault();
-        if (!error) {
-            const time = `${hours}:${minutes} ${period}`;
-            // Further processing with the date, time, location, and other data
-            console.log("Scheduled meeting at", date, time, location);
+        const formData = new FormData();
+        formData.append('date',date);
+        formData.append('time',`${hours}:${minutes} ${period}`);
+        formData.append('location' , l);
+        formData.append('type', type);
+        formData.append('juryId',jury);
+        console.log(formData)
+        const response = await axios.post('https://localhost:7219/api/meeting');
+        if (response.status == 200) {
+            Swal.fire({
+                title: response.data,
+                icon: "success",
+            });
+        } else {
+            Swal.fire({
+                title: "Erreur lors de l'ajout du membre!",
+                text: errorData.message || 'Erreur inconnue',
+                icon: "error",
+            });
         }
     };
 
@@ -104,31 +108,31 @@ function ScheduleMeeting() {
                                         </label>
                                         <div className="flex space-x-2">
                                             <select
-                                                value={hours}
                                                 onChange={(e) => setHours(e.target.value)}
                                                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                                 required
                                             >
+                                                <option disabled hidden selected>Heur</option>
                                                 {Array.from({ length: 12 }, (_, i) => i + 1).map(hour => (
                                                     <option key={hour} value={hour}>{hour}</option>
                                                 ))}
                                             </select>
                                             <select
-                                                value={minutes}
                                                 onChange={(e) => setMinutes(e.target.value)}
                                                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                                 required
                                             >
-                                                {Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0')).map(minute => (
+                                                <option disabled hidden selected>Minutes</option>
+                                                {Array.from({length: 60}, (_, i) => i.toString().padStart(2, '0')).map(minute => (
                                                     <option key={minute} value={minute}>{minute}</option>
                                                 ))}
                                             </select>
                                             <select
-                                                value={period}
                                                 onChange={(e) => setPeriod(e.target.value)}
                                                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                                 required
                                             >
+                                                <option disabled hidden selected>Période</option>
                                                 <option value="AM">AM</option>
                                                 <option value="PM">PM</option>
                                             </select>
@@ -139,25 +143,50 @@ function ScheduleMeeting() {
                                 <div className="flex flex-col sm:flex-row gap-6 mb-4.5">
                                     <div className="w-full sm:w-1/2">
                                         <label className="mb-2.5 block text-black dark:text-white">
-                                            Type of meeting <span className="text-meta-1">*</span>
+                                            Type de réunion <span className="text-meta-1">*</span>
                                         </label>
-                                        <input
-                                            type="text"
-                                            placeholder="Entrez le secteur d'activité"
-                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                        <select
+                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                             required
-                                        />
+                                            onChange={(e) => setType(e.target.value)}
+                                        >
+                                            <option selected disabled hidden>Choisissez réunion</option>
+                                            <option value={0}>Première réunion</option>
+                                            <option value={1}>Deuxième réunion</option>
+                                            <option value={2}>Troisième réunion</option>
+                                            <option value={3}>Quatrième réunion</option>
+                                        </select>
+                                    </div>
+                                    <div className="w-full sm:w-1/2">
+                                        <label className="mb-2.5 block text-black dark:text-white">
+                                            Jury <span className="text-meta-1">*</span>
+                                        </label>
+                                        <select
+                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+
+                                            onChange={(e) => setJury(e.target.value)}
+                                            required
+                                        >
+                                            <option value='' selected disabled hidden>Liste de Jury</option>
+
+                                            {juries?.map((jury, i) => {
+                                                return (
+                                                    <option key={i} value={jury.juryId}>{jury.juryName}</option>
+                                                )
+                                            })}
+
+                                        </select>
                                     </div>
                                     <div className="w-full sm:w-1/2">
                                         <label className="mb-2.5 block text-black dark:text-white">
                                             Lieu <span className="text-meta-1">*</span>
                                         </label>
                                         <select
-                                            value={location}
                                             onChange={handleLocationChange}
                                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                             required
                                         >
+                                            <option disabled hidden selected>Choisissez le Lieu</option>
                                             <option value="etablissement">Établissement</option>
                                             <option value="autre">Autre</option>
                                         </select>
