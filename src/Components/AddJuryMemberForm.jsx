@@ -222,10 +222,10 @@ const AddJuryMemberForm = () => {
                                     </label>
                                     <select
                                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        value={Role}
                                         onChange={(e) => setRole(e.target.value)}
                                         required
                                     >
+                                        <option selected hidden disabled>Choisissez role</option>
                                     {roles.map((role,i)=>{
                                         return(
                                             <option key={i} value={role.juryMemberRoleId}>{role.role}</option>
@@ -282,10 +282,11 @@ const AddJuryMemberForm = () => {
                                     </label>
                                     <select
                                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        value={jury}
+                                        
                                         onChange={(e) => setJury(e.target.value)}
                                         required
                                     >
+                                    <option selected disabled hidden>Choisissez jury</option>
                                     {juries?.map((jury,i)=>{
                                         return(
                                             <option key={i} value={jury.juryId}>{jury.juryName}</option>
