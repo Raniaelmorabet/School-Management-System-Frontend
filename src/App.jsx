@@ -8,9 +8,10 @@ import Sidebar from "./Components/Sidebar.jsx";
 import MeetingListPage from "./Components/MeetingListPage.jsx";
 import ScheduleMeeting from "./Components/ScheduleMeeting.jsx";
 import RescheduleMeeting from "./Components/RescheduleMeeting.jsx";
-
+import GenerateInvitationsForm from "./Components/GenerateInvitationsForm.jsx";
 function App() {
     return (
+        // <GenerateInvitationsForm />
         <Router>
             <div className="flex h-screen">
                 <Sidebar/>
