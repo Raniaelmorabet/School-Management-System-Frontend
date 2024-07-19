@@ -58,7 +58,7 @@ function ScheduleMeeting() {
             date: date,
             time: `${hours}:${minutes} ${period}`,
             location: location === 'autre' ? customLocation : location,
-            type: parseInt(type), // Ensure type is an integer
+            type: parseInt(type),
             juryId: jury
         };
         console.log(formData)
