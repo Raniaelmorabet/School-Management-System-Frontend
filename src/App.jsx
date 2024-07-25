@@ -9,28 +9,29 @@ import MeetingListPage from "./Components/MeetingListPage.jsx";
 import ScheduleMeeting from "./Components/ScheduleMeeting.jsx";
 import RescheduleMeeting from "./Components/RescheduleMeeting.jsx";
 import GenerateInvitationsForm from "./Components/GenerateInvitationsForm.jsx";
+import GenerateDeliberation from "./Components/GenerateDeliberation.jsx";
 function App() {
     return (
-        // <GenerateInvitationsForm />
-        <Router>
-            <div className="flex h-screen">
-                <Sidebar/>
-                <div className="flex-1 flex flex-col">
-                    <Header />
-                    <div className='p-10'>
-                        <Routes>
-                            <Route path="/Home" element={<JuryList />} />
-                            <Route path="/add-jury" element={<AddJuryMemberForm />} />
-                            <Route path="/Update/:id" element={<UpdateJuryMemberForm />} />
-                            <Route path="/MeetingListPage" element={<MeetingListPage />} />
-                            <Route path="/ScheduleMeeting" element={<ScheduleMeeting />} />
-                            <Route path="/RescheduleMeeting/:id" element={<RescheduleMeeting />} />
-                        </Routes>
-                    </div>
-                </div>
-
-            </div>
-        </Router>
+        <GenerateDeliberation />
+        // <Router>
+        //     <div className="flex h-screen">
+        //         <Sidebar/>
+        //         <div className="flex-1 flex flex-col">
+        //             <Header />
+        //             <div className='p-10'>
+        //                 <Routes>
+        //                     <Route path="/Home" element={<JuryList />} />
+        //                     <Route path="/add-jury" element={<AddJuryMemberForm />} />
+        //                     <Route path="/Update/:id" element={<UpdateJuryMemberForm />} />
+        //                     <Route path="/MeetingListPage" element={<MeetingListPage />} />
+        //                     <Route path="/ScheduleMeeting" element={<ScheduleMeeting />} />
+        //                     <Route path="/RescheduleMeeting/:id" element={<RescheduleMeeting />} />
+        //                 </Routes>
+        //             </div>
+        //         </div>
+        //
+        //     </div>
+        // </Router>
     );
 }
 
