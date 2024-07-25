@@ -4,3 +4,7 @@
 .rounded-full {
     border-radius: 50%;
 }
+#rotate-text {
+    transform: rotate(-90deg);
+    white-space: nowrap;
+}
