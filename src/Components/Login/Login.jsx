@@ -35,33 +35,37 @@ function Login() {
   };
 
   return (
-    <div className="container">
-      <div className="form-box login">
-        <form onSubmit={handleSubmit}>
-          <h1 className="font-bold">Login</h1>
-          {error && <p className="error">{error}</p>}
-          <div className="input-box">
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              ref={emailRef}
-            />
-            <FaUser className="icon" />
+      <>
+        <div className='bg-blue-100 min-h-screen '>
+          <div className="container flex justify-center items-center m-auto">
+            <div className="form-box login">
+              <form onSubmit={handleSubmit}>
+                <h1 className="font-bold">Login</h1>
+                {error && <p className="error">{error}</p>}
+                <div className="input-box">
+                  <input
+                      type="email"
+                      placeholder="Email"
+                      required
+                      ref={emailRef}
+                  />
+                  <FaUser className="icon"/>
+                </div>
+                <div className="input-box">
+                  <input
+                      type="password"
+                      placeholder="Password"
+                      required
+                      ref={passwordRef}
+                  />
+                  <FaLock className="icon"/>
+                </div>
+                <button className='btn' type="submit">Login</button>
+              </form>
+            </div>
           </div>
-          <div className="input-box">
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              ref={passwordRef}
-            />
-            <FaLock className="icon" />
-          </div>
-          <button type="submit">Login</button>
-        </form>
-      </div>
-    </div>
+        </div>
+      </>
   );
 }
 

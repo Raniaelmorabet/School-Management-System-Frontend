@@ -14,11 +14,7 @@ import PrintTable from "./Components/PVModalitePassage.jsx";
 import Login from './Components/Login/Login.jsx'; 
 function App() {
     return (
-        <>
-        {/* <PrintTable /> */}
         <Login/>
-        </>
-        // <PVControlContinu1ereAnnee/>
         // <Router>
         //     <div className="flex h-screen">
         //         <Sidebar/>
