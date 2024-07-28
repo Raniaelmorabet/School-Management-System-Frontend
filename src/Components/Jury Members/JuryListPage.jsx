@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import JuryTwo from '../assets/jury2.jpg';
-import JuryThree from '../assets/jury3.jpg';
-import Juryfive from '../assets/jury6.jpg';
-import Jurysix from '../assets/jury7.jpg';
+import JuryTwo from "/src/assets/jury2.jpg"
+import JuryThree from '/src/assets/jury3.jpg';
+import Juryfive from '/src/assets/jury6.jpg';
+import Jurysix from '/src/assets/jury7.jpg';
 import { MdDelete } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import Swal from 'sweetalert2';

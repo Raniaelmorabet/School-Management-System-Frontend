@@ -49,7 +49,7 @@ const chunkArray = (array, size) => {
     return result;
 };
 
-const PVControlContinu1ereAnnee = () => {
+const PVControlContinu = () => {
     const [showModal, setShowModal] = useState(false);
 
     const Deliberation = ({ students }) => (
@@ -306,4 +306,4 @@ const PVControlContinu1ereAnnee = () => {
     );
 };
 
-export default PVControlContinu1ereAnnee;
+export default PVControlContinu;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import { RxCaretDown } from "react-icons/rx";
 import { CiSearch } from 'react-icons/ci';
-import juryfive from "../assets/jury5.webp";
+import juryfive from "/src/assets/jury5.webp";
 import { Link } from 'react-router-dom';
 
 function Header() {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import PDFDocument from './PDFDocument.jsx';
 
-const GenerateInvitationsForm = () => {
+const Convocation = () => {
     const [objectives, setObjectives] = useState([
         'Arrêter les listes des stagiaires inscrits au titre de l\'année 2022-2023',
         'Valider le règlement des examens',
@@ -127,4 +127,4 @@ const GenerateInvitationsForm = () => {
     );
 }
 
-export default GenerateInvitationsForm;
+export default Convocation;

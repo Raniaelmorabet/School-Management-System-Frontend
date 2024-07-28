@@ -59,7 +59,7 @@ const chunkArray = (array, size) => {
     return result;
 };
 
-class PrintTable extends React.Component {
+class ModalitePassage extends React.Component {
     generatePDF = () => {
         const element = document.getElementById('printableTable');
         html2pdf()
@@ -304,4 +304,4 @@ class PrintTable extends React.Component {
     }
 }
 
-export default PrintTable;
+export default ModalitePassage;
