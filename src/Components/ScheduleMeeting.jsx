@@ -32,7 +32,7 @@ function ScheduleMeeting() {
     useEffect(() => {
         const fetchJury = async () => {
             try {
-                const response = await axios.get('https://localhost:7219/api/Jury');
+                const response = await axios.get('http://localhost:7219/api/Jury');
                 setJuries(response.data)
                 console.log(response.data)
             } catch (error) {
@@ -62,7 +62,7 @@ function ScheduleMeeting() {
             juryId: jury
         };
         console.log(formData)
-        const response = await axios.post('https://localhost:7219/api/meeting',formData);
+        const response = await axios.post('http://localhost:7219/api/meeting',formData);
         if (response.status == 200) {
             Swal.fire({
                 title: response.data,

@@ -20,7 +20,7 @@ const UpdateJuryMemberForm = () => {
     useEffect(async()=>{
             const fetchJury = async () => {
                 try {
-                    const response = await axios.get(`https://localhost:7219/api/JuryMember/${id}`);
+                    const response = await axios.get(`http://localhost:7219/api/JuryMember/${id}`);
                     console.log(response.data)
                     setFirstName(response.data.firstName)
                     setLastName(response.data.lastName)
@@ -37,7 +37,7 @@ const UpdateJuryMemberForm = () => {
             };
             const fetchRoles = async () => {
                 try {
-                    const response = await axios.get('https://localhost:7219/api/JuryMemberRole');
+                    const response = await axios.get('http://localhost:7219/api/JuryMemberRole');
                     setRoles(response.data)
                     console.log(response.data)
                 } catch (error) {
@@ -46,7 +46,7 @@ const UpdateJuryMemberForm = () => {
             };
             const fetchJuries = async () => {
                 try {
-                    const response = await axios.get('https://localhost:7219/api/Jury');
+                    const response = await axios.get('http://localhost:7219/api/Jury');
                     setJuries(response.data)
                     console.log(response.data)
                 } catch (error) {
@@ -102,7 +102,7 @@ const UpdateJuryMemberForm = () => {
             console.log(`${key}: ${value}`);
         }
         try {
-            const response = await axios.put(`https://localhost:7219/api/JuryMember`,formData);
+            const response = await axios.put(`http://localhost:7219/api/JuryMember`,formData);
             if (response.status != 200) {
                 throw new Error('Network response was not ok');
             }

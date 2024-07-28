@@ -20,7 +20,7 @@ const AddJuryMemberForm = () => {
     useEffect(()=>{
         const fetchRoles = async () => {
             try {
-                const response = await axios.get('https://localhost:7219/api/JuryMemberRole');
+                const response = await axios.get('http://localhost:7219/api/JuryMemberRole');
                 setRoles(response.data)
                 console.log(response.data)
             } catch (error) {
@@ -29,7 +29,7 @@ const AddJuryMemberForm = () => {
         };
         const fetchJury = async () => {
             try {
-                const response = await axios.get('https://localhost:7219/api/Jury');
+                const response = await axios.get('http://localhost:7219/api/Jury');
                 setJuries(response.data)
                 console.log(response.data)
             } catch (error) {
@@ -83,7 +83,7 @@ const AddJuryMemberForm = () => {
         }
 
         try {
-            const response = await axios.post('https://localhost:7219/api/JuryMember',formData);
+            const response = await axios.post('http://localhost:7219/api/JuryMember',formData);
             console.log(response);
             if (response.status == 200) {
                 Swal.fire({

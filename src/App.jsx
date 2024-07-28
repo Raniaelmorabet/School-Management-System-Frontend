@@ -9,10 +9,12 @@ import MeetingListPage from "./Components/MeetingListPage.jsx";
 import ScheduleMeeting from "./Components/ScheduleMeeting.jsx";
 import RescheduleMeeting from "./Components/RescheduleMeeting.jsx";
 import GenerateInvitationsForm from "./Components/GenerateInvitationsForm.jsx";
-import GenerateDeliberation from "./Components/GenerateDeliberation.jsx";
+import PVControlContinu1ereAnnee from "./Components/PV(Control continu 1ere annee).jsx";
+import PrintTable from "./Components/PVModalitePassage.jsx";
 function App() {
     return (
-        <GenerateDeliberation />
+        <PrintTable/>
+        // <PVControlContinu1ereAnnee/>
         // <Router>
         //     <div className="flex h-screen">
         //         <Sidebar/>

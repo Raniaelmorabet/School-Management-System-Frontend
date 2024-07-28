@@ -11,7 +11,7 @@ const Calendar = () => {
     useEffect(() => {
         const fetchMeetings = async () => {
             try {
-                const response = await axios.get('https://localhost:7219/api/meeting');
+                const response = await axios.get('http://localhost:7219/api/meeting');
                 setMeetingsList(response.data);
                 console.log(response.data);
             } catch (error) {

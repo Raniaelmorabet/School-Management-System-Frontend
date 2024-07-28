@@ -25,7 +25,7 @@ const JuryList = () => {
     const [listData, setListData] = useState([]);
     const fetchJuries = async () => {
         try {
-            const response = await axios.get('https://localhost:7219/api/JuryMember');
+            const response = await axios.get('http://localhost:7219/api/JuryMember');
             setListData(response.data)
             console.log('res',response.data)
         } catch (error) {
