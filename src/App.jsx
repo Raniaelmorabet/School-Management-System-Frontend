@@ -13,9 +13,11 @@ import PVControlContinu from "./Components/PV Documents/PVControlContinu.jsx";
 import PrintTable from "./Components/PV Documents/PVModalitePassage.jsx";
 import Login from './Components/Login/Login.jsx';
 import FicheFormateur from "./Components/PV Documents/PVFicheFormateur.jsx";
+import PVControlContinuMPCC from "./Components/PV Documents/PVControlContinuMPCC.jsx";
+import PVControlContinuMPEFCFP from "./Components/PV Documents/PVControlContinuMPEFCFP.jsx";
 function App() {
     return (
-        <FicheFormateur/>
+        <PVControlContinuMPEFCFP/>
         // <Router>
         //     <div className="flex h-screen">
         //         <Sidebar/>
