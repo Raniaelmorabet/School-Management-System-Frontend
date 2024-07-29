@@ -15,9 +15,10 @@ import Login from './Components/Login/Login.jsx';
 import FicheFormateur from "./Components/PV Documents/PVFicheFormateur.jsx";
 import PVControlContinuMPCC from "./Components/PV Documents/PVControlContinuMPCC.jsx";
 import PVControlContinuMPEFCFP from "./Components/PV Documents/PVControlContinuMPEFCFP.jsx";
+import PVResultatValidations from "./Components/PV Documents/PVResultatValidations.jsx";
 function App() {
     return (
-        <PVControlContinuMPEFCFP/>
+        <PVResultatValidations/>
         // <Router>
         //     <div className="flex h-screen">
         //         <Sidebar/>
