@@ -27,7 +27,6 @@ function HeaderTable() {
                 PROCE-VERBAL DE DELIBIRATION<br />
                 SECTEUR : TIC<br />
                 Année de Formation : 2023/2024<br />
-
             </div>
         </>
     )

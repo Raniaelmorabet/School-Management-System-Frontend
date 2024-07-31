@@ -3,7 +3,7 @@ import html2pdf from 'html2pdf.js';
 import 'tailwindcss/tailwind.css';
 import HeaderTable from './HeaderTable.jsx';
 
-const App = () => {
+const validation = () => {
     const contentRef = useRef();
 
     const generatePdf = () => {
@@ -201,4 +201,4 @@ const App = () => {
     );
 };
 
-export default App;
+export default validation;
