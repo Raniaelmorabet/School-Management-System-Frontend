@@ -1,39 +1,44 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import JuryList from "./Components/Jury Members/JuryListPage.jsx";
-import Header from "./Components/Header/Header.jsx";
-import AddJuryMemberForm from "./Components/Jury Members/AddJuryMemberForm.jsx";
-import UpdateJuryMemberForm from "./Components/Jury Members/UpdateJuryMemberForm.jsx";
-import Sidebar from "./Components/SideBar/Sidebar.jsx";
-import MeetingListPage from "./Components/Meetings/MeetingListPage.jsx";
-import ScheduleMeeting from "./Components/Meetings/ScheduleMeeting.jsx";
-import RescheduleMeeting from "./Components/Meetings/RescheduleMeeting.jsx";
-import Convocation from "./Components/Convocation/Convocation.jsx";
-import PVControlContinu from "./Components/PV Documents/PVControlContinu.jsx";
-import PrintTable from "./Components/PV Documents/PVModalitePassage.jsx";
+import React, { useEffect, useState } from 'react';
+import {Routes, Route, Navigate } from 'react-router-dom';
 import Login from './Components/Login/Login.jsx'; 
+import ErrorPage from './Components/ErrorPage/ErrorPage.jsx';
+import AppRoutes from './Components/Routing/AppRoutes.jsx';
+import Loading from './Components/Loading/Loading.jsx';
 function App() {
+    [flag,setFlag] = useState("loading");
+    useEffect(()=>{
+        setFlag("loading")
+        var data = {
+            token : localStorage.getItem("token"),
+            user : localStorage.getItem("user"),
+            role : localStorage.getItem("role")
+        };
+        if(data.token == undefined || data.user == undefined || data.role == undefined){
+            setFlag("login");
+        }else{
+            setFlag("authorize");
+        }
+    },[]);
     return (
-        // <PrintTable/>
-        <Router>
-            <div className="flex h-screen">
-                <Sidebar/>
-                <div className="flex-1 flex flex-col">
-                    <Header />
-                    <div className='p-10'>
-                        <Routes>
-                            <Route path="/Home" element={<JuryList />} />
-                            <Route path="/add-jury" element={<AddJuryMemberForm />} />
-                            <Route path="/Update/:id" element={<UpdateJuryMemberForm />} />
-                            <Route path="/MeetingListPage" element={<MeetingListPage />} />
-                            <Route path="/ScheduleMeeting" element={<ScheduleMeeting />} />
-                            <Route path="/RescheduleMeeting/:id" element={<RescheduleMeeting />} />
-                        </Routes>
-                    </div>
-                </div>
-
-            </div>
-        </Router>
+        <Routes>
+            {flag == "authorize" ? (
+                <>
+                    <Route path='/*' element={<ErrorPage/>} />
+                    <Route path='/sms/*' element={<AppRoutes/>} />
+                    <Route path='/' element={<Navigate to={'/sms'}/>} />
+                    <Route path='/login' element={<Navigate to={'/sms'}/>} />
+                </>
+            ) : flag == "loading" ? (
+                <>
+                    <Route to='/*' element={<Loading/>}/>
+                </>
+            ) : (
+                <>
+                    <Route path='/login' element={<Login/>} />
+                    <Route path='/*' element={<Navigate to='/login'/>} />
+                </>
+            )}
+        </Routes>
     );
 }
 
