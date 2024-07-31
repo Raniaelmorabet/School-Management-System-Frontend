@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import {Input} from "/src/Components/Atoms/input.jsx"
 const AddJuryMemberForm = () => {
     const [profileImage, setProfileImage] = useState(null);
     const [profileImagePreview, setProfileImagePreview] = useState(null);
@@ -122,23 +122,11 @@ const AddJuryMemberForm = () => {
                                     <label className="mb-2.5 block text-black dark:text-white">
                                         Prénom <span className="text-meta-1">*</span>
                                     </label>
-                                    <input
-                                        type="text"
-                                        placeholder="Entrez votre prénom"
-                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        required
-                                        onChange={(e) => setFirstName(e.target.value)}
-                                    />
+                                    <Input type={'text'} onChange={(e) => setFirstName(e.target.value)} placeholder={'Entrez votre prénom'}/>
                                     <label className="mt-8 mb-2.5 block text-black dark:text-white">
                                         Nom de famille <span className="text-meta-1">*</span>
                                     </label>
-                                    <input
-                                        type="text"
-                                        placeholder="Entrez votre nom de famille"
-                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        required
-                                        onChange={(e) => setLastName(e.target.value)}
-                                    />
+                                    <Input type={'text'} onChange={(e) => setLastName(e.target.value)} placeholder={'Entrez votre nom de famille'}/>
                                 </div>
                                 <div className="w-full sm:w-1/2">
                                     <label className="mb-2.5 block text-black dark:text-white">
@@ -208,20 +196,15 @@ const AddJuryMemberForm = () => {
                                     <label className="mb-2.5 block text-black dark:text-white">
                                         Adresse e-mail <span className="text-meta-1">*</span>
                                     </label>
-                                    <input
-                                        type="email"
-                                        placeholder="Entrez votre adresse e-mail"
-                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        required
-                                        onChange={(e) => setEmail(e.target.value)}
-                                    />
+                                    <Input type={'email'} onChange={(e) => setEmail(e.target.value)} placeholder={'Entrez votre adresse e-mail'}/>
+
                                 </div>
                                 <div className="w-full sm:w-1/2">
                                     <label className="mb-2.5 block text-black dark:text-white">
                                         Rôle <span className="text-meta-1">*</span>
                                     </label>
                                     <select
-                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                        className="w-full font-roboto-regular rounded-[4px] border-[1px] border-[#E0E0E0] text-[16px] bg-[#FFFFFF] py-3 px-5 text-[#424242] outline-none transition disabled:cursor-default disabled:bg-whiter"
                                         onChange={(e) => setRole(e.target.value)}
                                         required
                                     >
@@ -241,25 +224,13 @@ const AddJuryMemberForm = () => {
                                     <label className="mb-2.5 block text-black dark:text-white">
                                         Dernier diplôme <span className="text-meta-1">*</span>
                                     </label>
-                                    <input
-                                        type="text"
-                                        placeholder="Entrez votre dernier diplôme"
-                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        required
-                                        onChange={(e) => setLastDegree(e.target.value)}
-                                    />
+                                    <Input type={'text'} onChange={(e) => setLastDegree(e.target.value)} placeholder={'Entrez votre dernier diplôme'}/>
                                 </div>
                                 <div className="w-full sm:w-1/2">
                                     <label className="mb-2.5 block text-black dark:text-white">
                                         Années d'expérience <span className="text-meta-1">*</span>
                                     </label>
-                                    <input
-                                        type="number"
-                                        placeholder="Entrez vos années d'expérience"
-                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        required
-                                        onChange={(e) => setExperienceYears(e.target.value)}
-                                    />
+                                    <Input type={'number'} onChange={(e) => setExperienceYears(e.target.value)} placeholder={'Entrez vos années d\'expérience'}/>
                                 </div>
                             </div>
 
@@ -268,20 +239,14 @@ const AddJuryMemberForm = () => {
                                     <label className="mb-2.5 block text-black dark:text-white">
                                         Nom de l'entreprise <span className="text-meta-1">*</span>
                                     </label>
-                                    <input
-                                        type="text"
-                                        placeholder="Entrez le nom de l'entreprise"
-                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        required
-                                        onChange={(e) => setCompanyName(e.target.value)}
-                                    />
+                                    <Input type={'text'} onChange={(e) => setCompanyName(e.target.value)} placeholder={'Entrez le nom de l\'entreprise'}/>
                                 </div>
                                 <div className="w-full sm:w-1/2">
                                     <label className="mb-2.5 block text-black dark:text-white">
                                         Jury <span className="text-meta-1">*</span>
                                     </label>
                                     <select
-                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                        className="w-full font-roboto-regular rounded-[4px] border-[1px] border-[#E0E0E0] text-[16px] bg-[#FFFFFF] py-3 px-5 text-[#424242] outline-none transition disabled:cursor-default disabled:bg-whiter"
                                         
                                         onChange={(e) => setJury(e.target.value)}
                                         required
@@ -299,13 +264,13 @@ const AddJuryMemberForm = () => {
                             <div className="flex justify-end gap-4.5">
                                 <Link
                                     to='/Home'
-                                    className="flex justify-center rounded bg-meta-1 py-2 px-6 font-medium text-white hover:bg-opacity-90"
+                                    className="flex justify-center rounded-[4px] bg-meta-1 py-2 px-6 font-medium text-[16px] text-[#FFFFFF] hover:bg-opacity-90"
                                 >
                                     Annuler
                                 </Link>
                                 <button
                                     type='submit'
-                                    className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-white hover:bg-opacity-90"
+                                    className="flex justify-center rounded-[4px] bg-[#1A237E] py-2 px-6 font-medium text-[16px] text-[#FFFFFF] hover:bg-opacity-90"
                                     onClick={handleSubmit}
                                 >
                                     Ajouter
