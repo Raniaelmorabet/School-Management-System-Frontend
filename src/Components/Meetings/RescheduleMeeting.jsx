@@ -2,6 +2,10 @@ import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import {PrimaryButton} from "../Atoms/PrimaryButton.jsx";
+import {SecondaryButton} from "../Atoms/SecondaryButton.jsx";
+import {Input} from "../Atoms/input.jsx";
+import {Label} from "../Atoms/Label.jsx";
 
 
 function ScheduleMeeting() {
@@ -88,7 +92,7 @@ function ScheduleMeeting() {
                 <div className="flex flex-col gap-9">
                     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                         <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-                            <h3 className="font-medium text-black dark:text-white">
+                            <h3 className="font-roboto-medium text-black dark:text-white">
                                 Planifier une réunion
                             </h3>
                         </div>
@@ -96,26 +100,16 @@ function ScheduleMeeting() {
                             <div className="p-6.5">
                                 <div className="flex flex-col sm:flex-row gap-6 mb-4.5">
                                     <div className="w-full sm:w-1/2">
-                                        <label className="mb-2.5 block text-black dark:text-white">
-                                            Date <span className="text-meta-1">*</span>
-                                        </label>
-                                        <input
-                                            type="date"
-                                            value={date}
-                                            onChange={handleDateChange}
-                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                            required
-                                        />
+                                        <Label>Date <span className="text-meta-1">*</span></Label>
+                                        <Input value={date} type={'date'} onChange={handleDateChange}/>
                                         {error && <p className="text-red-500">{error}</p>}
                                     </div>
                                     <div className="w-full sm:w-1/2">
-                                        <label className="mb-2.5 block text-black dark:text-white">
-                                            L'heure <span className="text-meta-1">*</span>
-                                        </label>
+                                        <Label>L'heure <span className="text-meta-1">*</span></Label>
                                         <div className="flex space-x-2">
                                             <select
                                                 onChange={(e) => setHours(e.target.value)}
-                                                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                className="w-full rounded-[4px] border-[1px] border-[#E0E0E0] text-[16px] bg-[#FFFFFF] py-3 px-5 text-[#424242] outline-none transition disabled:cursor-default disabled:bg-whiter"
                                                 required
                                             >
                                                 <option disabled hidden selected>Heur</option>
@@ -125,7 +119,7 @@ function ScheduleMeeting() {
                                             </select>
                                             <select
                                                 onChange={(e) => setMinutes(e.target.value)}
-                                                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                className="w-full rounded-[4px] border-[1px] border-[#E0E0E0] text-[16px] bg-[#FFFFFF] py-3 px-5 text-[#424242] outline-none transition disabled:cursor-default disabled:bg-whiter"
                                                 required
                                             >
                                                 <option disabled hidden selected>Minutes</option>
@@ -135,7 +129,7 @@ function ScheduleMeeting() {
                                             </select>
                                             <select
                                                 onChange={(e) => setPeriod(e.target.value)}
-                                                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                className="w-full rounded-[4px] border-[1px] border-[#E0E0E0] text-[16px] bg-[#FFFFFF] py-3 px-5 text-[#424242] outline-none transition disabled:cursor-default disabled:bg-whiter"
                                                 required
                                             >
                                                 <option disabled hidden selected>Période</option>
@@ -148,11 +142,9 @@ function ScheduleMeeting() {
 
                                 <div className="flex flex-col sm:flex-row gap-6 mb-4.5">
                                     <div className="w-full sm:w-1/2">
-                                        <label className="mb-2.5 block text-black dark:text-white">
-                                            Type de réunion <span className="text-meta-1">*</span>
-                                        </label>
+                                        <Label>Type de réunion <span className="text-meta-1">*</span></Label>
                                         <select
-                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                            className="w-full rounded-[4px] border-[1px] border-[#E0E0E0] text-[16px] bg-[#FFFFFF] py-3 px-5 text-[#424242] outline-none transition disabled:cursor-default disabled:bg-whiter"
                                             required
                                             onChange={(e) => setType(e.target.value)}
                                         >
@@ -164,11 +156,9 @@ function ScheduleMeeting() {
                                         </select>
                                     </div>
                                     <div className="w-full sm:w-1/2">
-                                        <label className="mb-2.5 block text-black dark:text-white">
-                                            Jury <span className="text-meta-1">*</span>
-                                        </label>
+                                        <Label>Jury <span className="text-meta-1">*</span></Label>
                                         <select
-                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                            className="w-full rounded-[4px] border-[1px] border-[#E0E0E0] text-[16px] bg-[#FFFFFF] py-3 px-5 text-[#424242] outline-none transition disabled:cursor-default disabled:bg-whiter"
 
                                             onChange={(e) => setJury(e.target.value)}
                                             required
@@ -184,12 +174,10 @@ function ScheduleMeeting() {
                                         </select>
                                     </div>
                                     <div className="w-full sm:w-1/2">
-                                        <label className="mb-2.5 block text-black dark:text-white">
-                                            Lieu <span className="text-meta-1">*</span>
-                                        </label>
+                                        <Label>Lieu <span className="text-meta-1">*</span></Label>
                                         <select
                                             onChange={handleLocationChange}
-                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                            className="w-full rounded-[4px] border-[1px] border-[#E0E0E0] text-[16px] bg-[#FFFFFF] py-3 px-5 text-[#424242] outline-none transition disabled:cursor-default disabled:bg-whiter"
                                             required
                                         >
                                             <option disabled hidden selected>Choisissez le Lieu</option>
@@ -197,30 +185,17 @@ function ScheduleMeeting() {
                                             <option value="autre">Autre</option>
                                         </select>
                                         {location === "autre" && (
-                                            <input
-                                                type="text"
-                                                placeholder="Entrez le lieu"
-                                                value={customLocation}
-                                                onChange={handleCustomLocationChange}
-                                                className="w-full mt-4 rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                            />
+                                            <Input type={'text'} placeholder={"Entrez le lieu"} value={customLocation} onChange={handleCustomLocationChange} marginTop={'mt-2'}></Input>
                                         )}
                                     </div>
                                 </div>
 
                                 <div className="flex justify-end gap-4.5">
                                     <Link
-                                        to="/Home"
-                                        className="flex justify-center rounded bg-meta-1 py-2 px-6 font-medium text-white hover:bg-opacity-90"
-                                    >
-                                        Annuler
+                                        to="/Home">
+                                        <SecondaryButton>Annuler</SecondaryButton>
                                     </Link>
-                                    <button
-                                        type="submit"
-                                        className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-white hover:bg-opacity-90"
-                                    >
-                                        Ajouter
-                                    </button>
+                                    <PrimaryButton type={'submit'}>Ajouter</PrimaryButton>
                                 </div>
                             </div>
                         </form>

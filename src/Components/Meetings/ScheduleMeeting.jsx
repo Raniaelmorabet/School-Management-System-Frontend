@@ -3,6 +3,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import {Input} from "/src/Components/Atoms/input.jsx"
+import {PrimaryButton} from "../Atoms/PrimaryButton.jsx";
+import {SecondaryButton} from "../Atoms/SecondaryButton.jsx";
+import {Label} from "../Atoms/Label.jsx";
 
 function ScheduleMeeting() {
     const [date, setDate] = useState("");
@@ -33,7 +36,7 @@ function ScheduleMeeting() {
     useEffect(() => {
         const fetchJury = async () => {
             try {
-                const response = await axios.get('http://localhost:7219/api/Jury');
+                const response = await axios.get('http://localhost:5016/api/Jury');
                 setJuries(response.data)
                 console.log(response.data)
             } catch (error) {
@@ -63,10 +66,11 @@ function ScheduleMeeting() {
             juryId: jury
         };
         console.log(formData)
-        const response = await axios.post('http://localhost:7219/api/meeting',formData);
+        const response = await axios.post('http://localhost:5016/api/meeting',formData);
         if (response.status == 200) {
             Swal.fire({
                 title: response.data,
+                color: 'bg-[#1A237E]',
                 icon: "success",
             }).then(()=>{
                 navigate('/MeetingListPage');
@@ -94,16 +98,12 @@ function ScheduleMeeting() {
                             <div className="p-6.5">
                                 <div className="flex flex-col sm:flex-row gap-6 mb-4.5">
                                     <div className="w-full sm:w-1/2">
-                                        <label className="mb-2.5 block text-black dark:text-white">
-                                            Date <span className="text-meta-1">*</span>
-                                        </label>
+                                        <Label>Date <span className="text-meta-1">*</span></Label>
                                         <Input value={date} type={'date'} onChange={handleDateChange}/>
                                         {error && <p className="text-red-500">{error}</p>}
                                     </div>
                                     <div className="w-full sm:w-1/2">
-                                        <label className="mb-2.5 block text-black dark:text-white">
-                                            L'heure <span className="text-meta-1">*</span>
-                                        </label>
+                                        <Label>L'heure <span className="text-meta-1">*</span></Label>
                                         <div className="flex space-x-2">
                                             <select
                                                 onChange={(e) => setHours(e.target.value)}
@@ -140,9 +140,7 @@ function ScheduleMeeting() {
 
                                 <div className="flex flex-col sm:flex-row gap-6 mb-4.5">
                                     <div className="w-full sm:w-1/2">
-                                        <label className="mb-2.5 block text-black dark:text-white">
-                                            Type de réunion <span className="text-meta-1">*</span>
-                                        </label>
+                                        <Label>Type de réunion <span className="text-meta-1">*</span></Label>
                                         <select
                                             className="w-full rounded-[4px] border-[1px] border-[#E0E0E0] text-[16px] bg-[#FFFFFF] py-3 px-5 text-[#424242] outline-none transition disabled:cursor-default disabled:bg-whiter"
                                             required
@@ -156,9 +154,7 @@ function ScheduleMeeting() {
                                         </select>
                                     </div>
                                     <div className="w-full sm:w-1/2">
-                                        <label className="mb-2.5 block text-black dark:text-white">
-                                            Jury <span className="text-meta-1">*</span>
-                                        </label>
+                                        <Label>Jury <span className="text-meta-1">*</span></Label>
                                         <select
                                             className="w-full rounded-[4px] border-[1px] border-[#E0E0E0] text-[16px] bg-[#FFFFFF] py-3 px-5 text-[#424242] outline-none transition disabled:cursor-default disabled:bg-whiter"
 
@@ -176,9 +172,7 @@ function ScheduleMeeting() {
                                         </select>
                                     </div>
                                     <div className="w-full sm:w-1/2">
-                                        <label className="mb-2.5 block text-black dark:text-white">
-                                            Lieu <span className="text-meta-1">*</span>
-                                        </label>
+                                        <Label>Lieu <span className="text-meta-1">*</span></Label>
                                         <select
                                             onChange={handleLocationChange}
                                             className="w-full rounded-[4px] border-[1px] border-[#E0E0E0] text-[16px] bg-[#FFFFFF] py-3 px-5 text-[#424242] outline-none transition disabled:cursor-default disabled:bg-whiter"
@@ -189,30 +183,17 @@ function ScheduleMeeting() {
                                             <option value="autre">Autre</option>
                                         </select>
                                         {location === "autre" && (
-                                            <input
-                                                type="text"
-                                                placeholder="Entrez le lieu"
-                                                value={customLocation}
-                                                onChange={handleCustomLocationChange}
-                                                className="w-full rounded-[4px] border-[1px] border-[#E0E0E0] text-[16px] mt-2 bg-[#FFFFFF] py-3 px-5 text-[#424242] outline-none transition disabled:cursor-default disabled:bg-whiter"
-                                            />
+                                            <Input type={'text'} placeholder={"Entrez le lieu"} value={customLocation} onChange={handleCustomLocationChange} marginTop={'mt-2'}></Input>
                                         )}
                                     </div>
                                 </div>
 
                                 <div className="flex justify-end gap-4.5">
                                     <Link
-                                        to="/Home"
-                                        className="flex justify-center rounded-[4px] bg-meta-1 py-2 px-6 font-medium text-[16px] text-[#FFFFFF] hover:bg-opacity-90"
-                                    >
-                                        Annuler
+                                        to="/Home">
+                                        <SecondaryButton>Annuler</SecondaryButton>
                                     </Link>
-                                    <button
-                                        type="submit"
-                                        className="flex justify-center rounded-[4px] bg-[#1A237E] py-2 px-6 font-medium text-[16px] text-[#FFFFFF] hover:bg-opacity-90"
-                                    >
-                                        Ajouter
-                                    </button>
+                                    <PrimaryButton type={'submit'}>Ajouter</PrimaryButton>
                                 </div>
                             </div>
                         </form>

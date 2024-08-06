@@ -19,7 +19,7 @@ const Sidebar = () => {
                     <div className="py-7 px-2">
                         <div className="flex items-center justify-between px-4">
                             <div className="flex items-center space-x-2">
-                                <span className="text-2xl font-extrabold">Logo</span>
+                                <span className="text-2xl font-extrabold text-[#FF9800]">Logo</span>
                             </div>
                         </div>
                         <nav>
@@ -28,19 +28,19 @@ const Sidebar = () => {
                                 <ul className="mt-3 space-y-2">
                                     <li>
                                         <a href="#" className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-gray-700 p-2 rounded-md">
-                                            <FaUser />
+                                            <FaUser className='text-[#FF9800]'/>
                                             <span>Profile</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="#" className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-gray-700 p-2 rounded-md">
-                                            <TiGroup />
+                                            <TiGroup className='text-[#FF9800]'/>
                                             <Link to='/Home'>Les Jury</Link>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="#" className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-gray-700 p-2 rounded-md">
-                                            <FaCalendarAlt />
+                                            <FaCalendarAlt className='text-[#FF9800]'/>
                                             <Link to='/MeetingListPage'>Les Réunions</Link>
                                         </a>
                                     </li>
@@ -50,7 +50,7 @@ const Sidebar = () => {
                     </div>
                 )}
                 <button onClick={toggleSidebar} className="absolute bottom-4 right-5 focus:outline-none ">
-                    {isOpen ? <IoIosArrowDropleft  className="text-2xl" /> : <IoIosArrowDropright className="text-2xl" />}
+                    {isOpen ? <IoIosArrowDropleft  className="text-2xl text-[#FF9800]" /> : <IoIosArrowDropright className="text-2xl text-[#FF9800]" />}
                 </button>
             </div>
             <div className={`flex-1 transition-margin duration-300 ${isOpen ? 'ml-55' : 'ml-16'} overflow-auto`}>

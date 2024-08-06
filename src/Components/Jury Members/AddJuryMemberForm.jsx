@@ -3,6 +3,9 @@ import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {Input} from "/src/Components/Atoms/input.jsx"
+import {PrimaryButton} from "/src/Components/Atoms/PrimaryButton.jsx"
+import {SecondaryButton} from "/src/Components/Atoms/SecondaryButton.jsx"
+import {Label} from "../Atoms/Label.jsx";
 const AddJuryMemberForm = () => {
     const [profileImage, setProfileImage] = useState(null);
     const [profileImagePreview, setProfileImagePreview] = useState(null);
@@ -16,11 +19,26 @@ const AddJuryMemberForm = () => {
     const [jury, setJury] = useState('');
     const [roles,setRoles] = useState([]);
     const [juries,setJuries] = useState();
+
+    // const[formState, setFormState] = useState({
+    //     profileImage: null,
+    //     profileImagePreview: null,
+    //     Role: '',
+    //     FirstName: '',
+    //     LastName: '',
+    //     Email: '',
+    //     LatestDiploma: '',
+    //     YearOfExperience: '',
+    //     CompanyName: '',
+    //     Jury: '',
+    //     roles: [],
+    //     juries: undefined
+    // })
     const navigate = useNavigate()
     useEffect(()=>{
         const fetchRoles = async () => {
             try {
-                const response = await axios.get('http://localhost:7219/api/JuryMemberRole');
+                const response = await axios.get('http://localhost:5016/api/JuryMemberRole');
                 setRoles(response.data)
                 console.log(response.data)
             } catch (error) {
@@ -29,7 +47,7 @@ const AddJuryMemberForm = () => {
         };
         const fetchJury = async () => {
             try {
-                const response = await axios.get('http://localhost:7219/api/Jury');
+                const response = await axios.get('http://localhost:5016/api/Jury');
                 setJuries(response.data)
                 console.log(response.data)
             } catch (error) {
@@ -83,14 +101,16 @@ const AddJuryMemberForm = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:7219/api/JuryMember',formData);
+            const response = await axios.post('http://localhost:5016/api/JuryMember',formData);
             console.log(response);
             if (response.status == 200) {
                 Swal.fire({
                     title: response.data,
                     icon: "success",
-                });
-            } else {
+                }).then(()=>{
+                navigate('/Home');
+            });
+        } else {
                 Swal.fire({
                     title: "Erreur lors de l'ajout du membre!",
                     text: errorData.message || 'Erreur inconnue',
@@ -111,7 +131,7 @@ const AddJuryMemberForm = () => {
             <div className="flex flex-col gap-9">
                 <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-                        <h3 className="font-medium text-black dark:text-white">
+                        <h3 className="font-medium text-[20px] text-black">
                             Créer Membre du Jury
                         </h3>
                     </div>
@@ -119,19 +139,13 @@ const AddJuryMemberForm = () => {
                         <div className="p-6.5">
                             <div className="flex flex-col sm:flex-row gap-6 mb-4.5">
                                 <div className="w-full sm:w-1/2">
-                                    <label className="mb-2.5 block text-black dark:text-white">
-                                        Prénom <span className="text-meta-1">*</span>
-                                    </label>
+                                    <Label>Prénom <span className="text-meta-1">*</span></Label>
                                     <Input type={'text'} onChange={(e) => setFirstName(e.target.value)} placeholder={'Entrez votre prénom'}/>
-                                    <label className="mt-8 mb-2.5 block text-black dark:text-white">
-                                        Nom de famille <span className="text-meta-1">*</span>
-                                    </label>
+                                    <Label marginTop={'mt-8'}>Nom de famille <span className="text-meta-1">*</span></Label>
                                     <Input type={'text'} onChange={(e) => setLastName(e.target.value)} placeholder={'Entrez votre nom de famille'}/>
                                 </div>
                                 <div className="w-full sm:w-1/2">
-                                    <label className="mb-2.5 block text-black dark:text-white">
-                                        Photo de profil
-                                    </label>
+                                    <Label>Photo de profil</Label>
                                     <div
                                         id="FileUpload"
                                         className="relative block w-full cursor-pointer appearance-none rounded border border-dashed border-black/30 bg-gray py-4 px-4 dark:bg-meta-4"
@@ -193,16 +207,11 @@ const AddJuryMemberForm = () => {
 
                             <div className="flex flex-col sm:flex-row gap-6 mb-4.5">
                                 <div className="w-full sm:w-1/2">
-                                    <label className="mb-2.5 block text-black dark:text-white">
-                                        Adresse e-mail <span className="text-meta-1">*</span>
-                                    </label>
+                                    <Label>Adresse e-mail <span className="text-meta-1">*</span></Label>
                                     <Input type={'email'} onChange={(e) => setEmail(e.target.value)} placeholder={'Entrez votre adresse e-mail'}/>
-
                                 </div>
                                 <div className="w-full sm:w-1/2">
-                                    <label className="mb-2.5 block text-black dark:text-white">
-                                        Rôle <span className="text-meta-1">*</span>
-                                    </label>
+                                    <Label>Rôle <span className="text-meta-1">*</span></Label>
                                     <select
                                         className="w-full font-roboto-regular rounded-[4px] border-[1px] border-[#E0E0E0] text-[16px] bg-[#FFFFFF] py-3 px-5 text-[#424242] outline-none transition disabled:cursor-default disabled:bg-whiter"
                                         onChange={(e) => setRole(e.target.value)}
@@ -221,33 +230,25 @@ const AddJuryMemberForm = () => {
 
                             <div className="flex flex-col sm:flex-row gap-6 mb-4.5">
                                 <div className="w-full sm:w-1/2">
-                                    <label className="mb-2.5 block text-black dark:text-white">
-                                        Dernier diplôme <span className="text-meta-1">*</span>
-                                    </label>
+                                    <Label>Dernier diplôme <span className="text-meta-1">*</span></Label>
                                     <Input type={'text'} onChange={(e) => setLastDegree(e.target.value)} placeholder={'Entrez votre dernier diplôme'}/>
                                 </div>
                                 <div className="w-full sm:w-1/2">
-                                    <label className="mb-2.5 block text-black dark:text-white">
-                                        Années d'expérience <span className="text-meta-1">*</span>
-                                    </label>
+                                    <Label>Années d'expérience <span className="text-meta-1">*</span></Label>
                                     <Input type={'number'} onChange={(e) => setExperienceYears(e.target.value)} placeholder={'Entrez vos années d\'expérience'}/>
                                 </div>
                             </div>
 
                             <div className="flex flex-col sm:flex-row gap-6 mb-4.5">
                                 <div className="w-full sm:w-1/2">
-                                    <label className="mb-2.5 block text-black dark:text-white">
-                                        Nom de l'entreprise <span className="text-meta-1">*</span>
-                                    </label>
+                                    <Label>Nom de l'entreprise <span className="text-meta-1">*</span></Label>
                                     <Input type={'text'} onChange={(e) => setCompanyName(e.target.value)} placeholder={'Entrez le nom de l\'entreprise'}/>
                                 </div>
                                 <div className="w-full sm:w-1/2">
-                                    <label className="mb-2.5 block text-black dark:text-white">
-                                        Jury <span className="text-meta-1">*</span>
-                                    </label>
+                                    <Label>Jury <span className="text-meta-1">*</span></Label>
                                     <select
                                         className="w-full font-roboto-regular rounded-[4px] border-[1px] border-[#E0E0E0] text-[16px] bg-[#FFFFFF] py-3 px-5 text-[#424242] outline-none transition disabled:cursor-default disabled:bg-whiter"
-                                        
+
                                         onChange={(e) => setJury(e.target.value)}
                                         required
                                     >
@@ -262,19 +263,10 @@ const AddJuryMemberForm = () => {
                                 </div>
                             </div>
                             <div className="flex justify-end gap-4.5">
-                                <Link
-                                    to='/Home'
-                                    className="flex justify-center rounded-[4px] bg-meta-1 py-2 px-6 font-medium text-[16px] text-[#FFFFFF] hover:bg-opacity-90"
-                                >
-                                    Annuler
+                                <Link to='/Home'>
+                                    <SecondaryButton>Annuler</SecondaryButton>
                                 </Link>
-                                <button
-                                    type='submit'
-                                    className="flex justify-center rounded-[4px] bg-[#1A237E] py-2 px-6 font-medium text-[16px] text-[#FFFFFF] hover:bg-opacity-90"
-                                    onClick={handleSubmit}
-                                >
-                                    Ajouter
-                                </button>
+                                <PrimaryButton onClick={handleSubmit} type={'submit'}>Ajouter</PrimaryButton>
                             </div>
                         </div>
                     </form>

@@ -8,6 +8,7 @@ import { FaRegEdit } from "react-icons/fa";
 import Swal from 'sweetalert2';
 import {Link, useParams} from 'react-router-dom';
 import axios from 'axios';
+import {PrimaryButton} from "../Atoms/PrimaryButton.jsx";
 const getRoleName = (roleValue) => {
     switch(roleValue) {
         case 0:
@@ -25,7 +26,7 @@ const JuryList = () => {
     const [listData, setListData] = useState([]);
     const fetchJuries = async () => {
         try {
-            const response = await axios.get('http://localhost:7219/api/JuryMember');
+            const response = await axios.get('http://localhost:5016/api/JuryMember');
             setListData(response.data)
             console.log('res',response.data)
         } catch (error) {
@@ -41,28 +42,16 @@ const JuryList = () => {
         Swal.fire({
             title: "Êtes-vous sûr de vouloir supprimer cet élément ?",
             icon: "warning",
+            iconColor: '#ff6666',
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
+            confirmButtonColor: "#1A237E",
             cancelButtonColor: "#d33",
             confirmButtonText: "Oui, Supprimer"
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const response = await axios.delete(`https://localhost:7219/api/JuryMember/${id}`);
+                    const response = await axios.delete(`http://localhost:5016/api/JuryMember/${id}`);
                     fetchJuries();
-                    // if (response.ok) {
-                    //     const newList = listData.filter((item) => item.juryMemberId !== id);
-                    //     setListData(newList);
-                    //     Swal.fire({
-                    //         title: "L'élément a été supprimé.",
-                    //         icon: "success",
-                    //     });
-                    // } else {
-                    //     Swal.fire({
-                    //         title: "Erreur lors de la suppression.",
-                    //         icon: "error",
-                    //     });
-                    // }
                 } catch (error) {
                     Swal.fire({
                         title: "Erreur lors de la suppression.",
@@ -80,10 +69,8 @@ const JuryList = () => {
                     Membres du jury
                 </h4>
                 <Link
-                    to="/add-jury"
-                    className="px-4 py-2 bg-blue-950 text-white rounded-md  focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
-                >
-                    Ajouter Jury
+                    to="/add-jury">
+                    <PrimaryButton>Ajouter Jury</PrimaryButton>
                 </Link>
             </div>
 
@@ -143,7 +130,7 @@ const JuryList = () => {
                         </div>
                         <div className="flex items-center justify-center p-2.5 xl:p-5">
                         {console.log(list.role)}
-                            <p className="text-black">{list.role.role}</p>
+                            <p className="text-black text-center">{list.role.role}</p>
                         </div>
 
                         <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">

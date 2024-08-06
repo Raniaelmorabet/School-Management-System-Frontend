@@ -2,6 +2,10 @@ import React, {useEffect, useState} from 'react';
 import Swal from 'sweetalert2';
 import {Link, useParams} from 'react-router-dom';
 import axios from 'axios';
+import {PrimaryButton} from "../Atoms/PrimaryButton.jsx";
+import {SecondaryButton} from "../Atoms/SecondaryButton.jsx";
+import {Label} from "../Atoms/Label.jsx";
+import {Input} from "../Atoms/input.jsx";
 
 const UpdateJuryMemberForm = () => {
     const [profileImage, setProfileImage] = useState(null);
@@ -20,7 +24,7 @@ const UpdateJuryMemberForm = () => {
     useEffect(async()=>{
             const fetchJury = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:7219/api/JuryMember/${id}`);
+                    const response = await axios.get(`http://localhost:5016/api/JuryMember/${id}`);
                     console.log(response.data)
                     setFirstName(response.data.firstName)
                     setLastName(response.data.lastName)
@@ -37,7 +41,7 @@ const UpdateJuryMemberForm = () => {
             };
             const fetchRoles = async () => {
                 try {
-                    const response = await axios.get('http://localhost:7219/api/JuryMemberRole');
+                    const response = await axios.get('http://localhost:5016/api/JuryMemberRole');
                     setRoles(response.data)
                     console.log(response.data)
                 } catch (error) {
@@ -46,7 +50,7 @@ const UpdateJuryMemberForm = () => {
             };
             const fetchJuries = async () => {
                 try {
-                    const response = await axios.get('http://localhost:7219/api/Jury');
+                    const response = await axios.get('http://localhost:5016/api/Jury');
                     setJuries(response.data)
                     console.log(response.data)
                 } catch (error) {
@@ -102,7 +106,7 @@ const UpdateJuryMemberForm = () => {
             console.log(`${key}: ${value}`);
         }
         try {
-            const response = await axios.put(`http://localhost:7219/api/JuryMember`,formData);
+            const response = await axios.put(`http://localhost:5016/api/JuryMember`,formData);
             if (response.status != 200) {
                 throw new Error('Network response was not ok');
             }
@@ -133,33 +137,13 @@ const UpdateJuryMemberForm = () => {
                         <div className="p-6.5">
                             <div className="flex flex-col sm:flex-row gap-6 mb-4.5">
                                 <div className="w-full sm:w-1/2">
-                                    <label className="mb-2.5 block text-black dark:text-white">
-                                        Prénom <span className="text-meta-1">*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        placeholder="Entrez votre prénom"
-                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        required
-                                        value={FirstName}
-                                        onChange={(e) => setFirstName(e.target.value)}
-                                    />
-                                    <label className="mt-8 mb-2.5 block text-black dark:text-white">
-                                        Nom de famille <span className="text-meta-1">*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        placeholder="Entrez votre nom de famille"
-                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        required
-                                        value={LastName}
-                                        onChange={(e) => setLastName(e.target.value)}
-                                    />
+                                    <Label>Prénom <span className="text-meta-1">*</span></Label>
+                                    <Input type={'text'} onChange={(e) => setFirstName(e.target.value)} placeholder={'Entrez votre prénom'}/>
+                                    <Label marginTop={'mt-8'}>Nom de famille <span className="text-meta-1">*</span></Label>
+                                    <Input type={'text'} onChange={(e) => setLastName(e.target.value)} placeholder={'Entrez votre nom de famille'}/>
                                 </div>
                                 <div className="w-full sm:w-1/2">
-                                    <label className="mb-2.5 block text-black dark:text-white">
-                                        Photo de profil
-                                    </label>
+                                    <Label>Photo de profil</Label>
                                     <div
                                         id="FileUpload"
                                         className="relative block w-full cursor-pointer appearance-none rounded border border-dashed border-black/30 bg-gray py-4 px-4 dark:bg-meta-4"
@@ -221,22 +205,11 @@ const UpdateJuryMemberForm = () => {
 
                             <div className="flex flex-col sm:flex-row gap-6 mb-4.5">
                                 <div className="w-full sm:w-1/2">
-                                    <label className="mb-2.5 block text-black dark:text-white">
-                                        Adresse e-mail <span className="text-meta-1">*</span>
-                                    </label>
-                                    <input
-                                        type="email"
-                                        placeholder="Entrez votre adresse e-mail"
-                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        required
-                                        value={Email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                    />
+                                    <Label>Adresse e-mail <span className="text-meta-1">*</span></Label>
+                                    <Input type={'email'} onChange={(e) => setEmail(e.target.value)} placeholder={'Entrez votre adresse e-mail'}/>
                                 </div>
                                 <div className="w-full sm:w-1/2">
-                                <label className="mb-2.5 block text-black dark:text-white">
-                                        Rôle <span className="text-meta-1">*</span>
-                                    </label>
+                                    <Label>Rôle <span className="text-meta-1">*</span></Label>
                                     <select
                                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                         value={Role}
@@ -254,51 +227,22 @@ const UpdateJuryMemberForm = () => {
 
                             <div className="flex flex-col sm:flex-row gap-6 mb-4.5">
                                 <div className="w-full sm:w-1/2">
-                                    <label className="mb-2.5 block text-black dark:text-white">
-                                        Dernier diplôme <span className="text-meta-1">*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        placeholder="Entrez votre dernier diplôme"
-                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        required
-                                        value={LatestDiploma}
-                                        onChange={(e) => setLastDegree(e.target.value)}
-                                    />
+                                    <Label>Dernier diplôme <span className="text-meta-1">*</span></Label>
+                                    <Input type={'text'} onChange={(e) => setLastDegree(e.target.value)} placeholder={'Entrez votre dernier diplôme'}/>
                                 </div>
                                 <div className="w-full sm:w-1/2">
-                                    <label className="mb-2.5 block text-black dark:text-white">
-                                        Années d'expérience <span className="text-meta-1">*</span>
-                                    </label>
-                                    <input
-                                        type="number"
-                                        placeholder="Entrez vos années d'expérience"
-                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        required
-                                        value={YearOfExperience}
-                                        onChange={(e) => setExperienceYears(e.target.value)}
-                                    />
+                                    <Label>Années d'expérience <span className="text-meta-1">*</span></Label>
+                                    <Input type={'number'} onChange={(e) => setExperienceYears(e.target.value)} placeholder={'Entrez vos années d\'expérience'}/>
                                 </div>
                             </div>
 
                             <div className="flex flex-col sm:flex-row gap-6 mb-4.5">
                                 <div className="w-full sm:w-1/2">
-                                    <label className="mb-2.5 block text-black dark:text-white">
-                                        Nom de l'entreprise <span className="text-meta-1">*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        placeholder="Entrez le nom de l'entreprise"
-                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        required
-                                        value={CompanyName}
-                                        onChange={(e) => setCompanyName(e.target.value)}
-                                    />
+                                    <Label>Nom de l'entreprise <span className="text-meta-1">*</span></Label>
+                                    <Input type={'text'} onChange={(e) => setCompanyName(e.target.value)} placeholder={'Entrez le nom de l\'entreprise'}/>
                                 </div>
                                 <div className="w-full sm:w-1/2">
-                                <label className="mb-2.5 block text-black dark:text-white">
-                                        Jury <span className="text-meta-1">*</span>
-                                    </label>
+                                    <Label>Jury <span className="text-meta-1">*</span></Label>
                                     <select
                                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                         value={jury}
@@ -315,19 +259,10 @@ const UpdateJuryMemberForm = () => {
                                 </div>
                             </div>
                             <div className="flex justify-end gap-4.5">
-                                <Link
-                                    to='/Home'
-                                    className="flex justify-center rounded bg-meta-1 py-2 px-6 font-medium text-white hover:bg-opacity-90"
-                                >
-                                    Annuler
+                                <Link to='/Home'>
+                                <SecondaryButton>Annuler</SecondaryButton>
                                 </Link>
-                                <button
-                                    type='submit'
-                                    className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-white hover:bg-opacity-90"
-                                    onClick={handleSubmit}
-                                >
-                                    Enregister les modifications
-                                </button>
+                                <PrimaryButton type={'submit'} onClick={handleSubmit}>Enregister les modifications</PrimaryButton>
                             </div>
                         </div>
                     </form>

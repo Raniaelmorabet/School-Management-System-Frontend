@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaEdit } from 'react-icons/fa';
 import axios from 'axios';
+import {SecondaryButton} from "../Atoms/SecondaryButton.jsx";
+import {PrimaryButton} from "../Atoms/PrimaryButton.jsx";
 
 const Calendar = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -11,7 +13,7 @@ const Calendar = () => {
     useEffect(() => {
         const fetchMeetings = async () => {
             try {
-                const response = await axios.get('http://localhost:7219/api/meeting');
+                const response = await axios.get('http://localhost:5016/api/meeting');
                 setMeetingsList(response.data);
                 console.log(response.data);
             } catch (error) {
@@ -75,7 +77,7 @@ const Calendar = () => {
         <>
             <div className="w-full max-w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="flex justify-between p-2 items-center">
-                    <button onClick={handlePreviousMonth} className="text-xl font-semibold">&lt;</button>
+                    <button onClick={handlePreviousMonth} className="text-xl font-semibold"></button>
                     <span className="text-xl font-semibold">
                         {`${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`}
                     </span>
@@ -174,9 +176,8 @@ const Calendar = () => {
                 </div>
             )}
             <div className='flex justify-end'>
-                <Link to='/ScheduleMeeting'
-                      className="rounded mt-3 bg-blue-950 py-2 px-6 font-medium text-white hover:bg-opacity-90 ">
-                    Planifier une réunion
+                <Link to='/ScheduleMeeting' className='mt-3'>
+                    <PrimaryButton>Planifier une réunion</PrimaryButton>
                 </Link>
             </div>
         </>
