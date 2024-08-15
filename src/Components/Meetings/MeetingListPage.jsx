@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaEdit } from 'react-icons/fa';
 import axios from 'axios';
-import {SecondaryButton} from "../Atoms/SecondaryButton.jsx";
 import {PrimaryButton} from "../Atoms/PrimaryButton.jsx";
 
 const Calendar = () => {
@@ -77,7 +75,7 @@ const Calendar = () => {
         <>
             <div className="w-full max-w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="flex justify-between p-2 items-center">
-                    <button onClick={handlePreviousMonth} className="text-xl font-semibold"></button>
+                    <button onClick={handlePreviousMonth} className="text-xl font-semibold">&lt;</button>
                     <span className="text-xl font-semibold">
                         {`${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`}
                     </span>
@@ -85,7 +83,7 @@ const Calendar = () => {
                 </div>
                 <table className="w-full">
                     <thead>
-                    <tr className="grid grid-cols-7 rounded-t-sm bg-blue-950 text-white">
+                    <tr className="grid grid-cols-7 rounded-t-sm bg-[#004b9c] text-white">
                         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, index) => (
                             <th
                                 key={index}
@@ -117,16 +115,20 @@ const Calendar = () => {
                                             {day}
                                         </span>
                                         {event && (
-                                            <div
-                                                className="event absolute left-2 z-10 mb-1 flex w-[92%] flex-col rounded-sm border-l-[3px] border-bg-blue-950 bg-gray px-3 py-1 text-left"
-                                            >
-                                                <span className="event-name text-sm font-semibold text-black dark:text-white">
+                                            <Link to='/MeetingDetails'>
+                                                <div
+                                                    className="event absolute left-2 z-10 mb-1 flex w-[92%] flex-col rounded-sm border-l-[3px] border-bg-blue-950 bg-gray px-3 py-1 text-left"
+                                                >
+                                                <span
+                                                    className="event-name text-sm font-semibold text-black dark:text-white">
                                                     {event.title}
                                                 </span>
-                                                <span className="time text-sm font-medium text-black dark:text-white">
+                                                    <span
+                                                        className="time text-sm font-medium text-black dark:text-white">
                                                     {event.time}
                                                 </span>
-                                            </div>
+                                                </div>
+                                            </Link>
                                         )}
                                     </td>
                                 );
@@ -136,45 +138,6 @@ const Calendar = () => {
                     </tbody>
                 </table>
             </div>
-            {selectedEvent && (
-                <div className="fixed inset-0 bg-graydark bg-opacity-50 z-50 flex justify-center items-center">
-                    <div className="relative bg-white shadow-lg rounded-lg w-115 ">
-                        <div className="flex w-115 h-16 rounded-t-lg justify-center items-center bg-blue-950 mb-4">
-                            <h2 className="text-xl font-bold text-white">Détails de la Réunion</h2>
-                            <Link to={`/RescheduleMeeting/${selectedEvent.meetingId}`}><FaEdit size={20} className="absolute right-4 top-[21px] text-xl cursor-pointer text-white" />
-                            </Link>
-                        </div>
-                        <div className="mb-4 border-b p-4 border-gray-300 pb-4">
-                            <p className="text-blue-950 font-bold">Date:</p>
-                            <p className="text-gray-900">{new Date(selectedEvent.date).toLocaleDateString()}</p>
-                        </div>
-                        <div className="mb-4 border-b p-4 border-gray-300 pb-4">
-                            <p className="text-blue-950 font-bold">Titre:</p>
-                            <p className="text-gray-900">{selectedEvent.title}</p>
-                        </div>
-                        <div className="mb-4 border-b p-4 border-gray-300 pb-4">
-                            <p className="text-blue-950 font-bold">Heure:</p>
-                            <p className="text-gray-900">{selectedEvent.time}</p>
-                        </div>
-                        <div className="mb-4 border-b p-4 border-gray-300 pb-4">
-                            <p className="text-blue-950 font-bold">Lieu:</p>
-                            <p className="text-gray-900">{selectedEvent.location}</p>
-                        </div>
-                        <div className="mb-4 p-4">
-                            <p className="text-blue-950 font-bold">Jury:</p>
-                            <p className="text-gray-900">{selectedEvent.jury.juryName}</p>
-                        </div>
-                        <div className="flex justify-end pr-4 pb-3 -mt-4">
-                            <button
-                                className="text-red-600 focus:outline-none"
-                                onClick={() => setSelectedEvent(null)}
-                            >
-                                Fermer
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
             <div className='flex justify-end'>
                 <Link to='/ScheduleMeeting' className='mt-3'>
                     <PrimaryButton>Planifier une réunion</PrimaryButton>

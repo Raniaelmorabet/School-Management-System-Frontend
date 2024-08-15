@@ -19,9 +19,10 @@ import PVResultatValidations from "./Components/PV Documents/PVResultatValidatio
 import Document from "./Components/PV Documents/PVReunion2.jsx";
 import PVReunion1 from "./Components/PV Documents/PVReunion1.jsx";
 import PVReunion3 from "./Components/PV Documents/PVReunion3.jsx";
+import MeetingDetails from "./Components/Meetings/MeetingDetails.jsx";
+
 function App() {
     return (
-         // <PVReunion3 />
         <Router>
             <div className="flex h-screen">
                 <Sidebar/>
@@ -33,6 +34,7 @@ function App() {
                             <Route path="/add-jury" element={<AddJuryMemberForm />} />
                             <Route path="/Update/:id" element={<UpdateJuryMemberForm />} />
                             <Route path="/MeetingListPage" element={<MeetingListPage />} />
+                            <Route path="/MeetingDetails" element={<MeetingDetails />} />
                             <Route path="/ScheduleMeeting" element={<ScheduleMeeting />} />
                             <Route path="/RescheduleMeeting/:id" element={<RescheduleMeeting />} />
                         </Routes>

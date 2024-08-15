@@ -1,47 +1,149 @@
-import React from 'react';
-import { FaEdit } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { IoMdCloudDownload } from "react-icons/io";
+import axios from 'axios';
 
-function MeetingDetails() {
-    const meetingDetails = {
-        date: '2024-07-12',
-        lheure: '10:00 AM',
-        lieu: 'Salle de Réunion A',
-        type: 'Conférence',
-        jury: 'Dr. Smith, Prof. Johnson, Dr. Williams'
+const MeetingDetails = () => {
+    const { meetingId } = useParams();
+    const [event, setEvent] = useState(null);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchEventData = async () => {
+            try {
+                console.log('Fetching data for meeting ID:', meetingId);
+                const eventResponse = await axios.get(`http://localhost:5016/api/Meeting/${meetingId}`);
+                setEvent(eventResponse.data);
+                console.log("Event data:", eventResponse.data);
+            } catch (err) {
+                console.error('Error fetching event data:', err.response?.data || err.message);
+                setError('Error fetching event data. Please try again later.');
+            }
+        };
+
+        fetchEventData();
+    }, [meetingId]);
+
+    if (error) {
+        return <div>{error}</div>;
+    }
+
+    if (!event) {
+        return <div>Loading...</div>;
+    }
+
+    const handleEmailSend = () => {
+
     };
 
     return (
-        <div className="max-w-xl mx-auto p-6 bg-white shadow-md rounded-lg">
-            <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-center">Détails de la Réunion</h2>
-                <button className="text-gray-500 hover:text-gray-700 focus:outline-none">
-                    <FaEdit size={23} />
-                </button>
+        <div className=" p-4">
+            <h2 className="text-2xl font-bold mb-8 text-center">Détails de la Réunion</h2>
+            <div className="flex flex-col font-satoshi">
+                <div className="grid grid-cols-2 rounded-sm bg-blue-50 dark:bg-blue-800 text-gray-800 dark:text-gray-200 sm:grid-cols-4">
+                    <div className="p-3 xl:p-6">
+                        <h5 className="text-sm font-medium uppercase xsm:text-base text-blue-700 dark:text-blue-300">
+                            Date
+                        </h5>
+                    </div>
+                    <div className="p-3 text-center xl:p-6">
+                        <h5 className="text-sm font-medium uppercase xsm:text-base text-blue-700 dark:text-blue-300">
+                            Heure
+                        </h5>
+                    </div>
+                    <div className="p-3 text-center xl:p-6">
+                        <h5 className="text-sm font-medium uppercase xsm:text-base text-blue-700 dark:text-blue-300">
+                            Lieu
+                        </h5>
+                    </div>
+                    <div className="hidden p-3 text-center sm:block xl:p-6">
+                        <h5 className="text-sm font-medium uppercase xsm:text-base text-blue-700 dark:text-blue-300">
+                            Jury
+                        </h5>
+                    </div>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 border-b border-blue-200 dark:border-blue-700">
+                    <div className="flex items-center gap-3 p-3 xl:p-6 text-gray-700 dark:text-gray-300">
+                        {new Date(event.date).toLocaleDateString()}
+                    </div>
+                    <div className="flex items-center justify-center p-3 xl:p-6 text-gray-700 dark:text-gray-300">
+                        {event.time}
+                    </div>
+                    <div className="flex items-center justify-center p-3 xl:p-6 text-gray-700 dark:text-gray-300">
+                        {event.location}
+                    </div>
+                    <div className="hidden items-center justify-center text-gray-700 dark:text-gray-300 p-3 sm:flex xl:p-6 gap-3">
+                        {event.jury.juryName}
+                    </div>
+                </div>
             </div>
-            <div className="border-t border-gray-200">
-                <div className="py-4">
-                    <label className="block text-gray-700 font-medium mb-1">Date:</label>
-                    <p className="text-gray-900">{meetingDetails.date}</p>
+            <div className="flex flex-col font-satoshi mt-10">
+                <div className="grid grid-cols-2 rounded-sm bg-blue-50 dark:bg-blue-800 text-gray-800 dark:text-gray-200 sm:grid-cols-4">
+                    <div className="p-3 xl:p-6">
+                        <h5 className="text-sm font-medium uppercase xsm:text-base text-blue-700 dark:text-blue-300">
+                            Jury Members
+                        </h5>
+                    </div>
+                    <div className="p-3 text-center xl:p-6">
+                        <h5 className="text-sm font-medium uppercase xsm:text-base text-blue-700 dark:text-blue-300">
+                            Email
+                        </h5>
+                    </div>
+                    <div className="p-3 text-center xl:p-6">
+                        <h5 className="text-sm font-medium uppercase xsm:text-base text-blue-700 dark:text-blue-300">
+                            Rôle
+                        </h5>
+                    </div>
+                    <div className="hidden p-3 text-center sm:block xl:p-6">
+                        <h5 className="text-sm font-medium uppercase xsm:text-base text-blue-700 dark:text-blue-300">
+                            Actions
+                        </h5>
+                    </div>
                 </div>
-                <div className="border-t border-gray-200 py-4">
-                    <label className="block text-gray-700 font-medium mb-1">L'heure:</label>
-                    <p className="text-gray-900">{meetingDetails.lheure}</p>
-                </div>
-                <div className="border-t border-gray-200 py-4">
-                    <label className="block text-gray-700 font-medium mb-1">Lieu:</label>
-                    <p className="text-gray-900">{meetingDetails.lieu}</p>
-                </div>
-                <div className="border-t border-gray-200 py-4">
-                    <label className="block text-gray-700 font-medium mb-1">Type de Réunion:</label>
-                    <p className="text-gray-900">{meetingDetails.type}</p>
-                </div>
-                <div className="border-t border-gray-200 py-4">
-                    <label className="block text-gray-700 font-medium mb-1">Jury:</label>
-                    <p className="text-gray-900">{meetingDetails.jury}</p>
-                </div>
+                {event.jury.juryMembers.map((member, key) => (
+                    <div
+                        className={`grid grid-cols-2 sm:grid-cols-4 ${key === event.jury.juryMembers.length - 1 ? '' : 'border-b border-blue-200 dark:border-blue-700'}`}
+                        key={member.juryMemberId}
+                    >
+                        <div className="flex items-center gap-3 p-3 xl:p-6">
+                            <div className="flex-shrink-0">
+                                <img src={member.profileImg} alt="Profile" className="h-12 w-12 rounded-full mr-4" />
+                            </div>
+                            <p className="hidden text-gray-700 dark:text-gray-300 sm:block font-semibold">
+                                {member.firstName} {member.lastName}
+                            </p>
+                        </div>
+                        <div className="flex items-center justify-center p-3 xl:p-6">
+                            <a href={`mailto:${member.email}`} className="text-blue-500 underline">
+                                {member.email}
+                            </a>
+                        </div>
+                        <div className="flex items-center justify-center p-3 xl:p-6">
+                            <p className="text-gray-700 dark:text-gray-300">{member.role.role}</p>
+                        </div>
+                        <div className="hidden items-center justify-center text-m p-3 sm:flex xl:p-6 gap-3">
+                            <button
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                onClick={handleEmailSend}
+                            >
+                                Envoyer Email
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <div className='flex space-x-4 justify-end mt-7'>
+                <button className='bg-blue-700 hover:bg-blue-500 flex rounded-md h-11 w-[280px] p-2 space-x-2'>
+                    <IoMdCloudDownload className='text-white w-7 h-7 ml-2'/>
+                    <p className='text-white text-xl'>télécharger Convocation</p>
+                </button>
+                <button className='bg-blue-700 hover:bg-blue-500 flex rounded-md h-11 w-[200px] p-2 space-x-2'>
+                    <IoMdCloudDownload className='text-white w-7 h-7 ml-2 '/>
+                    <p className='text-white text-xl'>télécharger PV</p>
+                </button>
             </div>
         </div>
     );
-}
+};
 
 export default MeetingDetails;

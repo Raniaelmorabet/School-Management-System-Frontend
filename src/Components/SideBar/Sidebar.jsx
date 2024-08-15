@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { FaCalendarAlt, FaUser } from 'react-icons/fa';
 import { IoIosArrowDropright, IoIosArrowDropleft } from "react-icons/io";
 import { TiGroup } from "react-icons/ti";
-import {Link} from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +13,7 @@ const Sidebar = () => {
 
     return (
         <div className="flex">
-            <div className={`fixed top-0 left-0 h-screen bg-blue-950 text-white ${isOpen ? 'w-55' : 'w-16'} transition-width duration-300`}>
+            <div className={`fixed top-0 left-0 h-screen bg-[#004b9c] text-white ${isOpen ? 'w-55' : 'w-16'} transition-width duration-300`}>
                 {isOpen && (
                     <div className="py-7 px-2">
                         <div className="flex items-center justify-between px-4">
@@ -27,30 +26,30 @@ const Sidebar = () => {
                                 <h2 className="text-xs font-semibold text-gray-400 uppercase">Menu</h2>
                                 <ul className="mt-3 space-y-2">
                                     <li>
-                                        <a href="#" className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-gray-700 p-2 rounded-md">
+                                        <a href="#" className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-[#2196F3] p-2 rounded-md">
                                             <FaUser className='text-[#FF9800]'/>
                                             <span>Profile</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-gray-700 p-2 rounded-md">
+                                        <Link to='/Home' className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-[#2196F3] p-2 rounded-md">
                                             <TiGroup className='text-[#FF9800]'/>
-                                            <Link to='/Home'>Les Jury</Link>
-                                        </a>
+                                            <span>Les Jury</span>
+                                        </Link>
                                     </li>
                                     <li>
-                                        <a href="#" className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-gray-700 p-2 rounded-md">
+                                        <Link to='/MeetingListPage' className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-[#2196F3] p-2 rounded-md">
                                             <FaCalendarAlt className='text-[#FF9800]'/>
-                                            <Link to='/MeetingListPage'>Les Réunions</Link>
-                                        </a>
+                                            <span>Les Réunions</span>
+                                        </Link>
                                     </li>
                                 </ul>
                             </div>
                         </nav>
                     </div>
                 )}
-                <button onClick={toggleSidebar} className="absolute bottom-4 right-5 focus:outline-none ">
-                    {isOpen ? <IoIosArrowDropleft  className="text-2xl text-[#FF9800]" /> : <IoIosArrowDropright className="text-2xl text-[#FF9800]" />}
+                <button onClick={toggleSidebar} className="absolute bottom-4 right-5 focus:outline-none">
+                    {isOpen ? <IoIosArrowDropleft className="text-2xl text-[#FF9800]" /> : <IoIosArrowDropright className="text-2xl text-[#FF9800]" />}
                 </button>
             </div>
             <div className={`flex-1 transition-margin duration-300 ${isOpen ? 'ml-55' : 'ml-16'} overflow-auto`}>

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import JuryTwo from "/src/assets/jury2.jpg"
+import JuryTwo from "/src/assets/jury2.jpg";
 import JuryThree from '/src/assets/jury3.jpg';
 import Juryfive from '/src/assets/jury6.jpg';
 import Jurysix from '/src/assets/jury7.jpg';
 import { MdDelete } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import Swal from 'sweetalert2';
-import {Link, useParams} from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-import {PrimaryButton} from "../Atoms/PrimaryButton.jsx";
+import { PrimaryButton } from "../Atoms/PrimaryButton.jsx";
+
 const getRoleName = (roleValue) => {
     switch(roleValue) {
         case 0:
@@ -27,24 +28,22 @@ const JuryList = () => {
     const fetchJuries = async () => {
         try {
             const response = await axios.get('http://localhost:5016/api/JuryMember');
-            setListData(response.data)
-            console.log('res',response.data)
+            setListData(response.data);
         } catch (error) {
             console.error('Error fetching roles:', error);
         }
     };
     useEffect(() => {
-        
         fetchJuries();
     }, []);
+
     const handleDelete = async (id) => {
-        console.log("Deleting ID:", id);
         Swal.fire({
             title: "Êtes-vous sûr de vouloir supprimer cet élément ?",
             icon: "warning",
             iconColor: '#ff6666',
             showCancelButton: true,
-            confirmButtonColor: "#1A237E",
+            confirmButtonColor: "#004b9c",
             cancelButtonColor: "#d33",
             confirmButtonText: "Oui, Supprimer"
         }).then(async (result) => {
@@ -68,12 +67,10 @@ const JuryList = () => {
                 <h4 className="text-xl font-semibold text-black dark:text-white font-satoshi">
                     Membres du jury
                 </h4>
-                <Link
-                    to="/add-jury">
+                <Link to="/add-jury">
                     <PrimaryButton>Ajouter Jury</PrimaryButton>
                 </Link>
             </div>
-
             <div className="flex flex-col font-satoshi">
                 <div className="grid grid-cols-2 rounded-sm bg-blue-100 dark:bg-meta-4 text-graydark sm:grid-cols-5">
                     <div className="p-2.5 xl:p-5">
@@ -102,14 +99,10 @@ const JuryList = () => {
                         </h5>
                     </div>
                 </div>
-
                 {listData.map((list, key) => (
-
                     <div
                         className={`grid grid-cols-2 sm:grid-cols-5 ${
-                            key === listData.length - 1
-                                ? ''
-                                : 'border-b border-stroke dark:border-strokedark'
+                            key === listData.length - 1 ? '' : 'border-b border-stroke dark:border-strokedark'
                         }`}
                         key={list.juryMemberId}
                     >
@@ -121,18 +114,14 @@ const JuryList = () => {
                                 {list.firstName} {list.lastName}
                             </p>
                         </div>
-
-                        <div className="flex items-center justify-center p-2.5 xl:p-5 ">
-                            
+                        <div className="flex items-center justify-center p-2.5 xl:p-5">
                             <a href={`mailto:${list.email}`} className="text-blue-500 underline">
                                 {list.email}
                             </a>
                         </div>
                         <div className="flex items-center justify-center p-2.5 xl:p-5">
-                        {console.log(list.role)}
                             <p className="text-black text-center">{list.role.role}</p>
                         </div>
-
                         <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
                             <p className={`text-black dark:text-white ${list.status === 'Validé' ? 'text-green-500' : 'text-red-500'}`}>
                                 {list.status}
@@ -140,10 +129,10 @@ const JuryList = () => {
                         </div>
                         <div className="hidden items-center justify-center text-2xl p-2.5 sm:flex xl:p-5 gap-3">
                             <Link to={`/update/${list.juryMemberId}`}>
-                                <FaRegEdit className='text-graydark cursor-pointer'/>
+                                <FaRegEdit className='text-blue-500 cursor-pointer'/>
                             </Link>
                             <MdDelete
-                                className='text-graydark cursor-pointer hover:text-red-500'
+                                className='text-red-500 cursor-pointer hover:text-red-700'
                                 onClick={() => handleDelete(list.juryMemberId)}
                             />
                         </div>
