@@ -1,28 +1,25 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import JuryList from "./Components/Jury Members/JuryListPage.jsx";
-import Header from "./Components/Header/Header.jsx";
-import AddJuryMemberForm from "./Components/Jury Members/AddJuryMemberForm.jsx";
-import UpdateJuryMemberForm from "./Components/Jury Members/UpdateJuryMemberForm.jsx";
-import Sidebar from "./Components/SideBar/Sidebar.jsx";
-import MeetingListPage from "./Components/Meetings/MeetingListPage.jsx";
-import ScheduleMeeting from "./Components/Meetings/ScheduleMeeting.jsx";
-import RescheduleMeeting from "./Components/Meetings/RescheduleMeeting.jsx";
-import Convocation from "./Components/Convocation/Convocation.jsx";
-import PVControlContinu from "./Components/PV Documents/PVControlContinu.jsx";
-import PrintTable from "./Components/PV Documents/PVModalitePassage.jsx";
-import Login from './Components/Login/Login.jsx';
-import FicheFormateur from "./Components/PV Documents/PVFicheFormateur.jsx";
-import PVControlContinuMPCC from "./Components/PV Documents/PVControlContinuMPCC.jsx";
-import PVControlContinuMPEFCFP from "./Components/PV Documents/PVControlContinuMPEFCFP.jsx";
-import PVResultatValidations from "./Components/PV Documents/PVResultatValidations.jsx";
-import Document from "./Components/PV Documents/PVReunion2.jsx";
-import PVReunion1 from "./Components/PV Documents/PVReunion1.jsx";
-import PVReunion3 from "./Components/PV Documents/PVReunion3.jsx";
-import MeetingDetails from "./Components/Meetings/MeetingDetails.jsx";
-
+import React, { useEffect, useState } from 'react';
+import {Routes, Route, Navigate } from 'react-router-dom';
+import Login from './Components/Login/Login.jsx'; 
+import ErrorPage from './Components/ErrorPage/ErrorPage.jsx';
+import AppRoutes from './Components/Routing/AppRoutes.jsx';
+import Loading from './Components/Loading/Loading.jsx';
+import { useSelector } from 'react-redux';
 function App() {
+    const [flag,setFlag] = useState("loading");
+    const token = useSelector(state=>state.authentication.token);
+    const user = useSelector(state=>state.authentication.user);
+    const role = useSelector(state=>state.authentication.role);
+    useEffect(()=>{
+        setFlag("loading")
+        if(token == null || user == null || role == null){
+            setFlag("login");
+        }else{
+            setFlag("authorize");
+        }
+    },[]);
     return (
+        // <PrintTable/>
         <Router>
             <div className="flex h-screen">
                 <Sidebar/>
@@ -34,7 +31,6 @@ function App() {
                             <Route path="/add-jury" element={<AddJuryMemberForm />} />
                             <Route path="/Update/:id" element={<UpdateJuryMemberForm />} />
                             <Route path="/MeetingListPage" element={<MeetingListPage />} />
-                            <Route path="/MeetingDetails" element={<MeetingDetails />} />
                             <Route path="/ScheduleMeeting" element={<ScheduleMeeting />} />
                             <Route path="/RescheduleMeeting/:id" element={<RescheduleMeeting />} />
                         </Routes>

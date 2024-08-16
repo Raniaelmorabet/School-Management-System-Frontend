@@ -11,14 +11,12 @@
   --text-primary: #212121;
   --text-secondary: #757575;
 }
-html, body {
+/* html, body {
   height: 100%;
   margin: 0;
-}
+} */
 .container {
-  position: relative;
-  width: 420px !important; ;
-  height: 450px;
+  width:100%;
   border: 2px solid rgba(255, 255, 255, .1);
   backdrop-filter: blur(30px);
   box-shadow: 0 0 10px rgba(0, 0, 0, .2);
@@ -33,9 +31,8 @@ html, body {
   top: 200px;
   background-color: var(--background-primary);
 }
-
-.container .form-box {
-  width: 100%;
+.form-box {
+  width: 35rem;
   padding: 30px;
 }
 

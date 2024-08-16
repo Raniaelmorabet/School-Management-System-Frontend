@@ -1,27 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import JuryTwo from "/src/assets/jury2.jpg";
-import JuryThree from '/src/assets/jury3.jpg';
 import Juryfive from '/src/assets/jury6.jpg';
-import Jurysix from '/src/assets/jury7.jpg';
 import { MdDelete } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import Swal from 'sweetalert2';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { PrimaryButton } from "../Atoms/PrimaryButton.jsx";
-
-const getRoleName = (roleValue) => {
-    switch(roleValue) {
-        case 0:
-            return 'Représentant de l\'établissement';
-        case 1:
-            return 'Formateur de l\'établissement';
-        case 2:
-            return 'Membre professionnel';
-        default:
-            return '';
-    }
-};
 
 const JuryList = () => {
     const [listData, setListData] = useState([]);
