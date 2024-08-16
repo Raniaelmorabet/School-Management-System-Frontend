@@ -6,6 +6,9 @@ import MeetingListPage from '../Meetings/MeetingListPage'
 import ScheduleMeeting from '../Meetings/ScheduleMeeting'
 import RescheduleMeeting from '../Meetings/RescheduleMeeting'
 import MeetingDetails from '../Meetings/MeetingDetails'
+import Sidebar from '../SideBar/Sidebar'
+import Header from '../Header/Header'
+import { Route, Routes } from 'react-router-dom'
 function AppRoutes() {
     return (
         <div className="flex h-screen">
@@ -14,7 +17,7 @@ function AppRoutes() {
                 <Header />
                 <div className='p-10'>
                     <Routes>
-                        <Route path="/Home" element={<JuryList />} />
+                        <Route path="/Juries" element={<JuryList />} />
                         <Route path="/add-jury" element={<AddJuryMemberForm />} />
                         <Route path="/Update/:id" element={<UpdateJuryMemberForm />} />
                         <Route path="/MeetingListPage" element={<MeetingListPage />} />
@@ -27,5 +30,4 @@ function AppRoutes() {
         </div>
     )
 }
-
 export default AppRoutes

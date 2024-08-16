@@ -1,13 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import {Api} from '../Tools/Api'
 // to learn more about redux toolkit
 // visit the link : https://redux-toolkit.js.org/
 // login method u should call it using useDispatch()
-export const login =  createAsyncThunk("auth/login",async ()=>{
+export const login =  createAsyncThunk("auth/login",async (data)=>{
     try{
-        const response = await axios.post('',data);
-        console.log(response.data);
-        return response.data;
+        const res = Api('https://localhost:7144/login','post',data)
+        .then(response=>response.data);
+        console.log(res);
+        return res;
     }catch(error){
         console.log(error);
         throw error;
@@ -53,7 +55,7 @@ const successLogoutRequest = (state)=>{
 }
 // auth slice
 const AuthSlice = createSlice({
-    name  : auth,
+    name  : "auth",
     initialState,
     extraReducers : (builder)=>{
         builder

@@ -1,70 +1,60 @@
-import React, { useRef, useEffect, useState } from 'react';
-import axios from 'axios';
-import './Login.css';
+import React, { useEffect, useState } from 'react';
+import Style from './login.module.scss';
 import { FaUser, FaLock } from 'react-icons/fa';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { login } from '../Slices/AuthSlice';
 
 function Login() {
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    // Set focus to the email input on component mount
-    emailRef.current.focus();
-  }, []);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const email = emailRef.current.value;
-    const password = passwordRef.current.value;
-
-    try {
-      const response = await axios.post('/api/auth/login', { email, password }); //bdel smiya dyal endpoint b lli endk f backend 'oussama'
-      const { token, role } = response.data;
-
-      if (role === 'director' || role === 'assistant') {
-        localStorage.setItem('jwt', token);
-        console.log('Login successful');
-      } else {
-        setError('Access denied: unauthorized role');
-      }
-    } catch (err) {
-      setError('Login failed: ' + err.message);
+  const {register,handleSubmit} = useForm();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const error = useSelector(state=>state.authentication.error);
+  const [displayPass,setDisplayPass]= useState(false); 
+  const onSubmit = async (data)=>{
+    const formData = {
+      email : data.email,
+      password : data.password
     }
-  };
-
+    await dispatch(login(formData));
+    console.log('navigate');
+    
+    navigate("/");
+    }
   return (
       <>
-        <div className='bg-blue-100 min-h-screen '>
-          <div className="container flex justify-center items-center m-auto">
-            <div className="form-box login">
-              <form onSubmit={handleSubmit}>
+          <div className={Style.Container}>
+            <div className={Style.FormWrapper}>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <h1 className="font-bold">Login</h1>
-                {error && <p className="error">{error}</p>}
-                <div className="input-box">
+                {error && <div className={Style.ErrorMsg}>{error}</div>}
+                <div className={Style.InputBox}>
                   <input
                       type="email"
                       placeholder="Email"
-                      required
-                      ref={emailRef}
+                      name='email'
+                      {...register("email",{required : true})}
                   />
-                  <FaUser className="icon"/>
+                  <FaUser className={Style.Icon}/>
                 </div>
-                <div className="input-box">
+                <div className={Style.InputBox}>
                   <input
-                      type="password"
+                      type={displayPass ? 'text' : 'password'}
                       placeholder="Password"
-                      required
-                      ref={passwordRef}
+                      name='password'
+                      {...register("password",{required : true})}
                   />
-                  <FaLock className="icon"/>
+                  <FaLock className={Style.Icon}/>
                 </div>
-                <button className='btn' type="submit">Login</button>
+                <div className={Style.showPassword}>
+                    <input type="checkbox" onChange={()=>setDisplayPass(!displayPass)}/>
+                    <p>{displayPass? 'hide' : 'show'} password</p>
+                </div>
+                <button className={Style.Btn} type="submit">Login</button>
               </form>
             </div>
           </div>
-        </div>
       </>
   );
 }

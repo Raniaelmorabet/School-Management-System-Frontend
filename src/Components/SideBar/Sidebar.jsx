@@ -35,7 +35,7 @@ const Sidebar = () => {
                                     <li>
                                         <a href="#" className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-gray-700 p-2 rounded-md">
                                             <TiGroup />
-                                            <Link to='/Home'>Les Jury</Link>
+                                            <Link to='/Juries'>Les Jury</Link>
                                         </a>
                                     </li>
                                     <li>

@@ -4,16 +4,15 @@ import Login from './Components/Login/Login.jsx';
 import ErrorPage from './Components/ErrorPage/ErrorPage.jsx';
 import AppRoutes from './Components/Routing/AppRoutes.jsx';
 import Loading from './Components/Loading/Loading.jsx';
+import { useSelector } from 'react-redux';
 function App() {
-    [flag,setFlag] = useState("loading");
+    const [flag,setFlag] = useState("loading");
+    const token = useSelector(state=>state.authentication.token);
+    const user = useSelector(state=>state.authentication.user);
+    const role = useSelector(state=>state.authentication.role);
     useEffect(()=>{
         setFlag("loading")
-        var data = {
-            token : localStorage.getItem("token"),
-            user : localStorage.getItem("user"),
-            role : localStorage.getItem("role")
-        };
-        if(data.token == undefined || data.user == undefined || data.role == undefined){
+        if(token == null || user == null || role == null){
             setFlag("login");
         }else{
             setFlag("authorize");
@@ -24,9 +23,9 @@ function App() {
             {flag == "authorize" ? (
                 <>
                     <Route path='/*' element={<ErrorPage/>} />
-                    <Route path='/sms/*' element={<AppRoutes/>} />
-                    <Route path='/' element={<Navigate to={'/sms'}/>} />
-                    <Route path='/login' element={<Navigate to={'/sms'}/>} />
+                    <Route path='/SMS/*' element={<AppRoutes/>} />
+                    <Route path='/' element={<Navigate to={'/SMS'}/>} />
+                    <Route path='/login' element={<Navigate to={'/SMS'}/>} />
                 </>
             ) : flag == "loading" ? (
                 <>
