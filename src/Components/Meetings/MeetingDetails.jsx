@@ -31,6 +31,23 @@ const MeetingDetails = () => {
     if (!event) {
         return <div>Loading...</div>;
     }
+    // Function to handle multiple file downloads
+    const handleDownloadAll = () => {
+        const fileNames = [
+            'PVControlContinu',
+            'PVControlContinuMPCC',
+            'PVControlContinuMPEFCFP',
+            'PVFicheFormateur',
+            'PVModalitePassage',
+        ];
+
+        fileNames.forEach(fileName => {
+            const link = document.createElement('a');
+            link.href = `/src/components/PV Documents/${fileName}.pdf`;
+            link.download = `${fileName}.pdf`;
+            link.click();
+        });
+    };
 
     const handleEmailSend = () => {
 
@@ -137,7 +154,9 @@ const MeetingDetails = () => {
                     <IoMdCloudDownload className='text-white w-7 h-7 ml-2'/>
                     <p className='text-white text-xl'>télécharger Convocation</p>
                 </button>
-                <button className='bg-blue-700 hover:bg-blue-500 flex rounded-md h-11 w-[200px] p-2 space-x-2'>
+                <button
+                    onClick={handleDownloadAll}
+                    className='bg-blue-700 hover:bg-blue-500 flex rounded-md h-11 w-[200px] p-2 space-x-2'>
                     <IoMdCloudDownload className='text-white w-7 h-7 ml-2 '/>
                     <p className='text-white text-xl'>télécharger PV</p>
                 </button>

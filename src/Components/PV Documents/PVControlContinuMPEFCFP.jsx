@@ -56,7 +56,7 @@ const chunkArray = (array, size) => {
     return result;
 };
 
-const PVControlContinuMPCC = () => {
+const PVControlContinuMPEFCFP = () => {
     const [showModal, setShowModal] = useState(false);
 
     const Deliberation = ({ students }) => (
@@ -230,4 +230,4 @@ const PVControlContinuMPCC = () => {
     );
 };
 
-export default PVControlContinuMPCC;
+export default PVControlContinuMPEFCFP;

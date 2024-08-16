@@ -73,7 +73,7 @@ const chunkArray = (array, size) => {
     return result;
 };
 
-const FicheFormateur = () => {
+const PVFicheFormateur = () => {
     const [pdfUrl, setPdfUrl] = useState('');
 
     useEffect(() => {
@@ -208,4 +208,4 @@ const FicheFormateur = () => {
     );
 };
 
-export default FicheFormateur;
+export default PVFicheFormateur;
