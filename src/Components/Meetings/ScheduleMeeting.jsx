@@ -7,6 +7,8 @@ import { Input } from "/src/Components/Atoms/input.jsx";
 import {PrimaryButton} from "../Atoms/PrimaryButton.jsx";
 import {SecondaryButton} from "../Atoms/SecondaryButton.jsx";
 import {Label} from "../Atoms/Label.jsx";
+import { Api } from "../Tools/Api.js";
+import { useSelector } from "react-redux";
 
 function ScheduleMeeting() {
     const [date, setDate] = useState("");
@@ -22,13 +24,12 @@ function ScheduleMeeting() {
     const [dayOrders, setDayOrders] = useState([]);
     const [selectedDayOrders, setSelectedDayOrders] = useState([]);
     const navigate = useNavigate();
-
+    const token = useSelector(state=>state.authentication.token);
     const handleDateChange = (e) => {
         const selectedDate = new Date(e.target.value);
         const currentDate = new Date();
         const sevenDaysFromNow = new Date();
         sevenDaysFromNow.setDate(currentDate.getDate() + 7);
-
         if (selectedDate < sevenDaysFromNow) {
             setError("Vous ne pouvez pas planifier une réunion avant 7 jours");
             setDate("");
@@ -37,46 +38,38 @@ function ScheduleMeeting() {
             setDate(e.target.value);
         }
     };
-
     useEffect(() => {
         const fetchJuries = async () => {
             try {
-                const response = await axios.get('http://localhost:5016/api/Jury');
-                setJuries(response.data);
+                await Api('https://localhost:7219/api/Jury','get','',token)
+                .then(res=>setJuries(res.data));
             } catch (error) {
                 console.error('Error fetching Juries:', error);
             }
         };
-
         const fetchDayOrders = async () => {
             try {
-                const response = await axios.get('http://localhost:5016/api/DayOrder');
-                setDayOrders(response.data);
+                await Api('https://localhost:7219/api/DayOrder','get','',token)
+                .then(res=>setDayOrders(res.data));
             } catch (error) {
-                console.error('Error fetching Day Orders:', error);
+                throw error;
             }
         };
-
         fetchJuries();
         fetchDayOrders();
     }, []);
-
     const handleLocationChange = (e) => {
         setLocation(e.target.value);
     };
-
     const handleCustomLocationChange = (e) => {
         setCustomLocation(e.target.value);
     };
-
     const handleDayOrderChange = (selectedOptions) => {
         setSelectedDayOrders(selectedOptions);
     };
-
     const handleRemoveDayOrder = (orderId) => {
         setSelectedDayOrders(selectedDayOrders.filter(order => order.value.dayOrderId !== orderId));
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = {
@@ -88,13 +81,14 @@ function ScheduleMeeting() {
             dayOrderModels: selectedDayOrders.map(option => option.value)
         };
         console.log("data",formData);
-        const response = await axios.post('http://localhost:5016/api/meeting', formData);
+        const response = await Api('https://localhost:7219/api/Meeting','post', formData, token)
+        .then(res=>res);
         if (response.status === 200) {
             Swal.fire({
                 title: response.data,
                 icon: "success",
             }).then(() => {
-                navigate('/MeetingListPage');
+                navigate('SMS/MeetingListPage');
             });
         } else {
             Swal.fire({
@@ -104,7 +98,6 @@ function ScheduleMeeting() {
             });
         }
     };
-
     const dayOrderOptions = dayOrders.map(order => ({
         value: order,
         label: order.dayOrderTitle

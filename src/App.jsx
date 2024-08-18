@@ -19,27 +19,25 @@ function App() {
         }
     },[]);
     return (
-        // <PrintTable/>
-        <Router>
-            <div className="flex h-screen">
-                <Sidebar/>
-                <div className="flex-1 flex flex-col">
-                    <Header />
-                    <div className='p-10'>
-                        <Routes>
-                            <Route path="/Home" element={<JuryList />} />
-                            <Route path="/add-jury" element={<AddJuryMemberForm />} />
-                            <Route path="/Update/:id" element={<UpdateJuryMemberForm />} />
-                            <Route path="/MeetingListPage" element={<MeetingListPage />} />
-                            <Route path="/ScheduleMeeting" element={<ScheduleMeeting />} />
-                            <Route path="/RescheduleMeeting/:id" element={<RescheduleMeeting />} />
-                        </Routes>
-                    </div>
-                </div>
-
-            </div>
-        </Router>
+        <Routes>
+            {flag == "authorize" ? (
+                <>
+                    <Route path='/*' element={<ErrorPage/>} />
+                    <Route path='/SMS/*' element={<AppRoutes/>} />
+                    <Route path='/' element={<Navigate to={'/SMS'}/>} />
+                    <Route path='/login' element={<Navigate to={'/SMS'}/>} />
+                </>
+            ) : flag == "loading" ? (
+                <>
+                    <Route to='/*' element={<Loading/>}/>
+                </>
+            ) : (
+                <>
+                    <Route path='/login' element={<Login/>} />
+                    <Route path='/*' element={<Navigate to='/login'/>} />
+                </>
+            )}
+        </Routes>
     );
 }
-
 export default App;

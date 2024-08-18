@@ -17,10 +17,10 @@ function Login() {
       email : data.email,
       password : data.password
     }
+    console.log(formData);
     await dispatch(login(formData));
     console.log('navigate');
-    
-    navigate("/");
+    navigate("/SMS");
     }
   return (
       <>

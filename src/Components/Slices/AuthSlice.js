@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import {Api} from '../Tools/Api'
 // to learn more about redux toolkit
 // visit the link : https://redux-toolkit.js.org/
@@ -17,10 +16,14 @@ export const login =  createAsyncThunk("auth/login",async (data)=>{
 });
 // logout method the same as login method
 export const logout = createAsyncThunk("/logout",async ()=>{
-    return axios
-    .post('')
-    .then((res)=>res.data)
-    .catch((err)=>console.log(err));
+    try{
+        const res = Api('https://localhost:7144/api/Auth/logout','post')
+        .then(response=>response.data);
+        console.log(res)
+        return res
+    }catch(error){
+        throw error;
+    }
 });
 // initial state u can access it using useSelector()
 const initialState = {
@@ -47,8 +50,9 @@ const successLoginRequest =  (state, { payload }) => {
 }
 // successLogoutRequest Method to handle success logout
 const successLogoutRequest = (state)=>{
-    state.admin = null;
+    state.user = null;
     state.token = null;
+    state.role = null;
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     localStorage.removeItem("role");

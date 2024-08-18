@@ -1,11 +1,9 @@
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-export const Api = (api,method,data)=>{
-    const token = useSelector(state=>state.authentication.token);
+export const Api = (api,method,data,token = null)=>{
     const header = token != null ? {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         } : {};
     let promise;
     switch(method){
