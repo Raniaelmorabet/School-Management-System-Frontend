@@ -3,17 +3,23 @@ import {FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import { RxCaretDown } from "react-icons/rx";
 import { CiSearch } from 'react-icons/ci';
 import juryfive from "/src/assets/jury5.webp";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { logout } from '../Slices/AuthSlice';
+import { useDispatch } from 'react-redux';
 
 function Header() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const logoutFunc = ()=>{
+        console.log("logout")
+        dispatch(logout())
+        console.log('pass dispatcher');
+        navigate('/login')
+    }
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
     };
-
-
-
     return (
         <>
             <div className="flex items-center justify-between pl-17 p-4 bg-white shadow-sm">
@@ -48,6 +54,7 @@ function Header() {
                                 <span className='text-gray-200'>View Profile</span>
                             </button>
                             <button
+                                onClick={logoutFunc}
                                 className="flex items-center block px-4 py-2 text-gray-800 hover:bg-black/10  w-full text-left"
                             >
                                 <FaSignOutAlt className="text-xl text-meta-1 mr-2" />

@@ -1,33 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { IoMdCloudDownload } from "react-icons/io";
-import axios from 'axios';
+import { Api } from '../Tools/Api';
+import { useSelector } from 'react-redux';
 
 const MeetingDetails = () => {
-    const { meetingId } = useParams();
+    const { id } = useParams();
     const [event, setEvent] = useState(null);
     const [error, setError] = useState(null);
+    const token = useSelector(state=>state.authentication.token);
+
 
     useEffect(() => {
         const fetchEventData = async () => {
             try {
-                console.log('Fetching data for meeting ID:', meetingId);
-                const eventResponse = await axios.get(`http://localhost:5016/api/Meeting/${meetingId}`);
-                setEvent(eventResponse.data);
-                console.log("Event data:", eventResponse.data);
-            } catch (err) {
-                console.error('Error fetching event data:', err.response?.data || err.message);
-                setError('Error fetching event data. Please try again later.');
+                await Api(`https://localhost:7219/api/Meeting/${id}`,'get','',token).
+                then(res=>setEvent(res.data));
+                
+            } catch (error) {
+                throw error;
             }
         };
 
         fetchEventData();
-    }, [meetingId]);
-
-    if (error) {
-        return <div>{error}</div>;
-    }
-
+    },[]);
     if (!event) {
         return <div>Loading...</div>;
     }

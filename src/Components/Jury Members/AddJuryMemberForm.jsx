@@ -6,6 +6,8 @@ import {Input} from "/src/Components/Atoms/input.jsx"
 import {PrimaryButton} from "/src/Components/Atoms/PrimaryButton.jsx"
 import {SecondaryButton} from "/src/Components/Atoms/SecondaryButton.jsx"
 import {Label} from "../Atoms/Label.jsx";
+import { Api } from '../Tools/Api.js';
+import { useSelector } from 'react-redux';
 const AddJuryMemberForm = () => {
     const [profileImage, setProfileImage] = useState(null);
     const [profileImagePreview, setProfileImagePreview] = useState(null);
@@ -19,6 +21,7 @@ const AddJuryMemberForm = () => {
     const [jury, setJury] = useState('');
     const [roles,setRoles] = useState([]);
     const [juries,setJuries] = useState();
+    const token = useSelector(state=>state.authentication.token);
 
     // const[formState, setFormState] = useState({
     //     profileImage: null,
@@ -38,20 +41,18 @@ const AddJuryMemberForm = () => {
     useEffect(()=>{
         const fetchRoles = async () => {
             try {
-                const response = await axios.get('http://localhost:5016/api/JuryMemberRole');
-                setRoles(response.data)
-                console.log(response.data)
+                await Api('https://localhost:7219/api/JuryMemberRole','get','',token)
+                .then(res=>setRoles(res.data));
             } catch (error) {
-                console.error('Error fetching roles:', error);
+                throw error;
             }
         };
         const fetchJury = async () => {
             try {
-                const response = await axios.get('http://localhost:5016/api/Jury');
-                setJuries(response.data)
-                console.log(response.data)
+                await Api('https://localhost:7219/api/Jury','get','',token)
+                .then(res=>setJuries(res.data));
             } catch (error) {
-                console.error('Error fetching Juries:', error);
+                throw error;
             }
         };
         fetchRoles();
@@ -77,7 +78,7 @@ const AddJuryMemberForm = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (!profileImage || !Role || !FirstName || !LastName || !Email || !LatestDiploma || !YearOfExperience || !CompanyName) {
+        if (!Role || !FirstName || !LastName || !Email || !LatestDiploma || !YearOfExperience || !CompanyName) {
             Swal.fire({
                 title: "Assurez-vous de remplir tout!",
                 icon: "error",
@@ -93,7 +94,7 @@ const AddJuryMemberForm = () => {
         formData.append('yearOfExperience', YearOfExperience);
         formData.append('latestDiploma', LatestDiploma);
         formData.append('roleId', Role);
-        formData.append('imgFile', profileImage);
+        formData.append('imgFile', profileImage != null ? profileImage : null);
         formData.append('juryId',jury)
         console.log(formData);
         for (let [key, value] of formData.entries()) {
@@ -101,14 +102,15 @@ const AddJuryMemberForm = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:5016/api/JuryMember',formData);
+            const response = await Api('https://localhost:7219/api/JuryMember','post',formData,token)
+            .then(res=>res);
             console.log(response);
-            if (response.status == 200) {
+            if (response.status === 200) {
                 Swal.fire({
                     title: response.data,
                     icon: "success",
                 }).then(()=>{
-                navigate('/Home');
+                navigate('/SMS/Juries');
             });
         } else {
                 Swal.fire({

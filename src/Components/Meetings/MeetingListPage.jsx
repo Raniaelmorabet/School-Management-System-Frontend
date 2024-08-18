@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import {PrimaryButton} from "../Atoms/PrimaryButton.jsx";
+import { useSelector } from 'react-redux';
+import { Api } from '../Tools/Api.js';
 
 const Calendar = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [meetingsList, setMeetingsList] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState(null);
-
+    const token = useSelector(state=>state.authentication.token);
     useEffect(() => {
         const fetchMeetings = async () => {
             try {
-                const response = await axios.get('http://localhost:5016/api/meeting');
-                setMeetingsList(response.data);
-                console.log(response.data);
+                await  Api('https://localhost:7219/api/Meeting','get', '' , token)
+                .then(res=>setMeetingsList(res.data))
             } catch (error) {
                 console.error('Error fetching meeting:', error);
             }
@@ -115,7 +115,7 @@ const Calendar = () => {
                                             {day}
                                         </span>
                                         {event && (
-                                            <Link to='/MeetingDetails'>
+                                            <Link to={`/SMS/MeetingDetails/${event.meetingId}`}>
                                                 <div
                                                     className="event absolute left-2 z-10 mb-1 flex w-[92%] flex-col rounded-sm border-l-[3px] border-bg-blue-950 bg-gray px-3 py-1 text-left"
                                                 >
@@ -139,7 +139,7 @@ const Calendar = () => {
                 </table>
             </div>
             <div className='flex justify-end'>
-                <Link to='/ScheduleMeeting' className='mt-3'>
+                <Link to='/SMS/ScheduleMeeting' className='mt-3'>
                     <PrimaryButton>Planifier une réunion</PrimaryButton>
                 </Link>
             </div>

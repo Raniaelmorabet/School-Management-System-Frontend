@@ -32,13 +32,13 @@ const Sidebar = () => {
                                         </a>
                                     </li>
                                     <li>
-                                        <Link to='/Home' className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-[#2196F3] p-2 rounded-md">
+                                        <Link to='/SMS/Juries' className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-[#2196F3] p-2 rounded-md">
                                             <TiGroup className='text-[#FF9800]'/>
                                             <span>Les Jury</span>
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link to='/MeetingListPage' className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-[#2196F3] p-2 rounded-md">
+                                        <Link to='/SMS/MeetingListPage' className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-[#2196F3] p-2 rounded-md">
                                             <FaCalendarAlt className='text-[#FF9800]'/>
                                             <span>Les Réunions</span>
                                         </Link>
