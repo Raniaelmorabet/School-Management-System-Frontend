@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Juryfive from '/src/assets/jury6.jpg';
+import Jury6 from '/src/assets/jury6.jpg';
 import { MdDelete } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import Swal from 'sweetalert2';
@@ -8,6 +8,9 @@ import axios from 'axios';
 import { PrimaryButton } from '../Atoms/PrimaryButton';
 import { Api } from '../Tools/Api';
 import { useSelector } from 'react-redux';
+import { CgEditMarkup } from "react-icons/cg";
+import { TiDeleteOutline } from "react-icons/ti";
+
 
 const JuryList = () => {
     const [listData, setListData] = useState([]);
@@ -87,21 +90,21 @@ const JuryList = () => {
                 </div>
                 {listData.map((list, key) => (
                     <div
-                        className={`grid grid-cols-2 sm:grid-cols-5 ${
+                        className={`grid grid-cols-2 sm:grid-cols-5 bg-[#D3D3D3]/20 ${
                             key === listData.length - 1 ? '' : 'border-b border-stroke dark:border-strokedark'
                         }`}
                         key={list.juryMemberId}
                     >
                         <div className="flex items-center gap-3 p-2.5 xl:p-5">
                             <div className="flex-shrink-0">
-                                <img src={list.profileImg || Juryfive} alt="Brand" className="h-12 w-12 rounded-full mr-4"/>
+                                <img src={list.profileImg || Jury6} alt="Brand" className="h-12 w-12 rounded-full mr-4"/>
                             </div>
                             <p className="hidden text-black dark:text-white sm:block font-semibold">
                                 {list.firstName} {list.lastName}
                             </p>
                         </div>
                         <div className="flex items-center justify-center p-2.5 xl:p-5">
-                            <a href={`mailto:${list.email}`} className="text-blue-500 underline">
+                            <a href={`mailto:${list.email}`} className="text-blue-500 ">
                                 {list.email}
                             </a>
                         </div>
@@ -109,16 +112,17 @@ const JuryList = () => {
                             <p className="text-black text-center">{list.role.role}</p>
                         </div>
                         <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                            <p className={`text-black dark:text-white ${list.status === 1 ? 'text-green-500' : 'text-red-500'}`}>
+                            <p className={`text-white dark:text-white rounded-xl w-16 text-center   
+                                ${list.status === 1 ? 'bg-green-700' : 'bg-[#FF9800]'}`}>
                                 {list.status === 1 ? 'Validé' : 'En progress'}
                             </p>
                         </div>
-                        <div className="hidden items-center justify-center text-2xl p-2.5 sm:flex xl:p-5 gap-3">
+                        <div className="hidden items-center justify-center text-2xl p-2.5 sm:flex xl:p-5 gap-2 ml-2">
                             <Link to={`/update/${list.juryMemberId}`}>
-                                <FaRegEdit className='text-blue-500 cursor-pointer'/>
+                                <CgEditMarkup className='cursor-pointer text-graydark'/>
                             </Link>
-                            <MdDelete
-                                className='text-red-500 cursor-pointer hover:text-red-700'
+                            <TiDeleteOutline size={31}
+                                className='cursor-pointer text-red-700'
                                 onClick={() => handleDelete(list.juryMemberId)}
                             />
                         </div>
