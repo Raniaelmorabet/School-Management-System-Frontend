@@ -5,17 +5,18 @@ import { CiSearch } from 'react-icons/ci';
 import juryfive from "/src/assets/jury5.webp";
 import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../Slices/AuthSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import logo2 from "../../assets/logo2.png"
 
 function Header() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const user = useSelector(state=>state.authentication.user);
+    const role = useSelector(state=>state.authentication.role);
     const logoutFunc = ()=>{
         console.log("logout")
         dispatch(logout())
-        console.log('pass dispatcher');
         navigate('/login')
     }
     const toggleDropdown = () => {
@@ -33,8 +34,8 @@ function Header() {
                     <div className="flex items-center space-x-4 pr-10">
                         <div className="flex items-center space-x-2 cursor-pointer" onClick={toggleDropdown}>
                             <div className="flex flex-col">
-                                <span className="text-gray-800 font-semibold">Hamza Bourkha</span>
-                                <span className="text-gray-400 text-sm">Directeur Pédagogique</span>
+                                <span className="text-gray-800 font-semibold">{user?.firstName+" "+user?.lastName}</span>
+                                <span className="text-gray-400 text-sm">{role == 'director' ? 'Directeur Pédagogique' : 'Assistant'}</span>
                             </div>
                             <img src={juryfive} className="h-10 w-10 rounded-full" alt="Profile"/>
                         </div>

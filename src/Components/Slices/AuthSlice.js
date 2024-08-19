@@ -5,26 +5,23 @@ import {Api} from '../Tools/Api'
 // login method u should call it using useDispatch()
 
 const authBaseUrl = import.meta.env.VITE_AUTH_BASE_URL;
-export const login =  createAsyncThunk("auth/login",async (data)=>{
-    try{
-        const res = Api(`${authBaseUrl}/login`,'post',data)
-        .then(response=>response.data);
-        console.log(res);
-        return res;
-    }catch(error){
-        console.log(error);
-        throw error;
+export const login = createAsyncThunk("auth/login", async (data, { rejectWithValue }) => {
+    try {
+        const response = await Api(`${authBaseUrl}/login`, 'post', data);
+        return response.data;
+    } catch (error) {
+        console.error("Login error:", error);
+        return rejectWithValue(error.response.data || "An error occurred during login.");
     }
 });
 // logout method the same as login method
-export const logout = createAsyncThunk("/logout",async ()=>{
-    try{
-        const res = Api(`${authBaseUrl}/logout`,'post')
-        .then(response=>response.data);
-        console.log(res)
-        return res
-    }catch(error){
-        throw error;
+export const logout = createAsyncThunk("auth/logout", async (_, { rejectWithValue }) => {
+    try {
+        const response = await Api(`${authBaseUrl}/logout`, 'post');
+        return response.data;
+    } catch (error) {
+        console.error("Logout error:", error);
+        return rejectWithValue(error.response.data || "An error occurred during logout.");
     }
 });
 // initial state u can access it using useSelector()
@@ -35,21 +32,23 @@ const initialState = {
     error: null,
 }
 // successLoginRequest Method to handle success login
-const successLoginRequest =  (state, { payload }) => {
-    if(payload.result){
-        state.admin = payload.result.user;
-        state.token = payload.result.token;
-        state.role = payload.result.role;
-        state.error = null,
-        // console.log(state.admin,state.token);
-        localStorage.setItem("token", payload.result.token);
-        localStorage.setItem("user", JSON.stringify(payload.result.user));
-        localStorage.setItem("role", JSON.stringify(payload.result.role));
+const successLoginRequest = (state, { payload }) => {
+    const { result, errorMessages } = payload || {};
+    if (result) {
+        state.user = result.user;
+        state.token = result.token;
+        state.role = result.role;
+        state.error = null;
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("user", JSON.stringify(result.user));
+        localStorage.setItem("role", JSON.stringify(result.role));
+    } else if (errorMessages && errorMessages.length) {
+        state.error = errorMessages[0];
+    } else {
+        state.error = "Unexpected error during login.";
     }
-    else if(payload.errorMessages){
-        state.error = payload.errorMessages[0];
-    }
-}
+};
+
 // successLogoutRequest Method to handle success logout
 const successLogoutRequest = (state)=>{
     state.user = null;
@@ -61,13 +60,20 @@ const successLogoutRequest = (state)=>{
 }
 // auth slice
 const AuthSlice = createSlice({
-    name  : "auth",
+    name: "auth",
     initialState,
-    extraReducers : (builder)=>{
+    extraReducers: (builder) => {
         builder
-        .addCase(login.fulfilled,successLoginRequest)
-        .addCase(logout.fulfilled,successLogoutRequest);
+            .addCase(login.fulfilled, successLoginRequest)
+            .addCase(login.rejected, (state, action) => {
+                state.error = action.payload || "Login failed.";
+            })
+            .addCase(logout.fulfilled, successLogoutRequest)
+            .addCase(logout.rejected, (state, action) => {
+                state.error = action.payload || "Logout failed.";
+            });
     }
-})
+});
+
 export const {} = AuthSlice.actions;
 export default AuthSlice.reducer;

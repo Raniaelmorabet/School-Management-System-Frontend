@@ -21,7 +21,8 @@ function LoginPage() {
             };
             await dispatch(login(formData));
             console.log('Login successful');
-            navigate("/");
+            navigate('/');
+            console.log("after navigate");
         } catch (error) {
             console.error("Login failed:", error);
         }
