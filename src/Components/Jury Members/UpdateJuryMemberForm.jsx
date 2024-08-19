@@ -6,7 +6,10 @@ import {PrimaryButton} from "../Atoms/PrimaryButton.jsx";
 import {SecondaryButton} from "../Atoms/SecondaryButton.jsx";
 import {Label} from "../Atoms/Label.jsx";
 import {Input} from "../Atoms/input.jsx";
-
+import { Api } from '../Tools/Api.js';
+import { useSelector } from 'react-redux';
+// base url
+const baseUrl = import.meta.env.VITE_BASE_URL;
 const UpdateJuryMemberForm = () => {
     const [profileImage, setProfileImage] = useState(null);
     const [profileImagePreview, setProfileImagePreview] = useState(null);
@@ -21,10 +24,11 @@ const UpdateJuryMemberForm = () => {
     const [juries,setJuries] = useState();
     const [roles,setRoles] = useState([]);
     const {id} = useParams();
+    const token = useSelector(state=>state.authentication.token);
     useEffect(async()=>{
             const fetchJury = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:5016/api/JuryMember/${id}`);
+                    const response = await Api(`${baseUrl}/JuryMember/${id}`,'get','',token);
                     console.log(response.data)
                     setFirstName(response.data.firstName)
                     setLastName(response.data.lastName)
@@ -34,14 +38,14 @@ const UpdateJuryMemberForm = () => {
                     setExperienceYears(response.data.yearOfExperience)
                     setLastDegree(response.data.latestDiploma)
                     setProfileImage(response.data.profileImg)
-                    setRole(response.data.role)
+                    setRole(response.data.role.juryMemberRoleId)
                 } catch (error) {
                     console.error('Error fetching Juries:', error);
                 }
             };
             const fetchRoles = async () => {
                 try {
-                    const response = await axios.get('http://localhost:5016/api/JuryMemberRole');
+                    const response = await Api(`${baseUrl}/JuryMemberRole`,'get','',token);
                     setRoles(response.data)
                     console.log(response.data)
                 } catch (error) {
@@ -50,7 +54,7 @@ const UpdateJuryMemberForm = () => {
             };
             const fetchJuries = async () => {
                 try {
-                    const response = await axios.get('http://localhost:5016/api/Jury');
+                    const response = await Api(`${baseUrl}/Jury`,'get','',token);
                     setJuries(response.data)
                     console.log(response.data)
                 } catch (error) {
@@ -102,11 +106,9 @@ const UpdateJuryMemberForm = () => {
         formData.append('imgFile', profileImage);
         formData.append('juryId', jury);
         // Debugging output
-        for (let [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
-        }
+        console.log(formData)
         try {
-            const response = await axios.put(`http://localhost:5016/api/JuryMember`,formData);
+            const response = await Api(`${baseUrl}/JuryMember`,'put',formData,token);
             if (response.status != 200) {
                 throw new Error('Network response was not ok');
             }
@@ -138,9 +140,9 @@ const UpdateJuryMemberForm = () => {
                             <div className="flex flex-col sm:flex-row gap-6 mb-4.5">
                                 <div className="w-full sm:w-1/2">
                                     <Label>Prénom <span className="text-meta-1">*</span></Label>
-                                    <Input type={'text'} onChange={(e) => setFirstName(e.target.value)} placeholder={'Entrez votre prénom'}/>
+                                    <Input value={FirstName} type={'text'} onChange={(e) => setFirstName(e.target.value)} placeholder={'Entrez votre prénom'}/>
                                     <Label marginTop={'mt-8'}>Nom de famille <span className="text-meta-1">*</span></Label>
-                                    <Input type={'text'} onChange={(e) => setLastName(e.target.value)} placeholder={'Entrez votre nom de famille'}/>
+                                    <Input value={LastName} type={'text'} onChange={(e) => setLastName(e.target.value)} placeholder={'Entrez votre nom de famille'}/>
                                 </div>
                                 <div className="w-full sm:w-1/2">
                                     <Label>Photo de profil</Label>
@@ -206,7 +208,7 @@ const UpdateJuryMemberForm = () => {
                             <div className="flex flex-col sm:flex-row gap-6 mb-4.5">
                                 <div className="w-full sm:w-1/2">
                                     <Label>Adresse e-mail <span className="text-meta-1">*</span></Label>
-                                    <Input type={'email'} onChange={(e) => setEmail(e.target.value)} placeholder={'Entrez votre adresse e-mail'}/>
+                                    <Input value={Email} type={'email'} onChange={(e) => setEmail(e.target.value)} placeholder={'Entrez votre adresse e-mail'}/>
                                 </div>
                                 <div className="w-full sm:w-1/2">
                                     <Label>Rôle <span className="text-meta-1">*</span></Label>
@@ -228,27 +230,27 @@ const UpdateJuryMemberForm = () => {
                             <div className="flex flex-col sm:flex-row gap-6 mb-4.5">
                                 <div className="w-full sm:w-1/2">
                                     <Label>Dernier diplôme <span className="text-meta-1">*</span></Label>
-                                    <Input type={'text'} onChange={(e) => setLastDegree(e.target.value)} placeholder={'Entrez votre dernier diplôme'}/>
+                                    <Input value={LatestDiploma} type={'text'} onChange={(e) => setLastDegree(e.target.value)} placeholder={'Entrez votre dernier diplôme'}/>
                                 </div>
                                 <div className="w-full sm:w-1/2">
                                     <Label>Années d'expérience <span className="text-meta-1">*</span></Label>
-                                    <Input type={'number'} onChange={(e) => setExperienceYears(e.target.value)} placeholder={'Entrez vos années d\'expérience'}/>
+                                    <Input value={YearOfExperience} type={'number'} onChange={(e) => setExperienceYears(e.target.value)} placeholder={'Entrez vos années d\'expérience'}/>
                                 </div>
                             </div>
 
                             <div className="flex flex-col sm:flex-row gap-6 mb-4.5">
                                 <div className="w-full sm:w-1/2">
                                     <Label>Nom de l'entreprise <span className="text-meta-1">*</span></Label>
-                                    <Input type={'text'} onChange={(e) => setCompanyName(e.target.value)} placeholder={'Entrez le nom de l\'entreprise'}/>
+                                    <Input value={CompanyName} type={'text'} onChange={(e) => setCompanyName(e.target.value)} placeholder={'Entrez le nom de l\'entreprise'}/>
                                 </div>
                                 <div className="w-full sm:w-1/2">
                                     <Label>Jury <span className="text-meta-1">*</span></Label>
                                     <select
                                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        value={jury}
                                         onChange={(e) => setJury(e.target.value)}
                                         required
                                     >
+                                    <option selected disabled hidden>Choisissez jury</option>
                                     {juries?.map((jury,i)=>{
                                         return(
                                             <option key={i} value={jury.juryId}>{jury.juryName}</option>

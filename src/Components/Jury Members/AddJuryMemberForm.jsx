@@ -8,6 +8,8 @@ import {SecondaryButton} from "/src/Components/Atoms/SecondaryButton.jsx"
 import {Label} from "../Atoms/Label.jsx";
 import { Api } from '../Tools/Api.js';
 import { useSelector } from 'react-redux';
+// base url
+const baseUrl = import.meta.env.VITE_BASE_URL;
 const AddJuryMemberForm = () => {
     const [profileImage, setProfileImage] = useState(null);
     const [profileImagePreview, setProfileImagePreview] = useState(null);
@@ -41,7 +43,7 @@ const AddJuryMemberForm = () => {
     useEffect(()=>{
         const fetchRoles = async () => {
             try {
-                await Api('http://localhost:5016/api/JuryMemberRole','get','',token)
+                await Api(`${baseUrl}/JuryMemberRole`,'get','',token)
                 .then(res=>setRoles(res.data));
             } catch (error) {
                 throw error;
@@ -49,7 +51,7 @@ const AddJuryMemberForm = () => {
         };
         const fetchJury = async () => {
             try {
-                await Api('http://localhost:5016/api/Jury','get','',token)
+                await Api(`${baseUrl}/Jury`,'get','',token)
                 .then(res=>setJuries(res.data));
             } catch (error) {
                 throw error;
@@ -102,7 +104,7 @@ const AddJuryMemberForm = () => {
         }
 
         try {
-            const response = await Api('http://localhost:5016/api/JuryMember','post',formData,token)
+            const response = await Api(`${baseUrl}/JuryMember`,'post',formData,token)
             .then(res=>res);
             console.log(response);
             if (response.status === 200) {

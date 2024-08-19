@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import {PrimaryButton} from "../Atoms/PrimaryButton.jsx";
 import { useSelector } from 'react-redux';
 import { Api } from '../Tools/Api.js';
-
+// base url
+const baseUrl = import.meta.env.VITE_BASE_URL;
 const Calendar = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [meetingsList, setMeetingsList] = useState([]);
@@ -12,7 +13,7 @@ const Calendar = () => {
     useEffect(() => {
         const fetchMeetings = async () => {
             try {
-                await  Api('http://localhost:5016/api/Meeting','get', '' , token)
+                await  Api(`${baseUrl}/Meeting`,'get', '' , token)
                 .then(res=>setMeetingsList(res.data))
             } catch (error) {
                 console.error('Error fetching meeting:', error);

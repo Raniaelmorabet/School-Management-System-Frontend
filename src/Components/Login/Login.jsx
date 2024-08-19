@@ -21,7 +21,7 @@ function LoginPage() {
             };
             await dispatch(login(formData));
             console.log('Login successful');
-            navigate("/SMS");
+            navigate("/");
         } catch (error) {
             console.error("Login failed:", error);
         }

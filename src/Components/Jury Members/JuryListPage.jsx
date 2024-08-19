@@ -11,13 +11,14 @@ import { useSelector } from 'react-redux';
 import { CgEditMarkup } from "react-icons/cg";
 import { TiDeleteOutline } from "react-icons/ti";
 
-
+// base url
+const baseUrl = import.meta.env.VITE_BASE_URL;
 const JuryList = () => {
     const [listData, setListData] = useState([]);
     const token = useSelector(state=>state.authentication.token);
     const fetchJuries = async () => {
         try {
-            await Api('http://localhost:5016/api/JuryMember','get','',token)
+            await Api(`${baseUrl}/JuryMember`,'get','',token)
             .then(res=>setListData(res.data));
         } catch (error) {
             console.error('Error fetching roles:', error);
@@ -39,7 +40,7 @@ const JuryList = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    await Api(`https://localhost:7219/api/JuryMember/${id}`,'delete','',token);
+                    await Api(`${baseUrl}/JuryMember/${id}`,'delete','',token);
                     fetchJuries();
                 } catch (error) {
                     Swal.fire({
@@ -118,7 +119,7 @@ const JuryList = () => {
                             </p>
                         </div>
                         <div className="hidden items-center justify-center text-2xl p-2.5 sm:flex xl:p-5 gap-2 ml-2">
-                            <Link to={`/update/${list.juryMemberId}`}>
+                            <Link to={`/SMS/update/${list.juryMemberId}`}>
                                 <CgEditMarkup className='cursor-pointer text-graydark'/>
                             </Link>
                             <TiDeleteOutline size={31}

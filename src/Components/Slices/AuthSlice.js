@@ -3,9 +3,11 @@ import {Api} from '../Tools/Api'
 // to learn more about redux toolkit
 // visit the link : https://redux-toolkit.js.org/
 // login method u should call it using useDispatch()
+
+const authBaseUrl = import.meta.env.VITE_AUTH_BASE_URL;
 export const login =  createAsyncThunk("auth/login",async (data)=>{
     try{
-        const res = Api('http://localhost:5218/login','post',data)
+        const res = Api(`${authBaseUrl}/login`,'post',data)
         .then(response=>response.data);
         console.log(res);
         return res;
@@ -17,7 +19,7 @@ export const login =  createAsyncThunk("auth/login",async (data)=>{
 // logout method the same as login method
 export const logout = createAsyncThunk("/logout",async ()=>{
     try{
-        const res = Api('http://localhost:5218/api/Auth/logout','post')
+        const res = Api(`${authBaseUrl}/logout`,'post')
         .then(response=>response.data);
         console.log(res)
         return res

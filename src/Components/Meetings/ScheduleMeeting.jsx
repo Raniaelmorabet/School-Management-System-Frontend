@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Swal from "sweetalert2";
 import Select from 'react-select';
 import { Input } from "/src/Components/Atoms/input.jsx";
@@ -9,7 +8,8 @@ import {SecondaryButton} from "../Atoms/SecondaryButton.jsx";
 import {Label} from "../Atoms/Label.jsx";
 import { Api } from "../Tools/Api.js";
 import { useSelector } from "react-redux";
-
+// base url
+const baseUrl = import.meta.env.VITE_BASE_URL;
 function ScheduleMeeting() {
     const [date, setDate] = useState("");
     const [error, setError] = useState("");
@@ -41,7 +41,7 @@ function ScheduleMeeting() {
     useEffect(() => {
         const fetchJuries = async () => {
             try {
-                await Api('http://localhost:5016/api/Jury','get','',token)
+                await Api(`${baseUrl}/Jury`,'get','',token)
                 .then(res=>setJuries(res.data));
             } catch (error) {
                 console.error('Error fetching Juries:', error);
@@ -49,7 +49,7 @@ function ScheduleMeeting() {
         };
         const fetchDayOrders = async () => {
             try {
-                await Api('http://localhost:5016/api/DayOrder','get','',token)
+                await Api(`${baseUrl}/DayOrder`,'get','',token)
                 .then(res=>setDayOrders(res.data));
             } catch (error) {
                 throw error;
@@ -81,7 +81,7 @@ function ScheduleMeeting() {
             dayOrderModels: selectedDayOrders.map(option => option.value)
         };
         console.log("data",formData);
-        const response = await Api('http://localhost:5016/api/Meeting','post', formData, token)
+        const response = await Api(`${baseUrl}/Meeting`,'post', formData, token)
         .then(res=>res);
         if (response.status === 200) {
             Swal.fire({

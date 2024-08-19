@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 import { IoMdCloudDownload } from "react-icons/io";
 import { Api } from '../Tools/Api';
 import { useSelector } from 'react-redux';
-
+// base url
+const baseUrl = import.meta.env.VITE_BASE_URL;
 const MeetingDetails = () => {
     const { id } = useParams();
     const [event, setEvent] = useState(null);
@@ -14,7 +15,7 @@ const MeetingDetails = () => {
     useEffect(() => {
         const fetchEventData = async () => {
             try {
-                await Api(`http://localhost:5016/api/Meeting/${id}`,'get','',token).
+                await Api(`${baseUrl}/Meeting/${id}`,'get','',token).
                 then(res=>setEvent(res.data));
                 
             } catch (error) {

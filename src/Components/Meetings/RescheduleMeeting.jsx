@@ -6,8 +6,10 @@ import {PrimaryButton} from "../Atoms/PrimaryButton.jsx";
 import {SecondaryButton} from "../Atoms/SecondaryButton.jsx";
 import {Input} from "../Atoms/input.jsx";
 import {Label} from "../Atoms/Label.jsx";
+import { Api } from "../Tools/Api.js";
 
-
+// base url
+const baseUrl = import.meta.env.VITE_BASE_URL;
 function ScheduleMeeting() {
     const [date, setDate] = useState("");
     const [error, setError] = useState("");
@@ -38,7 +40,7 @@ function ScheduleMeeting() {
     useEffect(() => {
         const fetchJury = async () => {
             try {
-                const response = await axios.get('http://localhost:5016/api/Jury');
+                const response = await Api(`${baseUrl}/Jury`,'get','',token);
                 setJuries(response.data)
                 console.log(response.data)
             } catch (error) {
@@ -69,13 +71,13 @@ function ScheduleMeeting() {
             juryId: jury
         };
         console.log(formData)
-        const response = await axios.put('http://localhost:5016/api/meeting',formData);
+        const response = await Api(`${baseUrl}/Meeting`,'put',formData,token);
         if (response.status == 200) {
             Swal.fire({
                 title: response.data,
                 icon: "success",
             }).then(()=>{
-                navigate('/MeetingListPage');
+                navigate('SMS/MeetingListPage');
             });
         } else {
             Swal.fire({

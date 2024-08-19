@@ -27,7 +27,7 @@ function App() {
                     <Route path='/*' element={<ErrorPage/>} />
                     <Route path='/SMS/*' element={<AppRoutes/>} />
                     <Route path='/' element={<Navigate to={'/SMS'}/>} />
-                    <Route path='/Login1' element={<Navigate to={'/SMS'}/>} />
+                    <Route path='/login' element={<Navigate to={'/SMS'}/>} />
                 </>
             ) : flag == "loading" ? (
                 <>
