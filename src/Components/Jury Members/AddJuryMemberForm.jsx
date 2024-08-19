@@ -41,7 +41,7 @@ const AddJuryMemberForm = () => {
     useEffect(()=>{
         const fetchRoles = async () => {
             try {
-                await Api('https://localhost:7219/api/JuryMemberRole','get','',token)
+                await Api('http://localhost:5016/api/JuryMemberRole','get','',token)
                 .then(res=>setRoles(res.data));
             } catch (error) {
                 throw error;
@@ -49,7 +49,7 @@ const AddJuryMemberForm = () => {
         };
         const fetchJury = async () => {
             try {
-                await Api('https://localhost:7219/api/Jury','get','',token)
+                await Api('http://localhost:5016/api/Jury','get','',token)
                 .then(res=>setJuries(res.data));
             } catch (error) {
                 throw error;
@@ -102,7 +102,7 @@ const AddJuryMemberForm = () => {
         }
 
         try {
-            const response = await Api('https://localhost:7219/api/JuryMember','post',formData,token)
+            const response = await Api('http://localhost:5016/api/JuryMember','post',formData,token)
             .then(res=>res);
             console.log(response);
             if (response.status === 200) {

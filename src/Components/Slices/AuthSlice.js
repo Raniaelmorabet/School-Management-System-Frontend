@@ -5,7 +5,7 @@ import {Api} from '../Tools/Api'
 // login method u should call it using useDispatch()
 export const login =  createAsyncThunk("auth/login",async (data)=>{
     try{
-        const res = Api('https://localhost:7144/login','post',data)
+        const res = Api('http://localhost:5218/login','post',data)
         .then(response=>response.data);
         console.log(res);
         return res;
@@ -17,7 +17,7 @@ export const login =  createAsyncThunk("auth/login",async (data)=>{
 // logout method the same as login method
 export const logout = createAsyncThunk("/logout",async ()=>{
     try{
-        const res = Api('https://localhost:7144/api/Auth/logout','post')
+        const res = Api('http://localhost:5218/api/Auth/logout','post')
         .then(response=>response.data);
         console.log(res)
         return res

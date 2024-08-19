@@ -14,7 +14,7 @@ const JuryList = () => {
     const token = useSelector(state=>state.authentication.token);
     const fetchJuries = async () => {
         try {
-            await Api('https://localhost:7219/api/JuryMember','get','',token)
+            await Api('http://localhost:5016/api/JuryMember','get','',token)
             .then(res=>setListData(res.data));
         } catch (error) {
             console.error('Error fetching roles:', error);

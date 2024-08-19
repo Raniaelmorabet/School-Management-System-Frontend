@@ -12,7 +12,7 @@ const Calendar = () => {
     useEffect(() => {
         const fetchMeetings = async () => {
             try {
-                await  Api('https://localhost:7219/api/Meeting','get', '' , token)
+                await  Api('http://localhost:5016/api/Meeting','get', '' , token)
                 .then(res=>setMeetingsList(res.data))
             } catch (error) {
                 console.error('Error fetching meeting:', error);

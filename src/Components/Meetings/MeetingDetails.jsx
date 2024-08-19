@@ -14,7 +14,7 @@ const MeetingDetails = () => {
     useEffect(() => {
         const fetchEventData = async () => {
             try {
-                await Api(`https://localhost:7219/api/Meeting/${id}`,'get','',token).
+                await Api(`http://localhost:5016/api/Meeting/${id}`,'get','',token).
                 then(res=>setEvent(res.data));
                 
             } catch (error) {

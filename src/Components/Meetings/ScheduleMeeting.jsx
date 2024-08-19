@@ -41,7 +41,7 @@ function ScheduleMeeting() {
     useEffect(() => {
         const fetchJuries = async () => {
             try {
-                await Api('https://localhost:7219/api/Jury','get','',token)
+                await Api('http://localhost:5016/api/Jury','get','',token)
                 .then(res=>setJuries(res.data));
             } catch (error) {
                 console.error('Error fetching Juries:', error);
@@ -49,7 +49,7 @@ function ScheduleMeeting() {
         };
         const fetchDayOrders = async () => {
             try {
-                await Api('https://localhost:7219/api/DayOrder','get','',token)
+                await Api('http://localhost:5016/api/DayOrder','get','',token)
                 .then(res=>setDayOrders(res.data));
             } catch (error) {
                 throw error;
@@ -81,7 +81,7 @@ function ScheduleMeeting() {
             dayOrderModels: selectedDayOrders.map(option => option.value)
         };
         console.log("data",formData);
-        const response = await Api('https://localhost:7219/api/Meeting','post', formData, token)
+        const response = await Api('http://localhost:5016/api/Meeting','post', formData, token)
         .then(res=>res);
         if (response.status === 200) {
             Swal.fire({

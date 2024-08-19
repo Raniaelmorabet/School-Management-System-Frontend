@@ -16,6 +16,10 @@ module.exports = {
     },
     extend: {
       colors: {
+        'dark-blue': '#0c1b33',
+        'sidebar-yellow': '#fcb916',
+        'sidebar-text': '#ffffff',
+        'sidebar-hover': '#2196F3',
         current: 'currentColor',
         transparent: 'transparent',
         white: '#FFFFFF',

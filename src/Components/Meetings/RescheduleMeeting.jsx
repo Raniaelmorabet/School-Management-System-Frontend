@@ -38,7 +38,7 @@ function ScheduleMeeting() {
     useEffect(() => {
         const fetchJury = async () => {
             try {
-                const response = await axios.get('http://localhost:7219/api/Jury');
+                const response = await axios.get('http://localhost:5016/api/Jury');
                 setJuries(response.data)
                 console.log(response.data)
             } catch (error) {
@@ -65,11 +65,11 @@ function ScheduleMeeting() {
             date: date,
             time: `${hours}:${minutes} ${period}`,
             location: location === 'autre' ? customLocation : location,
-            type: parseInt(type), // Ensure type is an integer
+            type: parseInt(type),
             juryId: jury
         };
         console.log(formData)
-        const response = await axios.put('http://localhost:7219/api/meeting',formData);
+        const response = await axios.put('http://localhost:5016/api/meeting',formData);
         if (response.status == 200) {
             Swal.fire({
                 title: response.data,
