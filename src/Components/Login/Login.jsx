@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../Slices/AuthSlice';
+import { loadingFalse } from '../Slices/LoadingSlice.js';
 
 function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
@@ -20,9 +21,8 @@ function LoginPage() {
                 password: data.password
             };
             await dispatch(login(formData));
-            console.log('Login successful');
+            dispatch(loadingFalse());
             navigate('/SMS/Juries');
-            console.log("after navigate");
         } catch (error) {
             console.error("Login failed:", error);
         }

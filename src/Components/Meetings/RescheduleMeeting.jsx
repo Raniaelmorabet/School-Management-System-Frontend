@@ -8,6 +8,7 @@ import {Input} from "../Atoms/input.jsx";
 import {Label} from "../Atoms/Label.jsx";
 import { Api } from "../Tools/Api.js";
 import {useSelector} from "react-redux";
+import Loading from "../Loading/Loading.jsx";
 
 // base url
 const baseUrl = import.meta.env.VITE_BASE_URL;
@@ -26,6 +27,7 @@ function ScheduleMeeting() {
     const [meeting, setMeeting] = useState();
     const navigate = useNavigate();
     const token = useSelector(state=>state.authentication.token);
+    const [loading,setLoading] = useState(false);
     const handleDateChange = (e) => {
         const selectedDate = new Date(e.target.value);
         const currentDate = new Date();
@@ -41,6 +43,7 @@ function ScheduleMeeting() {
         }
     };
     useEffect(() => {
+        setLoading(true)
         const fetchJury = async () => {
             try {
                 const response = await Api(`${baseUrl}/Jury`,'get','',token);
@@ -52,8 +55,9 @@ function ScheduleMeeting() {
         };
         const fetchMeetingId = async () => {
             try {
-                const response = await Api(`${baseUrl}/Meeting/${id}`, 'get', token);
+                const response = await Api(`${baseUrl}/Meeting/${id}`, 'get','', token);
                 setMeeting(response.data)
+                setLoading(false);
                 console.log(response.data)
             } catch (error) {
                 console.error('Error fetching Meeting:', error);
@@ -89,7 +93,7 @@ function ScheduleMeeting() {
                 title: response.data,
                 icon: "success",
             }).then(()=>{
-                navigate('SMS/MeetingListPage');
+                navigate('/SMS/MeetingListPage');
             });
         } else {
             console.log(response);
@@ -103,7 +107,8 @@ function ScheduleMeeting() {
 
     return (
         <>
-            <div className="m-0 mt-6 gap-9 sm:grid-cols-2 m-16">
+            {loading ? <Loading/> : (
+                <div className="m-0 mt-6 gap-9 sm:grid-cols-2 m-16">
                 <div className="flex flex-col gap-9">
                     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                         <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
@@ -217,6 +222,7 @@ function ScheduleMeeting() {
                     </div>
                 </div>
             </div>
+            )}
         </>
     );
 }

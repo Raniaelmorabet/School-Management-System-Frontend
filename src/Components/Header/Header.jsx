@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../Slices/AuthSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import logo2 from "../../assets/logo2.png"
+import { loadingFalse, loadingTrue } from '../Slices/LoadingSlice';
 
 function Header() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -15,9 +16,9 @@ function Header() {
     const user = useSelector(state=>state.authentication.user);
     const role = useSelector(state=>state.authentication.role);
     const logoutFunc = ()=>{
-        console.log("logout")
-        dispatch(logout())
-        navigate('/login')
+        dispatch(loadingTrue());
+        dispatch(logout());
+        navigate('/login');
     }
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);

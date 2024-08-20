@@ -8,6 +8,7 @@ import {SecondaryButton} from "/src/Components/Atoms/SecondaryButton.jsx"
 import {Label} from "../Atoms/Label.jsx";
 import { Api } from '../Tools/Api.js';
 import { useSelector } from 'react-redux';
+import Loading from '../Loading/Loading.jsx';
 // base url
 const baseUrl = import.meta.env.VITE_BASE_URL;
 const AddJuryMemberForm = () => {
@@ -24,9 +25,11 @@ const AddJuryMemberForm = () => {
     const [roles,setRoles] = useState([]);
     const [juries,setJuries] = useState();
     const token = useSelector(state=>state.authentication.token);
+    const [loading,setLoading] = useState(false);
 
     const navigate = useNavigate()
     useEffect(()=>{
+        setLoading(true);
         const fetchRoles = async () => {
             try {
                 await Api(`${baseUrl}/JuryMemberRole`,'get','',token)
@@ -39,6 +42,7 @@ const AddJuryMemberForm = () => {
             try {
                 await Api(`${baseUrl}/Jury`,'get','',token)
                 .then(res=>setJuries(res.data));
+                setLoading(false);
             } catch (error) {
                 throw error;
             }
@@ -73,7 +77,7 @@ const AddJuryMemberForm = () => {
             });
             return;
         }
-
+        setLoading(true)
         const formData = new FormData();
         formData.append('firstName', FirstName);
         formData.append('lastName', LastName);
@@ -93,14 +97,15 @@ const AddJuryMemberForm = () => {
             const response = await Api(`${baseUrl}/JuryMember`,'post',formData,token)
             .then(res=>res);
             console.log(response);
-            if (response.status === 200) {
+            if (response.status === 200 && !loading) {
                 Swal.fire({
                     title: response.data,
                     icon: "success",
                 }).then(()=>{
-                navigate('/SMS/Juries');
-            });
-        } else {
+                    setLoading(false);
+                    navigate('/SMS/Juries');
+                });
+            } else {
                 Swal.fire({
                     title: "Erreur lors de l'ajout du membre!",
                     text: errorData.message || 'Erreur inconnue',
@@ -117,7 +122,8 @@ const AddJuryMemberForm = () => {
     };
 
     return (
-        <div className="m-0 mt-6 gap-9 sm:grid-cols-2 m-16">
+        <div>
+            {loading ? <Loading/> : (<div className="m-0 mt-6 gap-9 sm:grid-cols-2 m-16">
             <div className="flex flex-col gap-9">
                 <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
@@ -262,6 +268,7 @@ const AddJuryMemberForm = () => {
                     </form>
                 </div>
             </div>
+        </div>)}
         </div>
     );
 };

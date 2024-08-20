@@ -11,27 +11,25 @@ import { useSelector } from 'react-redux';
 import { CgEditMarkup } from "react-icons/cg";
 import { TiDeleteOutline } from "react-icons/ti";
 import { FaRegCheckCircle } from "react-icons/fa";
-
+import Loading from '../Loading/Loading'
 // base url
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 const JuryList = () => {
     const [listData, setListData] = useState([]);
-    const [isDirector, setIsDirector] = useState(false);
     const token = useSelector(state => state.authentication.token);
+    const role = useSelector(state => state.authentication.role);
+    const [loading,setLoading] = useState(false);
 
     useEffect(() => {
-        // Replace this with your actual logic to check if the user is a director
-        // For example, you might fetch user role from the API and set isDirector based on that
-        // Here we assume the user role is fetched and set to true for demonstration
-        setIsDirector(true); // This is just for demonstration purposes
+        setLoading(true)
         fetchJuries();
     }, []);
-
     const fetchJuries = async () => {
         try {
             await Api(`${baseUrl}/JuryMember`, 'get', '', token)
                 .then(res => setListData(res.data));
+                setLoading(false)
         } catch (error) {
             console.error('Error fetching roles:', error);
         }
@@ -50,6 +48,7 @@ const JuryList = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
+                    setLoading(true)
                     await Api(`${baseUrl}/JuryMember/${id}`, 'delete', '', token);
                     fetchJuries();
                 } catch (error) {
@@ -64,9 +63,10 @@ const JuryList = () => {
 
     const handleValidate = async (id) => {
         try {
-            // Update status to "Validé" (1)
-            await Api(`${baseUrl}/JuryMember/${id}`, 'put', { status: 1 }, token);
+            setLoading(true)
+            await Api(`${baseUrl}/JuryMember/ValidateJuryMember/${id}`, 'put','', token);
             fetchJuries();
+            setLoading(false)
         } catch (error) {
             Swal.fire({
                 title: "Erreur lors de la validation.",
@@ -76,7 +76,8 @@ const JuryList = () => {
     };
 
     return (
-        <div className="rounded-sm border m-6 border-stroke bg-white px-5 pt-6 pb-4 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-10">
+        <div>
+            {loading ? <Loading/> : (<div className="rounded-sm border m-6 border-stroke bg-white px-5 pt-6 pb-4 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-10">
             <div className="flex justify-between items-center mb-6">
                 <h4 className="text-xl font-semibold text-black dark:text-white font-satoshi">
                     Membres du jury
@@ -151,17 +152,16 @@ const JuryList = () => {
                             className='cursor-pointer text-red-700'
                              onClick={() => handleDelete(list.juryMemberId)}
                             />
-                            {isDirector && list.status !== 1 && (
-                                <FaRegCheckCircle
+                            {role === 'director' && list.status !== 1 ? (<FaRegCheckCircle
                                     size={24}
                                     className="text-green-700 cursor-pointer"
                                     onClick={() => handleValidate(list.juryMemberId)}
-                                />
-                            )}
+                                />) : '' }
                         </div>
                     </div>
                 ))}
             </div>
+        </div>)}
         </div>
     );
 };
