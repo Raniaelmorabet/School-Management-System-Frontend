@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaUserGraduate, FaChalkboardTeacher, FaUsers, FaBookOpen, FaUser, FaClipboardCheck, FaUniversity, FaBell, FaEnvelope, FaBars } from 'react-icons/fa';
 import { MdOutlineNavigateNext } from 'react-icons/md';
 import logo from "../../assets/logo.png";
+import { BsTicketDetailedFill } from "react-icons/bs";
 import { Link } from 'react-router-dom';
 
 const Sidebar = () => {

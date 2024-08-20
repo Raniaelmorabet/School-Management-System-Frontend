@@ -216,7 +216,7 @@ function ScheduleMeeting() {
 
                             <div className="flex justify-end gap-4.5">
                                 <Link
-                                    to="/Home">
+                                    to="/SMS/MeetingListPage">
                                     <SecondaryButton>Annuler</SecondaryButton>
                                 </Link>
                                 <PrimaryButton type={'submit'}>Ajouter</PrimaryButton>

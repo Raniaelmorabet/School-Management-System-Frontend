@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Jury6 from '/src/assets/jury6.jpg';
+import empty from "../../assets/empty.png";
 import { MdDelete } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import Swal from 'sweetalert2';
@@ -32,10 +32,11 @@ const JuryList = () => {
         Swal.fire({
             title: "Êtes-vous sûr de vouloir supprimer cet élément ?",
             icon: "warning",
-            iconColor: '#ff6666',
+            iconColor: '#FF9800',
+            cancelButtonText: "Annuler",
             showCancelButton: true,
             confirmButtonColor: "#004b9c",
-            cancelButtonColor: "#d33",
+            cancelButtonColor: "#FF9800",
             confirmButtonText: "Oui, Supprimer"
         }).then(async (result) => {
             if (result.isConfirmed) {
@@ -51,8 +52,9 @@ const JuryList = () => {
             }
         });
     };
+    console.log(listData);
     return (
-        <div className="rounded-sm border m-6 border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+        <div className="rounded-sm border m-6 border-stroke bg-white px-5 pt-6 pb-4 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-10">
             <div className="flex justify-between items-center mb-6">
                 <h4 className="text-xl font-semibold text-black dark:text-white font-satoshi">
                     Membres du jury
@@ -98,7 +100,8 @@ const JuryList = () => {
                     >
                         <div className="flex items-center gap-3 p-2.5 xl:p-5">
                             <div className="flex-shrink-0">
-                                <img src={list.profileImg || Jury6} alt="Brand" className="h-12 w-12 rounded-full mr-4"/>
+                                <img src={list.profileImg ? list.profileImg : empty} alt="Brand"
+                                     className="h-12 w-12 rounded-full mr-4"/>
                             </div>
                             <p className="hidden text-black dark:text-white sm:block font-semibold">
                                 {list.firstName} {list.lastName}

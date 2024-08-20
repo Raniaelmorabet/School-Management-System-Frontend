@@ -261,7 +261,7 @@ const UpdateJuryMemberForm = () => {
                                 </div>
                             </div>
                             <div className="flex justify-end gap-4.5">
-                                <Link to='/Home'>
+                                <Link to='/SMS/Juries'>
                                 <SecondaryButton>Annuler</SecondaryButton>
                                 </Link>
                                 <PrimaryButton type={'submit'} onClick={handleSubmit}>Enregister les modifications</PrimaryButton>

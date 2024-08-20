@@ -25,20 +25,6 @@ const AddJuryMemberForm = () => {
     const [juries,setJuries] = useState();
     const token = useSelector(state=>state.authentication.token);
 
-    // const[formState, setFormState] = useState({
-    //     profileImage: null,
-    //     profileImagePreview: null,
-    //     Role: '',
-    //     FirstName: '',
-    //     LastName: '',
-    //     Email: '',
-    //     LatestDiploma: '',
-    //     YearOfExperience: '',
-    //     CompanyName: '',
-    //     Jury: '',
-    //     roles: [],
-    //     juries: undefined
-    // })
     const navigate = useNavigate()
     useEffect(()=>{
         const fetchRoles = async () => {
@@ -267,7 +253,7 @@ const AddJuryMemberForm = () => {
                                 </div>
                             </div>
                             <div className="flex justify-end gap-4.5">
-                                <Link to='/Home'>
+                                <Link to='/SMS/Juries'>
                                     <SecondaryButton>Annuler</SecondaryButton>
                                 </Link>
                                 <PrimaryButton onClick={handleSubmit} type={'submit'}>Ajouter</PrimaryButton>

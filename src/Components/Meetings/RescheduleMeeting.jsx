@@ -7,6 +7,7 @@ import {SecondaryButton} from "../Atoms/SecondaryButton.jsx";
 import {Input} from "../Atoms/input.jsx";
 import {Label} from "../Atoms/Label.jsx";
 import { Api } from "../Tools/Api.js";
+import {useSelector} from "react-redux";
 
 // base url
 const baseUrl = import.meta.env.VITE_BASE_URL;
@@ -22,7 +23,9 @@ function ScheduleMeeting() {
     const [juries,setJuries] = useState();
     const [type,setType] = useState();
     const {id} = useParams();
+    const [meeting, setMeeting] = useState();
     const navigate = useNavigate();
+    const token = useSelector(state=>state.authentication.token);
     const handleDateChange = (e) => {
         const selectedDate = new Date(e.target.value);
         const currentDate = new Date();
@@ -47,8 +50,17 @@ function ScheduleMeeting() {
                 console.error('Error fetching Juries:', error);
             }
         };
-
+        const fetchMeetingId = async () => {
+            try {
+                const response = await Api(`${baseUrl}/Meeting/${id}`, 'get', token);
+                setMeeting(response.data)
+                console.log(response.data)
+            } catch (error) {
+                console.error('Error fetching Meeting:', error);
+            }
+        }
         fetchJury();
+        fetchMeetingId();
     }, []);
 
     const handleLocationChange = (e) => {
@@ -95,7 +107,7 @@ function ScheduleMeeting() {
                     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                         <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
                             <h3 className="font-roboto-medium text-black dark:text-white">
-                                Planifier une réunion
+                                Replanifier une réunion
                             </h3>
                         </div>
                         <form onSubmit={handleSubmit}>
@@ -194,7 +206,7 @@ function ScheduleMeeting() {
 
                                 <div className="flex justify-end gap-4.5">
                                     <Link
-                                        to="/Home">
+                                        to="/SMS/MeetingListPage">
                                         <SecondaryButton>Annuler</SecondaryButton>
                                     </Link>
                                     <PrimaryButton type={'submit'}>Ajouter</PrimaryButton>

@@ -21,7 +21,7 @@ function LoginPage() {
             };
             await dispatch(login(formData));
             console.log('Login successful');
-            navigate('/');
+            navigate('/SMS/Juries');
             console.log("after navigate");
         } catch (error) {
             console.error("Login failed:", error);

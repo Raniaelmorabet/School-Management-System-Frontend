@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import {PrimaryButton} from "../Atoms/PrimaryButton.jsx";
 import { useSelector } from 'react-redux';
 import { Api } from '../Tools/Api.js';
+import {SecondaryButton} from "../Atoms/SecondaryButton.jsx";
 // base url
 const baseUrl = import.meta.env.VITE_BASE_URL;
 const Calendar = () => {
@@ -118,7 +119,7 @@ const Calendar = () => {
                                         {event && (
                                             <Link to={`/SMS/MeetingDetails/${event.meetingId}`}>
                                                 <div
-                                                    className="event absolute left-2 z-10 mb-1 flex w-[92%] flex-col rounded-sm border-l-[3px] border-bg-blue-950 bg-gray px-3 py-1 text-left"
+                                                    className="event absolute left-2 z-10 mb-1 flex w-[92%] flex-col rounded-sm border-l-[3px] border-[#FF9800] bg-gray px-3 py-1 text-left"
                                                 >
                                                 <span
                                                     className="event-name text-sm font-semibold text-black dark:text-white">
@@ -126,7 +127,7 @@ const Calendar = () => {
                                                 </span>
                                                     <span
                                                         className="time text-sm font-medium text-black dark:text-white">
-                                                    {event.time}
+                                                    {event.location}
                                                 </span>
                                                 </div>
                                             </Link>
