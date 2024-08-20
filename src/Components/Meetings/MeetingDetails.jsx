@@ -7,6 +7,7 @@ import axios from 'axios';
 import { CiEdit } from "react-icons/ci";
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import Convocation from '../Convocation/PDFDocument.jsx';
+import Swal from 'sweetalert2';
 import PDFDocument from "../Convocation/PDFDocument.jsx";
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
@@ -15,6 +16,7 @@ const MeetingDetails = () => {
     const { id } = useParams();
     const [event, setEvent] = useState(null);
     const [error, setError] = useState(null);
+    const [loadingEmailId, setLoadingEmailId] = useState(null);
     const [isSendingEmail, setIsSendingEmail] = useState(false);
     const token = useSelector(state => state.authentication.token);
 
@@ -34,11 +36,13 @@ const MeetingDetails = () => {
         const emailData = {
             To: member.email,
             Subject: 'Meeting Details',
-            Body: `Bonjour ${member.firstName} ${member.lastName},\n\nNous avons le plaisir de vous informer des détails de notre prochaine réunion.\n\nDate : ${new Date(event.date).toLocaleDateString()}\nHeure : ${event.time}\nLieu : ${event.location}\n\nMerci de bien vouloir confirmer votre présence.\n\nCordialement`
+            Body: `Bonjour ${member.firstName} ${member.lastName},
+            \n\nNous avons le plaisir de vous informer des détails de notre prochaine réunion.\n\nDate : ${new Date(event.date).toLocaleDateString()}\nHeure : ${event.time}\nLieu : ${event.location}\n\n
+            Merci de bien vouloir confirmer votre présence.\n\nCordialement`
         };
 
         try {
-            setIsSendingEmail(true);
+            setLoadingEmailId(member.juryMemberId); // Start loading for this specific member
             await axios.post('http://localhost:5016/api/Email', emailData, {
                 headers: {
                     'Accept': '*/*',
@@ -46,12 +50,24 @@ const MeetingDetails = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            alert(`Email sent to ${member.email}`);
+            Swal.fire({
+                icon: 'success',
+                title: 'Email Sent',
+                text: `Email sent to ${member.email}`,
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#004b9c',
+            });
         } catch (error) {
             console.error('Error sending email:', error);
-            alert('Failed to send email');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to send email',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#004b9c',
+            });
         } finally {
-            setIsSendingEmail(false);
+            setLoadingEmailId(null);
         }
     };
 
@@ -152,7 +168,7 @@ const MeetingDetails = () => {
                                 <button
                                     className='sendEmail'
                                     onClick={() => handleSendEmail(member)}
-                                    disabled={isSendingEmail}
+                                    disabled={loadingEmailId === member.juryMemberId}
                                 >
                                     <div className="svg-wrapper-1">
                                         <div className="svg-wrapper">
@@ -167,6 +183,11 @@ const MeetingDetails = () => {
                                     </div>
                                     <span>Envoyer Email</span>
                                 </button>
+                                {loadingEmailId === member.juryMemberId && (
+                                    <svg id='svg1' viewBox="25 25 50 50">
+                                    <circle r="20" cy="50" cx="50"></circle>
+                                </svg>
+                                )}
                             </div>
                         </div>
                     ))}
