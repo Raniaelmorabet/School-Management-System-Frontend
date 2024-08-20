@@ -8,6 +8,7 @@
     transform: rotate(-90deg);
     white-space: nowrap;
 }
+/*Email Button Style*/
 .sendEmail {
     font-family: inherit;
     font-size: 13px;
@@ -79,6 +80,7 @@
     margin-right: 5px;
     transform: rotate(45deg);
 }
+/* Download Button Style*/
 .containerBtn {
     padding: 0;
     margin: 0;
@@ -125,7 +127,7 @@
 
 .labelBtn .title {
     font-size: 17px;
-    color: black;
+    color: #004b9c;
     transition: all 0.4s ease;
     position: absolute;
     right: 18px;
@@ -298,7 +300,7 @@
 
 .labelBtn2 .title {
     font-size: 17px;
-    color: black;
+    color: #004b9c;
     transition: all 0.4s ease;
     position: absolute;
     right: 18px;
@@ -433,5 +435,43 @@
     100% {
         opacity: 0;
         visibility: hidden;
+    }
+}
+/*Loader Style*/
+#svg1 {
+    width: 2em;
+    transform-origin: center;
+    animation: rotate4 2s linear infinite;
+}
+
+circle {
+    fill: none;
+    stroke: #FF9800;
+    stroke-width: 2;
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+    stroke-linecap: round;
+    animation: dash4 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate4 {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes dash4 {
+    0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+    }
+
+    50% {
+        stroke-dasharray: 90, 200;
+        stroke-dashoffset: -35px;
+    }
+
+    100% {
+        stroke-dashoffset: -125px;
     }
 }
