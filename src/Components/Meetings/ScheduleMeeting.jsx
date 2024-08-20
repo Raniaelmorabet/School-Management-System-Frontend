@@ -87,6 +87,8 @@ function ScheduleMeeting() {
             Swal.fire({
                 title: response.data,
                 icon: "success",
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#004b9c',
             }).then(() => {
                 navigate('SMS/MeetingListPage');
             });
@@ -95,6 +97,8 @@ function ScheduleMeeting() {
                 title: "Erreur lors de l'ajout du membre!",
                 text: response.data.message || 'Erreur inconnue',
                 icon: "error",
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#004b9c',
             });
         }
     };
@@ -164,7 +168,7 @@ function ScheduleMeeting() {
                                         required
                                         onChange={(e) => setType(e.target.value)}
                                     >
-                                        <option disabled hidden selected >Choisissez réunion</option>
+                                        <option disabled hidden selected >Choisissez une réunion</option>
                                         <option value={0}>Première réunion</option>
                                         <option value={1}>Deuxième réunion</option>
                                         <option value={2}>Troisième réunion</option>

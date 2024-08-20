@@ -42,7 +42,7 @@ const MeetingDetails = () => {
         };
 
         try {
-            setLoadingEmailId(member.juryMemberId); // Start loading for this specific member
+            setLoadingEmailId(member.juryMemberId);
             await axios.post('http://localhost:5016/api/Email', emailData, {
                 headers: {
                     'Accept': '*/*',
