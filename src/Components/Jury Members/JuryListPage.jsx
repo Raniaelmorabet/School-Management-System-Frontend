@@ -10,23 +10,32 @@ import { Api } from '../Tools/Api';
 import { useSelector } from 'react-redux';
 import { CgEditMarkup } from "react-icons/cg";
 import { TiDeleteOutline } from "react-icons/ti";
+import { AiFillCheckCircle } from "react-icons/ai"; // Validation icon
 
 // base url
 const baseUrl = import.meta.env.VITE_BASE_URL;
+
 const JuryList = () => {
     const [listData, setListData] = useState([]);
-    const token = useSelector(state=>state.authentication.token);
+    const [isDirector, setIsDirector] = useState(false); // Add state to track if user is a director
+    const token = useSelector(state => state.authentication.token);
+
+    useEffect(() => {
+        // Replace this with your actual logic to check if the user is a director
+        // For example, you might fetch user role from the API and set isDirector based on that
+        // Here we assume the user role is fetched and set to true for demonstration
+        setIsDirector(true); // This is just for demonstration purposes
+        fetchJuries();
+    }, []);
+
     const fetchJuries = async () => {
         try {
-            await Api(`${baseUrl}/JuryMember`,'get','',token)
-            .then(res=>setListData(res.data));
+            await Api(`${baseUrl}/JuryMember`, 'get', '', token)
+                .then(res => setListData(res.data));
         } catch (error) {
             console.error('Error fetching roles:', error);
         }
     };
-    useEffect(() => {
-        fetchJuries();
-    }, []);
 
     const handleDelete = async (id) => {
         Swal.fire({
@@ -41,7 +50,7 @@ const JuryList = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    await Api(`${baseUrl}/JuryMember/${id}`,'delete','',token);
+                    await Api(`${baseUrl}/JuryMember/${id}`, 'delete', '', token);
                     fetchJuries();
                 } catch (error) {
                     Swal.fire({
@@ -52,7 +61,20 @@ const JuryList = () => {
             }
         });
     };
-    console.log(listData);
+
+    const handleValidate = async (id) => {
+        try {
+            // Update status to "Validé" (1)
+            await Api(`${baseUrl}/JuryMember/${id}`, 'put', { status: 1 }, token);
+            fetchJuries();
+        } catch (error) {
+            Swal.fire({
+                title: "Erreur lors de la validation.",
+                icon: "error",
+            });
+        }
+    };
+
     return (
         <div className="rounded-sm border m-6 border-stroke bg-white px-5 pt-6 pb-4 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-10">
             <div className="flex justify-between items-center mb-6">
@@ -117,8 +139,8 @@ const JuryList = () => {
                         </div>
                         <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
                             <p className={`text-white dark:text-white rounded-xl w-16 text-center   
-                                ${list.status === 1 ? 'bg-green-700' : 'bg-[#FF9800]'}`}>
-                                {list.status === 1 ? 'Validé' : 'En progress'}
+                                ${list.status === 1 ? 'bg-green-700' : 'bg-[#FF9800] w-20'}`}>
+                                {list.status === 1 ? 'Validé' : 'En cours'}
                             </p>
                         </div>
                         <div className="hidden items-center justify-center text-2xl p-2.5 sm:flex xl:p-5 gap-2 ml-2">
@@ -126,9 +148,16 @@ const JuryList = () => {
                                 <CgEditMarkup className='cursor-pointer text-graydark'/>
                             </Link>
                             <TiDeleteOutline size={31}
-                                className='cursor-pointer text-red-700'
-                                onClick={() => handleDelete(list.juryMemberId)}
+                            className='cursor-pointer text-red-700'
+                             onClick={() => handleDelete(list.juryMemberId)}
                             />
+                            {isDirector && list.status !== 1 && (
+                                <AiFillCheckCircle
+                                    size={25}
+                                    className="text-green-700 cursor-pointer"
+                                    onClick={() => handleValidate(list.juryMemberId)}
+                                />
+                            )}
                         </div>
                     </div>
                 ))}
