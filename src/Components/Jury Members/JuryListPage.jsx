@@ -10,14 +10,14 @@ import { Api } from '../Tools/Api';
 import { useSelector } from 'react-redux';
 import { CgEditMarkup } from "react-icons/cg";
 import { TiDeleteOutline } from "react-icons/ti";
-import { AiFillCheckCircle } from "react-icons/ai"; // Validation icon
+import { FaRegCheckCircle } from "react-icons/fa";
 
 // base url
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 const JuryList = () => {
     const [listData, setListData] = useState([]);
-    const [isDirector, setIsDirector] = useState(false); // Add state to track if user is a director
+    const [isDirector, setIsDirector] = useState(false);
     const token = useSelector(state => state.authentication.token);
 
     useEffect(() => {
@@ -152,8 +152,8 @@ const JuryList = () => {
                              onClick={() => handleDelete(list.juryMemberId)}
                             />
                             {isDirector && list.status !== 1 && (
-                                <AiFillCheckCircle
-                                    size={25}
+                                <FaRegCheckCircle
+                                    size={24}
                                     className="text-green-700 cursor-pointer"
                                     onClick={() => handleValidate(list.juryMemberId)}
                                 />
