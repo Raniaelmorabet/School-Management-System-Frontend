@@ -92,6 +92,7 @@ function ScheduleMeeting() {
                 navigate('SMS/MeetingListPage');
             });
         } else {
+            console.log(response);
             Swal.fire({
                 title: "Erreur lors de l'ajout du membre!",
                 text: errorData.message || 'Erreur inconnue',
@@ -162,7 +163,7 @@ function ScheduleMeeting() {
                                             required
                                             onChange={(e) => setType(e.target.value)}
                                         >
-                                            <option selected disabled hidden>Choisissez réunion</option>
+                                            <option selected disabled hidden>Choisissez une réunion</option>
                                             <option value={0}>Première réunion</option>
                                             <option value={1}>Deuxième réunion</option>
                                             <option value={2}>Troisième réunion</option>
