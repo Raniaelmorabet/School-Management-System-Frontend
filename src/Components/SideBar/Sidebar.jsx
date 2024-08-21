@@ -29,21 +29,20 @@ const Sidebar = () => {
                 </div>
                 <nav className="mt-4">
                     <ul>
-                        <li className="flex items-center px-4 py-3 hover:bg-sidebar-hover cursor-pointer border-b border-white" style={{ borderColor: separatorColor }}>
-                            <FaUserGraduate className={`${isOpen ? 'mr-3' : 'text-xl mr-3'}`} style={{ color: iconColor }} />
-                            <span className={`${isOpen ? 'block' : 'hidden'}`}>Tableau de Bord</span>
-                            <MdOutlineNavigateNext size={20} className={`${isOpen ? 'block ml-auto cursor-pointer' : 'hidden'}`} onClick={toggleList} />
-                        </li>
-                        {showList && (
-                            <ul className="ml-4 mt-2">
-                                <li className={`${isOpen ? 'block px-4 py-2 hover:bg-sidebar-hover cursor-pointer border-b border-white' : 'hidden'}`} style={{ borderColor: separatorColor }}>Président</li>
-                                <li className={`${isOpen ? 'block px-4 py-2 hover:bg-sidebar-hover cursor-pointer border-b border-white' : 'hidden'}`} style={{ borderColor: separatorColor }}>Assistante</li>
-                            </ul>
-                        )}
+                        <Link to='/SMS'>
+                            <li className="flex items-center px-4 py-3 hover:bg-sidebar-hover cursor-pointer border-b border-white"
+                                style={{borderColor: separatorColor}}>
+                                <FaUserGraduate className={`${isOpen ? 'mr-3' : 'text-xl mr-3'}`}
+                                                style={{color: iconColor}}/>
+                                <span className={`${isOpen ? 'block' : 'hidden'}`}>Tableau de Bord</span>
+                            </li>
+                        </Link>
                         <li>
                             <Link to='/SMS/Juries'
-                                  className="flex items-center px-4 py-4 hover:bg-sidebar-hover cursor-pointer border-b border-white" style={{ borderColor: separatorColor }}>
-                                <FaChalkboardTeacher className={`${isOpen ? 'mr-3' : 'text-xl mr-3'}`} style={{ color: iconColor }} />
+                                  className="flex items-center px-4 py-4 hover:bg-sidebar-hover cursor-pointer border-b border-white"
+                                  style={{borderColor: separatorColor}}>
+                                <FaChalkboardTeacher className={`${isOpen ? 'mr-3' : 'text-xl mr-3'}`}
+                                                     style={{color: iconColor}}/>
                                 <span className={`${isOpen ? 'block' : 'hidden'}`}>Les Jury</span>
                             </Link>
                         </li>
