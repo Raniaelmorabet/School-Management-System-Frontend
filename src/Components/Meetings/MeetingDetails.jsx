@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Link, useParams} from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import { IoMdCloudDownload } from "react-icons/io";
 import { Api } from '../Tools/Api';
 import { useSelector } from 'react-redux';
@@ -10,6 +10,9 @@ import Convocation from '../Convocation/PDFDocument.jsx';
 import Swal from 'sweetalert2';
 import PDFDocument from "../Convocation/PDFDocument.jsx";
 import Loading from '../Loading/Loading';
+import {CgEditMarkup} from "react-icons/cg";
+import {TiDeleteOutline} from "react-icons/ti";
+import {FaRegCheckCircle} from "react-icons/fa";
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 const MeetingDetails = () => {
@@ -20,6 +23,8 @@ const MeetingDetails = () => {
     const [isSendingEmail, setIsSendingEmail] = useState(false);
     const token = useSelector(state => state.authentication.token);
     const [loading,setLoading] = useState(false);
+    const role = useSelector(state => state.authentication.role);
+    const navigate = useNavigate();
     useEffect(() => {
         setLoading(true);
         fetchMeetingData();
@@ -88,6 +93,47 @@ const MeetingDetails = () => {
             link.click();
         });
     };
+    const handleValidate = async (id) => {
+        try {
+            setLoading(true)
+            await Api(`${baseUrl}/Meeting/ValidateMeeting/${id}`, 'put','', token);
+            fetchMeetingData();
+            setLoading(false)
+        } catch (error) {
+            Swal.fire({
+                title: "Erreur lors de la validation.",
+                icon: "error",
+                iconColor: '#FF9800',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#004b9c',
+            });
+        }
+    };
+    const handleDelete = async (id) => {
+        Swal.fire({
+            title: "Êtes-vous sûr de vouloir supprimer cet élément ?",
+            icon: "warning",
+            iconColor: '#FF9800',
+            cancelButtonText: "Annuler",
+            showCancelButton: true,
+            confirmButtonColor: "#004b9c",
+            cancelButtonColor: "#FF9800",
+            confirmButtonText: "Oui, Supprimer"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    setLoading(true)
+                    await Api(`${baseUrl}/Meeting/${id}`, 'delete', '', token);
+                    navigate('/SMS/MeetingListPage')
+                } catch (error) {
+                    Swal.fire({
+                        title: "Erreur lors de la suppression.",
+                        icon: "error",
+                    });
+                }
+            }
+        });
+    };
     return (
         <>
             {loading ? <Loading/> : (
@@ -100,27 +146,49 @@ const MeetingDetails = () => {
                                 <CiEdit size={35} className='text-[#FF9800]'/>
                             </Link>
                             <h2 className="text-3xl font-bold text-center mb-6 text-black">Détails de la Réunion</h2>
-                            <div className="mb-8">
-                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 bg-blue-50 dark:bg-blue-800 p-4 rounded-lg">
+                            <div className="mb-8 ">
+                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-5 bg-blue-50 dark:bg-blue-800 p-4 rounded-lg">
                                     <div className="flex flex-col items-start md:items-center">
-                                        <span className="font-semibold text-[#004b9c] dark:text-blue-300">Date</span>
+                                        <span className="mb-3 font-semibold text-[#004b9c] dark:text-blue-300">Date</span>
                                         <span className="text-gray-700 dark:text-gray-300">{new Date(meeting.date).toLocaleDateString()}</span>
                                     </div>
                                     <div className="flex flex-col items-start md:items-center">
-                                        <span className="font-semibold text-[#004b9c] dark:text-blue-300">Heure</span>
+                                        <span className="mb-3 font-semibold text-[#004b9c] dark:text-blue-300">Heure</span>
                                         <span className="text-gray-700 dark:text-gray-300">{meeting.time}</span>
                                     </div>
                                     <div className="flex flex-col items-start md:items-center">
-                                        <span className="font-semibold text-[#004b9c] dark:text-blue-300">Lieu</span>
+                                        <span className="mb-3 font-semibold text-[#004b9c] dark:text-blue-300">Lieu</span>
                                         <span className="text-gray-700 dark:text-gray-300">{meeting.location}</span>
                                     </div>
                                     <div className="flex flex-col items-start md:items-center">
-                                        <span className="font-semibold text-[#004b9c] dark:text-blue-300">Jury</span>
+                                        <span className="mb-3 font-semibold text-[#004b9c] dark:text-blue-300">Jury</span>
                                         <span className="text-gray-700 dark:text-gray-300">{meeting.jury.juryName}</span>
+                                    </div>
+                                    <div className="flex flex-col items-start md:items-center">
+                                        <span className="mb-3 font-semibold text-[#004b9c] dark:text-blue-300">Status</span>
+                                        <p className={`text-white dark:text-white rounded-xl w-16 text-center   
+                                            ${meeting.status === 1 ? 'bg-green-700' : 'bg-[#FF9800] w-20'}`}>
+                                             {meeting.status === 1 ? 'Validé' : 'En cours'}
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-col items-start md:items-center">
+                                    <span className="mb-3 font-semibold text-[#004b9c] dark:text-blue-300">Actions</span>
+                                        <div className='flex items-center gap-1'>
+                                            <TiDeleteOutline
+                                                size={31}
+                                                className='cursor-pointer text-red-700'
+                                                onClick={() => handleDelete(id)}
+                                            />
+                                            {role === 'director' && meeting.status !== 1 ? (<FaRegCheckCircle
+                                                size={24}
+                                                className="text-green-700 cursor-pointer"
+                                                onClick={() => handleValidate(meeting.meetingId)}
+                                            />) : '' }
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-    
+
                             <div className="flex flex-col font-satoshi mt-10">
                                 <div className="grid grid-cols-2 bg-blue-50 dark:bg-blue-800 text-gray-800 dark:text-gray-200 sm:grid-cols-4 ">
                                     <div className="p-3 xl:p-6">
