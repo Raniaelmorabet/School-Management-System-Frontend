@@ -8,6 +8,7 @@ import Loading from './Components/Loading/Loading.jsx';
 import { loadingTrue } from './Components/Slices/LoadingSlice.js';
 import { logout } from './Components/Slices/AuthSlice.js';
 import { Api } from './Components/Tools/Api.js';
+import LandingPage from "./Components/HomePage/LandingPage.jsx";
 
 const authBaseUrl = import.meta.env.VITE_AUTH_BASE_URL;
 

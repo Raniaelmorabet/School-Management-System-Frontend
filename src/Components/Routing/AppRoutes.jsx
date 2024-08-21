@@ -11,12 +11,13 @@ import Header from '../Header/Header';
 import { Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Loading from '../Loading/Loading';
+import LandingPage from "../HomePage/LandingPage.jsx";
 function AppRoutes() {
     const loading = useSelector(state=>state.loading.loading);
     return (
         <>
             {loading ? <Loading/> : (
-                <div className="flex h-screen">
+                <div className="flex h-screen ">
                 <Sidebar />
                 <div className="flex-1 flex flex-col">
                     <Header />
@@ -29,6 +30,7 @@ function AppRoutes() {
                             <Route path="/ScheduleMeeting" element={<ScheduleMeeting />} />
                             <Route path="/RescheduleMeeting/:id" element={<RescheduleMeeting />} />
                             <Route path='/MeetingDetails/:id' element={<MeetingDetails />} />
+                            <Route path='/' element={<LandingPage />} />
                         </Routes>
                     </div>
                 </div>
