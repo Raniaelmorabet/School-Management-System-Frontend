@@ -71,6 +71,9 @@ const JuryList = () => {
             Swal.fire({
                 title: "Erreur lors de la validation.",
                 icon: "error",
+                iconColor: '#FF9800',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#004b9c',
             });
         }
     };
@@ -153,10 +156,10 @@ const JuryList = () => {
                              onClick={() => handleDelete(list.juryMemberId)}
                             />
                             {role === 'director' && list.status !== 1 ? (<FaRegCheckCircle
-                                    size={24}
-                                    className="text-green-700 cursor-pointer"
-                                    onClick={() => handleValidate(list.juryMemberId)}
-                                />) : '' }
+                                size={24}
+                                className="text-green-700 cursor-pointer"
+                                onClick={() => handleValidate(list.juryMemberId)}
+                            />) : '' }
                         </div>
                     </div>
                 ))}
