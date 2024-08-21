@@ -190,7 +190,7 @@ const MeetingDetails = () => {
                             </div>
 
                             <div className="flex flex-col font-satoshi mt-10">
-                                <div className="grid grid-cols-2 bg-blue-50 dark:bg-blue-800 text-gray-800 dark:text-gray-200 sm:grid-cols-4 ">
+                                <div className="grid grid-cols-2 bg-blue-50 dark:bg-blue-800 text-gray-800 dark:text-gray-200 sm:grid-cols-5 ">
                                     <div className="p-3 xl:p-6">
                                         <h5 className="text-sm font-semibold uppercase xsm:text-base text-[#004b9c] dark:text-blue-300">
                                             Jury Members
@@ -211,88 +211,85 @@ const MeetingDetails = () => {
                                             Actions
                                         </h5>
                                     </div>
+                                    <div className="hidden p-3 text-center sm:block xl:p-6">
+                                        <h5 className="text-sm font-semibold uppercase xsm:text-base text-[#004b9c] dark:text-blue-300">
+                                            Convocation
+                                        </h5>
+                                    </div>
                                 </div>
                                 {meeting.jury.juryMembers.map((member, key) => (
-                                    <div
-                                        className={`grid grid-cols-2 sm:grid-cols-4 bg-[#D3D3D3]/20 ${key === meeting.jury.juryMembers.length - 1 ? '' : 'border-b border-[#FF9800]/15 dark:border-blue-700'}`}
-                                        key={member.juryMemberId}
-                                    >
-                                        <div className="flex items-center gap-3 p-3 xl:p-6">
-                                            <div className="flex-shrink-0">
-                                                <img src={member.profileImg} alt="Profile" className="h-12 w-12 rounded-full mr-4"/>
-                                            </div>
-                                            <p className="hidden text-gray-700 dark:text-gray-300 sm:block font-semibold">
-                                                {member.firstName} {member.lastName}
-                                            </p>
-                                        </div>
-                                        <div className="flex items-center justify-center p-3 xl:p-6">
-                                            <a href={`mailto:${member.email}`} className="text-blue-500">
-                                                {member.email}
-                                            </a>
-                                        </div>
-                                        <div className="flex items-center justify-center p-3 xl:p-6">
-                                            <p className="text-gray-700 dark:text-gray-300">{member.role.role}</p>
-                                        </div>
-                                        <div className="hidden items-center justify-center text-m p-3 sm:flex xl:p-6 gap-3">
-                                            <button
-                                                className='sendEmail'
-                                                onClick={() => handleSendEmail(member)}
-                                                disabled={loadingEmailId === member.juryMemberId}
-                                            >
-                                                <div className="svg-wrapper-1">
-                                                    <div className="svg-wrapper">
-                                                        <svg height="24" width="24" viewBox="0 0 24 24"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M0 0h24v24H0z" fill="none"></path>
-                                                            <path
-                                                                d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
-                                                                fill="currentColor"></path>
-                                                        </svg>
-                                                    </div>
+                                    <>
+                                        <div
+                                            className={`grid grid-cols-2 sm:grid-cols-5 bg-[#D3D3D3]/20 ${key === meeting.jury.juryMembers.length - 1 ? '' : 'border-b border-[#FF9800]/15 dark:border-blue-700'}`}
+                                            key={member.juryMemberId}
+                                        >
+                                            <div className="flex items-center gap-3 p-3 xl:p-6">
+                                                <div className="flex-shrink-0">
+                                                    <img src={member.profileImg} alt="Profile"
+                                                         className="h-12 w-12 rounded-full mr-4"/>
                                                 </div>
-                                                <span>Envoyer Email</span>
-                                            </button>
-                                            {loadingEmailId === member.juryMemberId && (
-                                                <svg id='svg1' viewBox="25 25 50 50">
-                                                <circle r="20" cy="50" cx="50"></circle>
-                                            </svg>
-                                            )}
+                                                <p className="hidden text-gray-700 dark:text-gray-300 sm:block font-semibold">
+                                                    {member.firstName} {member.lastName}
+                                                </p>
+                                            </div>
+                                            <div className="flex items-center justify-center p-3 xl:p-6">
+                                                <a href={`mailto:${member.email}`} className="text-blue-500">
+                                                    {member.email}
+                                                </a>
+                                            </div>
+                                            <div className="flex items-center justify-center p-3 xl:p-6">
+                                                <p className="text-gray-700 dark:text-gray-300">{member.role.role}</p>
+                                            </div>
+                                            <div
+                                                className="hidden items-center justify-center text-m p-3 sm:flex xl:p-6 gap-3">
+                                                <button
+                                                    className='sendEmail'
+                                                    onClick={() => handleSendEmail(member)}
+                                                    disabled={loadingEmailId === member.juryMemberId}
+                                                >
+                                                    <div className="svg-wrapper-1">
+                                                        <div className="svg-wrapper">
+                                                            <svg height="24" width="24" viewBox="0 0 24 24"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M0 0h24v24H0z" fill="none"></path>
+                                                                <path
+                                                                    d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
+                                                                    fill="currentColor"></path>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+                                                    <span>Envoyer Email</span>
+                                                </button>
+                                                {loadingEmailId === member.juryMemberId && (
+                                                    <svg id='svg1' viewBox="25 25 50 50">
+                                                        <circle r="20" cy="50" cx="50"></circle>
+                                                    </svg>
+                                                )}
+                                            </div>
+                                            <div className="flex items-center justify-center p-3 xl:p-6">
+                                                <button className="DownloadBtn">
+                                                    <svg className="svgIcon" viewBox="0 0 384 512" height="1em"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
+                                                    </svg>
+                                                    <span className="icon2"></span>
+                                                    <span className="tooltip">Download</span>
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </>
                                 ))}
                             </div>
                         </div>
-                        <div className="flex justify-end space-x-4 my-7">
-                            <div className="containerBtn">
-                                <label className="labelBtn">
-                                    <input type="checkbox" className="input"/>
-                                    <span className="circle">
-                                        <svg className="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                stroke-width="1.5" d="M12 19V5m0 14-4-4m4 4 4-4"></path>
-                                        </svg>
-                                        <div className="square"/>
-                                    </span>
-                                    <PDFDownloadLink
-                                        document={<Convocation event={meeting}/>}
-                                        fileName="convocation.pdf"
-                                    >
-                                        {({loading}) => (
-                                            <button>
-                                                <p className="title">Télécharger Convocation</p>
-                                                <p className="title">Open</p>
-                                            </button>
-                                        )}
-                                    </PDFDownloadLink>
-                                </label>
-                            </div>
-                            <div className="containerBtn2">
-                                <label className="labelBtn2">
-                                    <input type="checkbox" className="input"/>
-                                    <span className="circle">
-                                        <svg className="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24">
+                            <div className="flex justify-end space-x-4 my-7">
+                                <div className="containerBtn2">
+                                    <label className="labelBtn2">
+                                        <input type="checkbox" className="input"/>
+                                        <span className="circle">
+                                        <svg className="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                             fill="none"
+                                             viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                                 stroke-width="1.5" d="M12 19V5m0 14-4-4m4 4 4-4"></path>
                                         </svg>
