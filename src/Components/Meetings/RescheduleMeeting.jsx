@@ -215,7 +215,7 @@ function ScheduleMeeting() {
                                         to="/SMS/MeetingListPage">
                                         <SecondaryButton>Annuler</SecondaryButton>
                                     </Link>
-                                    <PrimaryButton type={'submit'}>Ajouter</PrimaryButton>
+                                    <PrimaryButton type={'submit'}>Modifier</PrimaryButton>
                                 </div>
                             </div>
                         </form>
