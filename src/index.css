@@ -566,3 +566,15 @@ circle {
         opacity: 1;
     }
 }
+
+@layer base {
+  :root {
+        --radius: 0.5rem;
+    }
+}
+.custom-dot {
+    fill: #1e3a8a;
+}
+.custom-dot2 {
+    fill: #F59E0C;
+}

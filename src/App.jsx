@@ -49,21 +49,25 @@ function App() {
 
     return (
         <Routes>
-            {flag === "authorize" ? (
-                <>
-                    <Route path='/SMS/*' element={<AppRoutes />} />
-                    <Route path='/' element={<Navigate to='/SMS' />} />
-                    <Route path='/login' element={<Navigate to='/SMS' />} />
-                    <Route path='/*' element={<ErrorPage />} />
-                </>
-            ) : flag === "loading" ? (
-                <Route path='/*' element={<Loading />} />
-            ) : (
-                <>
-                    <Route path='/login' element={<Login />} />
-                    <Route path='/*' element={<Navigate to='/login' />} />
-                </>
-            )}
+            {/*{flag === "authorize" ? (*/}
+            {/*    <>*/}
+            {/*        <Route path='/SMS/*' element={<AppRoutes />} />*/}
+            {/*        <Route path='/' element={<Navigate to='/SMS' />} />*/}
+            {/*        <Route path='/login' element={<Navigate to='/SMS' />} />*/}
+            {/*        <Route path='/*' element={<ErrorPage />} />*/}
+            {/*    </>*/}
+            {/*) : flag === "loading" ? (*/}
+            {/*    <Route path='/*' element={<Loading />} />*/}
+            {/*) : (*/}
+            {/*    <>*/}
+            {/*        <Route path='/login' element={<Login />} />*/}
+            {/*        <Route path='/*' element={<Navigate to='/login' />} />*/}
+            {/*    </>*/}
+            {/*)}*/}
+            <Route path='/SMS/*' element={<AppRoutes />} />
+            <Route path='/' element={<Navigate to='/SMS' />} />
+            <Route path='/login' element={<Navigate to='/SMS' />} />
+            <Route path='/*' element={<ErrorPage />} />
         </Routes>
     );
 }
